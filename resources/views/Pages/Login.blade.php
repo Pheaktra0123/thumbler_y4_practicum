@@ -13,7 +13,7 @@
             <div class=" text-center space-y-4">
                 <h1 class="text-5xl font-bold ">Welcome</h1>
                 <p class="text-xl">Be the first to know about new releases, limited editions and exclusive deals.</p>
-                <h2 class="text-">Log In</h2>
+                <h2 class="text-2xl font-bold">Log In</h2>
             </div>
             <div>
                 <form action="" >
