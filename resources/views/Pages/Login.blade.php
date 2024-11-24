@@ -1,3 +1,4 @@
+@extends("TailwindCssLink.style")
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,12 +8,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>login</title>
 </head>
-<body>
-        <main>
-            <div class="">
-                <h1>Welcome</h1>
-                <p>Be the first to know about new releases, limited editions and exclusive deals.</p>
-                <h2>Log In</h2>
+<body class="bg-black ">
+        <main class="bg-white w-11/12 flex-col mx-auto ">
+            <div class=" text-center space-y-4">
+                <h1 class="text-5xl font-bold ">Welcome</h1>
+                <p class="text-xl">Be the first to know about new releases, limited editions and exclusive deals.</p>
+                <h2 class="text-">Log In</h2>
             </div>
             <div>
                 <form action="" >
