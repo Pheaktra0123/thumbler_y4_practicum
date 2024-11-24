@@ -16,7 +16,18 @@
             </div>
             <div>
                 <form action="" >
-
+                    <div class="">
+                       <div>Email</div>
+                        <div>
+                            <input type="email" required>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Password</div>
+                        <div>
+                            <input type="password" required>
+                        </div>
+                    </div>
                 </form>
             </div>
         </main>
