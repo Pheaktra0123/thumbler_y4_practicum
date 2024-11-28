@@ -24,7 +24,7 @@
                                 Email
                             </div>
                             <div id="inputEmail" class="w-full border-b-2 outline-none ">
-                                <input type="email" id="email" required class="bg-gray-100 w-full border-none outline-none ">
+                                <input type="email" id="email" autocomplete="off" required class="bg-gray-100 w-full border-none outline-none ">
                             </div>
                         </div>
                         <div class="w-full mt-3">
