@@ -22,3 +22,6 @@ Route::get('/signup',function (){
 Route::get('/', function () {
     return view('/Pages/home');
 });
+Route::get('/customize', function () {
+    return view('/Pages/customize');
+});
