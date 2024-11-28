@@ -19,10 +19,6 @@ Route::get('/login', function () {
 Route::get('/signup',function (){
     return view('Pages/Register');
 });
-<<<<<<< HEAD
-Route::get('/home', function () {
-=======
 Route::get('/', function () {
->>>>>>> 96378c107bce39749ddc922c392ea62e8f3d11d8
     return view('/Pages/home');
 });

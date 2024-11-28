@@ -20,7 +20,7 @@
             <form class="" >
                 <div class="w-full mb-3">
                     <div>
-                        <span>*</span>
+                        <span class="text-red-900">*</span>
                         Username
                     </div>
                     <div class="w-full border-b-2 outline-none ">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="w-full">
                     <div>
-                        <span>*</span>
+                        <span class="text-red-900">*</span>
                         Email
                     </div>
                     <div class="w-full border-b-2 outline-none ">
@@ -38,7 +38,7 @@
                 </div>
                 <div class="w-full mt-3">
                     <div>
-                        <span class="text-red">*</span>
+                        <span class="text-red-900">*</span>
                         Password
                     </div>
                     <div class="w-full border-b-2 outline-none">
