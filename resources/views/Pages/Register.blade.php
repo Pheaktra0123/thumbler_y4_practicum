@@ -23,10 +23,19 @@
                         <span class="text-red-900">*</span>
                         Username
                     </div>
-                    <div class="w-full border-b-2 outline-none ">
-                        <input type="text"
-                               id="username"
-                               required class="bg-gray-100 w-full border-none outline-none">
+                    <div class="w-full border-b-2 outline-none  ">
+                        <div class="flex">
+                            <input type="text"
+                                   id="username"
+                                   autocomplete="off"
+                                   required class="bg-gray-100 w-full border-none outline-none">
+                           <div class="hidden" id="corName">
+                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 w-6 h-6 text-green-600">
+                                   <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                               </svg>
+                           </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="w-full">
@@ -35,10 +44,22 @@
                         Email
                     </div>
                     <div class="w-full border-b-2 outline-none ">
-                        <input type="email"
-                               id="email" required
-                               class="bg-gray-100 w-full border-none outline-none">
+                       <div class="flex">
+                           <input type="email"
+                                  autocomplete="off"
+                                  id="email"
+                                  required
+                                  class="bg-gray-100 w-full border-none outline-none">
+                           <div id="corEmail" class="hidden">
+                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 w-6 h-6 text-green-600">
+                                   <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                               </svg>
+                           </div>
+                       </div>
                     </div>
+                    <p class="text-[11px] text-red-900 mt-3 hidden " id="EmailWarning">
+
+                    </p>
                 </div>
                 <div class="w-full mt-3">
                     <div>
@@ -46,15 +67,23 @@
                         Password
                     </div>
                     <div class="w-full border-b-2 outline-none">
-                        <input type="password"
-                               id="password"
-                               required
-                               class="bg-gray-100 w-full border-none outline-none"
-                        >
+                        <div class="flex">
+                            <input type="password"
+                                   id="password"
+                                   required
+                                   class="bg-gray-100 w-full border-none outline-none"
+                            >
+                            <div  id="corPass" hidden>
+                                <svg id="corPass" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 w-6 h-6 text-green-600 ">
+                                    <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                                </svg>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
                 <p class="text-[11px] text-red-900 mt-3 hidden " id="warning">
-                    Password must contain number,uppercase,lowercase letter, and at least 8 characters
+
                 </p>
                 <div class="w-full bg-black text-white text-center p-2 mt-5 rounded-md">
                     <button class="w-full">Sign Up</button>
@@ -68,40 +97,103 @@
 </main>
 </body>
 <script>
-    const password = document.getElementById('password');
-    const warning=document.getElementById('warning');
+
+    const email=document.getElementById("email").value.trim();
     const signup=document.getElementById('signup');
+    const password = document.getElementById('password');
+    const username=document.getElementById('username');
+
+
     password.onblur=function (){
+        const warning=document.getElementById('warning');
         warning.style.display="none";
     }
-    signup.addEventListener("submit",function (event){
-        event.preventDefault();
-        let LowerCaseLetters=/[a-z]/g;
-        if(password.value.match(LowerCaseLetters)){
-            warning.style.display="none";
-        }else {
-            warning.style.display="block";
-        }
-        let Numbers=/[0-9]/g
-        if(password.value.match(Numbers)){
-            warning.style.display="none"
-        }
-        let UpperCaseLetters=/[A-Z]/g
-        if(password.value.match(UpperCaseLetters)){
-            warning.style.display="none"
-        }
-        else{
-            warning.style.display="block"
-        }
-        if(password.value.length >= 8) {
-            warning.style.display="none"
-        } else {
-            warning.style.display="block"
-        }
-    });
 
-    password.onkeyup=function (){
+    email.onblur=function (){
 
     }
+    username.onblur=function (){
+
+    }
+    //event of sign up when it keyup
+    signup.addEventListener("keyup", function (event) {
+        event.preventDefault();
+        const password = document.getElementById("password").value;
+        const warning = document.getElementById("warning");
+        const corPass=document.getElementById('corPass');
+        const corEmail=document.getElementById('corEmail');
+        const email=document.getElementById("email").value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (emailRegex){
+            corEmail.style.display="block"
+        }
+        // Define validation rules
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const isValidLength = password.length >= 8;
+
+        // Clear any previous messages
+        warning.style.display = "block";
+        warning.innerHTML = ""; // Optional: Customize this to append multiple messages
+
+        // If any criteria are missing, stop form submission
+        if (!hasLowerCase || !hasUpperCase || !hasNumber || !isValidLength) {
+            return;
+        }
+
+        // If all criteria pass, proceed with form submission
+        warning.style.display = "none";
+        corPass.style.display="block";
+        // Optionally, submit the form programmatically:
+        // event.target.submit();
+    });
+
+    //check validate when submit
+    signup.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const password = document.getElementById("password").value;
+        const warning = document.getElementById("warning");
+        const corPass=document.getElementById('corPass');
+        const EmailWarning=document.getElementById('EmailWarning');
+        const email=document.getElementById("email").value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!emailRegex){
+            EmailWarning.textContent="email must be have @"
+        }
+        // Define validation rules
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const isValidLength = password.length >= 8;
+
+        // Clear any previous messages
+        warning.style.display = "block";
+        warning.innerHTML = ""; // Optional: Customize this to append multiple messages
+
+        // Validate the password
+        if (!hasLowerCase) {
+            warning.innerHTML = "Password must include at least lowercase letter.<br>";
+        }
+        if (!hasUpperCase) {
+            warning.innerHTML = "Password must include at least  uppercase letter.<br>";
+        }
+        if (!hasNumber) {
+            warning.innerHTML = "Password must include at least  numeric character.<br>";
+        }
+        if (!isValidLength) {
+            warning.innerHTML = "Password must be at least 8 characters long.<br>";
+        }
+        // If any criteria are missing, stop form submission
+        if (!hasLowerCase || !hasUpperCase || !hasNumber || !isValidLength) {
+            return;
+        }
+
+        // If all criteria pass, proceed with form submission
+        warning.style.display = "none";
+        corPass.style.display="block";
+    });
+
+
 </script>
 </html>
