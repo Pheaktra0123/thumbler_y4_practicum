@@ -17,7 +17,8 @@
             <h2 class="text-2xl font-bold mb-2">Sign Up</h2>
         </div>
         <div class="bg-gray-100 px-10 py-10 rounded-b-lg mt-2">
-            <form class="" id="signup">
+            <form id="signup" action="{{ route('register.save') }}" method="POST">
+                @csrf
                 <div class="w-full mb-3">
                     <div>
                         <span class="text-red-900">*</span>
@@ -27,6 +28,7 @@
                         <div class="flex">
                             <input type="text"
                                    id="username"
+                                   name="username"
                                    autocomplete="off"
                                    required class="bg-gray-100 text-gray-500 w-full border-none outline-none mx-4 mt-2">
                            <div class="hidden" id="corName">
@@ -48,6 +50,7 @@
                            <input type="email"
                                   autocomplete="off"
                                   id="email"
+                                  name="email"
                                   required
                                   class="bg-gray-100 text-gray-500 w-full border-none outline-none mx-4 mt-2">
                            <div id="corEmail" class="hidden">
@@ -70,6 +73,7 @@
                         <div class="flex">
                             <input type="password"
                                    id="password"
+                                   name="password"
                                    required
                                    class="bg-gray-100 text-gray-500 w-full border-none outline-none mx-4 mt-2"
                             >
@@ -89,9 +93,7 @@
                     <input type="checkbox" onclick="showPassword()">
                     <p class="text-sm mx-2 text-gray-500">Show password</p>
                 </div>
-                <div class="w-full bg-black text-white text-center p-2 mt-5 rounded-md">
-                    <button class="w-full">Sign Up</button>
-                </div>
+                <button class="w-full bg-black text-white text-center p-2 mt-5 rounded-md hover:bg-gray-400 transition duration-300 delay-3000" type="submit">Sign Up</button>
                 <div class="text-sm mt-3 text-center">
                     <p>Already have an account ? <a class="underline" href="/login">Log In</a> </p>
                 </div>

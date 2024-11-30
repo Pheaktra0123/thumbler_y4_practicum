@@ -42,11 +42,9 @@
                         <div class="mt-5 text-sm underline">
                             <a href="#">Forgot Password</a>
                         </div>
-                        <div class="w-full bg-black text-white text-center p-2 mt-5 rounded-md">
-                            <button type="submit" class="w-full">Login</button>
-                        </div>
+                        <button type="submit" class="w-full bg-black text-white text-center p-2 mt-5 rounded-md">Login</button>
                         <div class="text-sm mt-3 text-center">
-                            <p>Don't have account ? <a class="underline" href="/signup">Sign Up</a> </p>
+                            <p>Don't have account ? <a class="underline" href="{{route('register')}}">Sign Up</a> </p>
                         </div>
                     </form>
                 </div>
