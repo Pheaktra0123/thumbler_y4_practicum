@@ -1,10 +1,18 @@
 @extends("TailwindCssLink.style")
 <!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
 
+<div class="py-4 p-20 flex flex-col items-start">
+    <button onclick="history.back()"
+        class="bg-gray-100 hover:bg-gray-300 text-black py-2 px-4 rounded-xl font-bold py-1 px-2 flex items-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Back arrow icon" class="h-5 w-5 mr-2" />
+        Back
+    </button>
+</div>
+
 
 <div class="text-center p-10">
-    <h1 class="font-bold text-4xl mb-4">Responsive Product card grid</h1>
-    <h1 class="text-3xl">Tailwind CSS</h1>
+    <h1 class="font-bold text-4xl mb-4">Choose your own Product!!</h1>
+    <!-- <h1 class="text-3xl">Tailwind CSS</h1> -->
 </div>
 
 <!-- ✅ Grid Section - Starts Here 👇 -->
@@ -14,8 +22,8 @@
     <!--   ✅ Product card 1 - Starts Here 👇 -->
     <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
         <a href="#">
-            <img src="https://images.unsplash.com/photo-1646753522408-077ef9839300?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NjZ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
+            <img src="cuz_1.png"
+                alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
             <div class="px-4 py-3 w-72">
                 <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                 <p class="text-lg font-bold text-black truncate block capitalize">Product Name</p>
@@ -40,8 +48,8 @@
     <!--   ✅ Product card 2 - Starts Here 👇 -->
     <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
         <a href="#">
-            <img src="https://images.unsplash.com/photo-1651950519238-15835722f8bb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8Mjh8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
+            <img src="cuz_1.png"
+                alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
             <div class="px-4 py-3 w-72">
                 <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                 <p class="text-lg font-bold text-black truncate block capitalize">Product Name</p>
@@ -66,8 +74,8 @@
     <!--   ✅ Product card 3 - Starts Here 👇 -->
     <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
         <a href="#">
-            <img src="https://images.unsplash.com/photo-1651950537598-373e4358d320?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MjV8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
+            <img src="cuz_1.png"
+                alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
             <div class="px-4 py-3 w-72">
                 <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                 <p class="text-lg font-bold text-black truncate block capitalize">Product Name</p>
@@ -92,8 +100,8 @@
     <!--   ✅ Product card 4 - Starts Here 👇 -->
     <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
         <a href="#">
-            <img src="https://images.unsplash.com/photo-1651950540805-b7c71869e689?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8Mjl8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
+            <img src="cuz_1.png"
+                alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
             <div class="px-4 py-3 w-72">
                 <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                 <p class="text-lg font-bold text-black truncate block capitalize">Product Name</p>
@@ -118,8 +126,8 @@
     <!--   ✅ Product card 5 - Starts Here 👇 -->
     <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
         <a href="#">
-            <img src="https://images.unsplash.com/photo-1649261191624-ca9f79ca3fc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NDd8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
+            <img src="cuz_1.png"
+                alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
             <div class="px-4 py-3 w-72">
                 <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                 <p class="text-lg font-bold text-black truncate block capitalize">Product Name</p>
@@ -144,8 +152,8 @@
     <!--   ✅ Product card 6 - Starts Here 👇 -->
     <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
         <a href="#">
-            <img src="https://images.unsplash.com/photo-1649261191606-cb2496e97eee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8NDR8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
+            <img src="cuz_1.png"
+                alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
             <div class="px-4 py-3 w-72">
                 <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                 <p class="text-lg font-bold text-black truncate block capitalize">Product Name</p>
@@ -169,23 +177,6 @@
 
 </section>
 
-<!-- 🛑 Grid Section - Ends Here -->
 
 
-<!-- credit -->
-<div class="text-center py-10 px-10">
-    <h2 class="font-bold text-2xl md:text-4xl mb-4">Thanks to <a href="https://unsplash.com/@nixcreative"
-            class="underline font-black">Tyler Nix</a> for those AMAZING product images!</h2>
-</div>
 
-
-<!-- Support Me 🙏🥰 -->
-<script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
-<script>
-    kofiWidgetOverlay.draw('mohamedghulam', {
-            'type': 'floating-chat',
-            'floating-chat.donateButton.text': 'Support me',
-            'floating-chat.donateButton.background-color': '#323842',
-            'floating-chat.donateButton.text-color': '#fff'
-        });
-</script>
