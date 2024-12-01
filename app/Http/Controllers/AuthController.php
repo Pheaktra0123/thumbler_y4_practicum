@@ -22,19 +22,22 @@ class AuthController extends Controller
     }
     public function registerSave(Request $request)
     {
-        Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-        ])->validate();
-       User::create([
-            'username'=>$request->username,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password),
-            'type'=>'0'
+        // Validate the input
+        $request->validate([
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
         ]);
 
-        return redirect()->route('login');
+        // Create the user
+        User::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
+        // Redirect or return success
+        return redirect()->route('login')->with('success', 'Registration successful. Please login.');
     }
     public function login()
     {
