@@ -12,15 +12,15 @@
 <body>
 <header class="shadow-lg">
     <nav class="flex justify-between px-10 py-3 item-center bg-gray-800 border-b-2">
-        <div class="text-2xl text-gray-200 font-bold uppercase place-content-center">
+        <div class="text-xl text-gray-200 font-bold uppercase place-content-center">
             Tumbler Haven
         </div>
         <div class="flex justify-between item-center place-items-center border max-w-full w-1/3 p-3 rounded-lg">
-            <div class="text-gray-200 px-1">Search</div>
+            <div class="text-gray-500 px-1">Search</div>
             <div class="w-full mx-w-full px-2 bg-gray-800">
-                <input type="search" class="outline-none w-full mx-w-full bg-gray-800 ">
+                <input type="search" class="outline-none text-gray-200 w-full mx-w-full bg-gray-800 ">
             </div>
-            <button class=" text-gray-200 border-l-2 px-1">
+            <button class=" text-gray-200 border-gray-500 border-l-2 px-1">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                   <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
                 </svg>
@@ -28,17 +28,17 @@
         </div>
         <div class="place-content-center">
             <ul class="flex gap-3">
-                <li class="bg-gray-500 p-2 text-gray-100 rounded-full shadow shadow-gray-400">
+                <li class="bg-gray-500 p-2 text-gray-300 rounded-full shadow shadow-gray-400 hover:bg-gray-600 delay-600 hover:transition hover:duration-500 hover:ease-in-out ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
                     </svg>
                 </li>
-                <li class="bg-gray-500 p-2 text-gray-100 rounded-full  shadow shadow-gray-400">
+                <li class="bg-gray-500 p-2 text-gray-300 rounded-full  shadow shadow-gray-400 hover:bg-gray-600 delay-600 hover:transition hover:duration-500 hover:ease-in-out ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                 </li>
-                <li class="bg-gray-500 p-2 text-gray-100 rounded-full  shadow shadow-gray-400">
+                <li class="bg-gray-500 p-2 text-gray-300 rounded-full  shadow shadow-gray-400 hover:bg-gray-600 delay-600 hover:transition hover:duration-500 hover:ease-in-out ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
                     </svg>
@@ -48,13 +48,13 @@
         </div>
     </nav>
 </header>
-<div class="flex h-screen bg-gray-100">
+<div class="flex bg-gray-100">
     <!-- sidebar -->
-    <div class="hidden md:flex flex-col w-96 bg-gray-800 rounded-br-lg">
+    <div class="max-h-screen  bottom-0 flex overflow-y-auto flex-col w-1/4 bg-gray-800 rounded-br-lg">
         <div class="flex items-center justify-center h-18 border-gray-300 mt-1">
             <span class="text-white font-bold uppercase p-2 ">Dashboard</span>
         </div>
-        <div class="flex flex-col flex-1 overflow-y-auto">
+        <div class="flex flex-col">
             <nav class="text-sm text-gray-300">
                 <ul class="flex flex-col">
                     <li class="px-4 cursor-pointer bg-gray-500 text-gray-800 mx-1 rounded-md hover:bg-gray-700  hover:text-white">
@@ -179,7 +179,7 @@
         </div>
     </div>
     <!-- Main content -->
-    <div class="flex flex-col flex-1 overflow-y-auto">
+    <div class="flex flex-col w-full max-h-screen overflow-y-auto ">
         <div>@yield('contents')</div>
     </div>
 </div>
