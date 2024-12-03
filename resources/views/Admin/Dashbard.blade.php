@@ -41,7 +41,7 @@
     <div class="">
         <div class="bg-gray-100  p-4">
             <div class="container mx-auto ">
-                <h1 class="text-4xl font-bold text-gray-800 text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 text-start mb-8">
                     Welcome to Admin Dashboard
                 </h1>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
