@@ -34,3 +34,8 @@ Route::get('/', function () {
 Route::get('/customize', function () {
     return view('/Pages/customize');
 });
+Route::get('/customizedetails', function () {
+    return view('/Pages/customizedetails');
+});
+
+
