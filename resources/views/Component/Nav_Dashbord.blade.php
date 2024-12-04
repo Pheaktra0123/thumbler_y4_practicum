@@ -11,7 +11,7 @@
 </head>
 <body>
 <header class="shadow-lg">
-    <nav class="flex justify-between px-10 py-3 item-center bg-gray-800 border-b-2">
+    <nav class="flex justify-between px-10 py-2 item-center bg-gray-800 border-b-2">
         <div class="text-xl text-gray-200 font-bold uppercase place-content-center">
             Tumbler Haven
         </div>
@@ -50,15 +50,15 @@
 </header>
 <div class="flex bg-gray-100 ">
     <!-- sidebar -->
-    <div class="bottom-0 flex min-h-screen flex-col w-1/4 bg-gray-800 rounded-br-lg">
-        <div class="flex flex-col max-h-[600px] p-2
-            ">
-            <nav class="text-sm text-gray-300 [&::-webkit-scrollbar]:w-3
+    <div class="max-w-full w-1/4 max-h-full overflow-y-auto flex flex-col bg-gray-800 rounded-br-lg">
+        <div class="flex flex-col max-h-screen mt-2">
+            <nav class="text-sm text-gray-300 [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar-track]:bg-gray-100
+            [&::-webkit-scrollbar-track]:rounded-sm
             [&::-webkit-scrollbar-thumb]:bg-gray-300
             [&::-webkit-scrollbar-thumb]:rounded-full
             [&::-webkit-scrollbar-thumb]:
-           overflow-y-auto mx-2">
+                     mx-2">
                 <ul class="flex flex-col">
                     <li class="px-4 cursor-pointer bg-gray-500 text-gray-800 mx-1 rounded-md hover:bg-gray-700  hover:text-white">
                         <a class="py-3 flex items-center" href="#">
@@ -166,15 +166,6 @@
 
                             Messages
                             <span class="ml-auto text-xs bg-gray-500 px-2 py-1 rounded-sm">16</span>
-                        </a>
-                    </li>
-                    <li class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
-                        <a href="#" class="py-2 flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 mr-3">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
-                            </svg>
-
-                            Calendar
                         </a>
                     </li>
                 </ul>
