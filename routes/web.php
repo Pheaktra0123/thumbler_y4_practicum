@@ -13,15 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::controller(\App\Http\Controllers\AuthController::class)->group(function (){
-    Route::get('login','login')->name('login');
-    Route::post('login','loginAction')->name('login.action');
 
     Route::get('register','register')->name('register');
     Route::post('register','registerSave')->name('register.save');
 
+    Route::get('login','login')->name('login');
+    Route::post('login','loginAction')->name('login.action');
+
     Route::get('logout', 'logout')->middleware('auth')->name('logout');
 });
-
+Route::get('/admin',function (){
+    return view('/Admin/AdminLogin');
+});
+Route::get('/nav',function (){
+    return view('Admin/Dashbard');
+});
 Route::get('/', function () {
     return view('/Pages/home');
 });

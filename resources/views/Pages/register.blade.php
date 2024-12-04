@@ -172,7 +172,7 @@
 
     //check validate when submit
     signup.addEventListener("submit", function (event) {
-        event.preventDefault();
+        //event.preventDefault();
         const password = document.getElementById("password").value;
         const warning = document.getElementById("warning");
         const corPass=document.getElementById('corPass');
