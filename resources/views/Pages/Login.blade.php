@@ -17,7 +17,8 @@
                     <h2 class="text-2xl font-bold mb-2">Log In</h2>
                 </div>
                 <div class="bg-gray-100 px-10 py-10 rounded-b-lg mt-2">
-                    <form class="" id="loginForm">
+                    <form class="" id="loginForm" action="{{'login.action'}}">
+                        @csrf
                         <div class="w-full">
                             <div>
                                 <span class="text-red-900">*</span>
@@ -39,8 +40,14 @@
                         <div class="mt-5 text-sm">
                             <p id="errorPass"></p>
                         </div>
-                        <div class="mt-5 text-sm underline">
-                            <a href="#">Forgot Password</a>
+                        <div class="flex justify-between">
+                            <div class="flex mx-2">
+                                <input type="checkbox" onclick="showPassword()">
+                                <p class="text-sm mx-2 text-gray-500">Show password</p>
+                            </div>
+                            <div class="text-sm underline">
+                                <a href="#">Forgot Password</a>
+                            </div>
                         </div>
                         <button type="submit" class="w-full bg-black text-white text-center p-2 mt-5 rounded-md">Login</button>
                         <div class="text-sm mt-3 text-center">
@@ -52,35 +59,13 @@
         </main>
 </body>
 <script>
-    const emailInput=document.getElementById("email");
-    const passwordInput=document.getElementById("password");
-    emailInput.addEventListener("input",function (event){
-        event.preventDefault();
-        const email=emailInput.value.trim();
-        let isValid=true;
-        const inputEmail=document.getElementById("inputEmail");
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-           if (!emailRegex.test(email)){
-               inputEmail.style.borderBottomColor="red";
-               const placeholder=email.input.placeholder="please! add your email"
-               console.log(placeholder)
-           }
-           else {
-               inputEmail.style.borderBottomColor="green";
-           }
-    })
-    passwordInput.addEventListener("input",(event)=>{
-        event.preventDefault();
-        const inputPass=document.getElementById("inputPass");
-        const password=passwordInput.value.trim();
-        const errorPass=document.getElementById("errorPass");
-        if (!password) {
-            passwordInput.style.borderBottomColor = "red";
+    function showPassword(){
+        if(password.type==="password"){
+            password.type="text";
         }
         else {
-            inputPass.style.borderBottomColor = "green";
-            errorPass.textContent = "";
+            password.type="password";
         }
-    })
+    }
 </script>
 </html>

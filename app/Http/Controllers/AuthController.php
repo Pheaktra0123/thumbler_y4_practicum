@@ -23,12 +23,19 @@ class AuthController extends Controller
     public function registerSave(Request $request)
     {
         // Validate the input
-        $request->validate([
+        $validatedData=$request->validate([
             'username' => 'required|string|max:255|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
         ]);
-
+        $userExists = User::where('email', $validatedData['email'])
+            ->orWhere('username', $validatedData['username'])
+            ->exists();
+        if ($userExists) {
+            return response()->json([
+                'message' => 'User already exists with this email or username.'
+            ], 400);
+        }
         // Create the user
         User::create([
             'username' => $request->username,

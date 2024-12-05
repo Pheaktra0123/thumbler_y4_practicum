@@ -19,6 +19,9 @@
         <div class="bg-gray-100 px-10 py-10 rounded-b-lg mt-2">
             <form id="signup" action="{{ route('register.save') }}" method="POST">
                 @csrf
+                @if($errors->has('$errors'))
+                    {{ $errors->first('error') }}
+                @endif
                 <div class="w-full mb-3">
                     <div>
                         <span class="text-red-900">*</span>
@@ -37,8 +40,10 @@
                                </svg>
                            </div>
                         </div>
-
                     </div>
+                    @error('username')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="w-full">
                     <div>
@@ -60,9 +65,9 @@
                            </div>
                        </div>
                     </div>
-                    <p class="text-[11px] text-red-900 mt-3 hidden " id="EmailWarning">
-
-                    </p>
+                    @error('email')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="w-full mt-3">
                     <div>
