@@ -1,4 +1,5 @@
 @extends("TailwindCssLink.style")
+@extends("TailwindCssLink.fontStyle")
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>login</title>
 </head>
-<body class="bg-black">
+<body class="bg-black ">
         <main class="h-screen flex-col content-center">
             <div class="bg-white  w-1/4 mx-auto rounded-lg  ">
                 <div class="text-center space-y-2 py-3">
@@ -17,7 +18,7 @@
                     <h2 class="text-2xl font-bold mb-2">Log In</h2>
                 </div>
                 <div class="bg-gray-100 px-10 py-10 rounded-b-lg mt-2">
-                    <form class="" id="loginForm" action="{{'login.action'}}">
+                    <form class="" id="loginForm" action="{{'login.action'}}" method="GET">
                         @csrf
                         <div class="w-full">
                             <div>
