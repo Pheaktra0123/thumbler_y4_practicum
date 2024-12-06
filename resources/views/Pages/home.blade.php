@@ -9,8 +9,10 @@
 </head>
 
 <body>
-    <div class=" w-full ">
-        <header
+<div class=" w-full ">
+@include('pages.header')
+
+        <!-- <header
             class="bg-black text-white w-full sticky top-0 z-50 flex flex-col overflow-hidden px-5 py-5 lg:mx-auto lg:flex-row lg:items-center">
             <a href="" class="flex font-serif items-center whitespace-nowrap text-2xl font-bold text-white">
                 Tumbler Haven
@@ -44,7 +46,7 @@
                 </div>
             </nav>
 
-        </header>
+        </header> -->
 
         <div id="cartDialog" class=" p-4 fixed z-50 hidden flex right-0 top-1/4 transform -translate-y-1/2">
             <div class="bg-white w-80 h-70 rounded-lg shadow-lg p-4 relative">

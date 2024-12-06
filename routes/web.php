@@ -37,5 +37,8 @@ Route::get('/customize', function () {
 Route::get('/customizedetails', function () {
     return view('/Pages/customizedetails');
 });
+Route::get('/#about-us', function () {
+    return view('/Pages/home/#about-us');
+});
 
 
