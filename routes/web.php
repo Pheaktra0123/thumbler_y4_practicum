@@ -25,6 +25,9 @@ Route::controller(\App\Http\Controllers\AuthController::class)->group(function (
 Route::get('/admin',function (){
     return view('/Admin/AdminLogin');
 });
+Route::get("/Tumblers",function (){
+   return view("/Admin/Product");
+});
 Route::get('/nav',function (){
     return view('Admin/Dashbard');
 });

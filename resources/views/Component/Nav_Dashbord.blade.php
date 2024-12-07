@@ -60,8 +60,8 @@
             [&::-webkit-scrollbar-thumb]:
                      mx-2">
                 <ul class="flex flex-col">
-                    <li class="px-4 cursor-pointer bg-gray-500 text-gray-800 mx-1 rounded-md hover:bg-gray-700  hover:text-white">
-                        <a class="py-3 flex items-center" href="#">
+                    <li name="active" data-id="dashboard" class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700  hover:text-white active:bg-gray-900 focus:bg-gray-900">
+                        <a class="py-3 flex items-center" href="/nav">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -71,8 +71,8 @@
                             Dashboard
                         </a>
                     </li>
-                    <li class="px-4 py-2 text-xs uppercase tracking-wider mx-1 rounded-md text-gray-500 font-bold">USER MANAGEMENT</li>
-                    <li class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700">
+                    <li   class="px-4 py-2 text-xs uppercase tracking-wider mx-1 rounded-md text-gray-500 font-bold">USER MANAGEMENT</li>
+                    <li name="active" data-id="user" class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700">
                         <a class="py-3 flex items-center" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
@@ -82,7 +82,7 @@
                             Users
                         </a>
                     </li>
-                    <li class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700">
+                    <li name="active" data-id="roles" class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700">
                         <a class="py-3 flex items-center" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
@@ -93,7 +93,7 @@
                             Roles
                         </a>
                     </li>
-                    <li class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700">
+                    <li name="active" data-id="permissions" class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700">
                         <a class="py-3 flex items-center" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
@@ -104,8 +104,8 @@
                             Permissions
                         </a>
                     </li>
-                    <li class="px-4 py-2 text-xs uppercase tracking-wider mx-1 rounded-md text-gray-500 font-bold">PRODUCT MANAGEMENT</li>
-                    <li class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
+                    <li  class="px-4 py-2 text-xs uppercase tracking-wider mx-1 rounded-md text-gray-500 font-bold">PRODUCT MANAGEMENT</li>
+                    <li name="active" data-id="categories" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
                         <a class="py-3 flex items-center" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
@@ -116,8 +116,8 @@
                             Categories
                         </a>
                     </li>
-                    <li class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
-                        <a class="py-3 flex items-center" href="#">
+                    <li name="active" data-id="products" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
+                        <a class="py-3 flex items-center" href="/Tumblers">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -128,7 +128,7 @@
                         </a>
                     </li>
                     <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold mx-1 rounded-md">ecommerce</li>
-                    <li class="px-4 hover:bg-gray-700 mx-1 rounded-md">
+                    <li name="active" data-id="orders" class="px-4 hover:bg-gray-700 mx-1 rounded-md">
                         <a href="#" class="py-3 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
@@ -138,7 +138,7 @@
                             Orders
                         </a>
                     </li>
-                    <li class="px-4 hover:bg-gray-700 mx-1 rounded-md">
+                    <li name="active" data-id="payment" class="px-4 hover:bg-gray-700 mx-1 rounded-md">
                         <a href="#" class="py-3 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
@@ -149,7 +149,7 @@
                         </a>
                     </li>
                     <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold mx-1 rounded-md">INFORMATION MANAGEMENT</li>
-                    <li class="px-4 hover:bg-gray-700">
+                    <li name="active" data-id="report" class="px-4 hover:bg-gray-700">
                         <a href="#" class="py-3 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 mr-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
@@ -158,8 +158,8 @@
                             <span class="ml-auto text-xs bg-red-500 px-2 py-1 rounded-sm">0</span>
                         </a>
                     </li>
-                    <li class="px-4 py-2 mt-2 text-xs uppercase tracking-wider text-gray-500 font-bold mx-1 rounded-md">Apps</li>
-                    <li class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
+                    <li  class="px-4 py-2 mt-2 text-xs uppercase tracking-wider text-gray-500 font-bold mx-1 rounded-md">Apps</li>
+                    <li name="active" data-id="message" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
                         <a href="#" class="py-2 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 mr-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 3.75H6.912a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859M12 3v8.25m0 0-3-3m3 3 3-3" />
@@ -179,4 +179,47 @@
     </div>
 </div>
 </body>
+<script>
+    const activeItems = document.getElementsByName("active");
+
+    // Load the active item from localStorage
+    const savedActiveId = localStorage.getItem("activeItemId");
+    if (savedActiveId) {
+        const activeItem = document.querySelector(`[data-id="${savedActiveId}"]`);
+        if (activeItem) {
+            setActiveItem(activeItem);
+        }
+    }
+
+    // Add click event listeners
+    activeItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+            // Save the clicked item's ID to localStorage
+            const itemId = item.getAttribute("data-id");
+            localStorage.setItem("activeItemId", itemId);
+
+            // Set the clicked item as active
+            setActiveItem(item);
+            const route=item.querySelector("a");
+            if (route){
+                window.location.href=route.href
+            }
+        });
+    });
+
+    // Helper function to set the active item
+    function setActiveItem(item) {
+        // Reset styles for all items
+        activeItems.forEach(function (i) {
+            i.style.background = '';
+            i.classList.remove("bg-gray-500", "text-white");
+        });
+
+        // Set the active style
+        item.style.background = '#6b7280';
+        item.classList.add("bg-gray-500", "text-white");
+    }
+
+
+</script>
 </html>
