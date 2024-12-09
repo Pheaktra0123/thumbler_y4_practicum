@@ -9,7 +9,20 @@
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
     <title>Document</title>
 </head>
-<body>
+<style>
+    #toggle-logout-active {
+        z-index: 50;
+    }
+
+    /* Transparent backdrop with blur */
+    #backdrop {
+        z-index: 40;
+        backdrop-filter: blur(4px); /* Apply the blur effect */
+    }
+</style>
+
+
+<body id="body">
 <header class="shadow-lg">
     <nav class="flex justify-between px-10 py-2 item-center bg-gray-800 border-b-2">
         <div class="text-xl text-gray-200 font-bold uppercase place-content-center">
@@ -20,7 +33,7 @@
             <div class="w-full mx-w-full px-2 bg-gray-800">
                 <input type="search" class="outline-none text-gray-300 w-full mx-w-full bg-gray-800 ">
             </div>
-            <button class=" text-gray-200 border-gray-500 border-l-2 px-1">
+            <button class=" text-gray-200 border-gray-500 border-l-2 px-1" >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                   <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
                 </svg>
@@ -38,17 +51,29 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                 </li>
-                <li class="bg-gray-500 p-2 text-gray-300 rounded-full  shadow shadow-gray-400 hover:bg-gray-600 delay-600 hover:transition hover:duration-500 hover:ease-in-out ">
+                <li id="toggle-logout" class="bg-red-500 p-2 text-gray-300 rounded-full  hover:bg-gray-600 delay-600 hover:transition hover:duration-500 hover:ease-in-out ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
                     </svg>
-
                 </li>
             </ul>
         </div>
     </nav>
 </header>
-<div class="flex bg-gray-100 ">
+<div id="toggle-logout-active" tabindex="-1" class="hidden absolute z-10 max-w-full left-[45%] top-[40%] w-1/4 h-1/3 bg-gray-200 flex-col justify-center place-content-center rounded-md shadow-gray-100 drop-shadow-lg transition duration-600 delay-600">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 w-16 h-16 mx-auto text-red-600">
+        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+    </svg>
+    <p class="text-2xl font-bold text-center text-gray-600">Do you want to logout?</p>
+    <div class="flex-col w-full mt-6">
+        <div class="flex justify-center">
+            <button id="cancel-button" type="button" class="border-2 w-1/2 border-gray-400 rounded-md text-md text-gray-900 px-4 py-2 mx-4 hover:bg-gray-400 hover:text-white">Cancel</button>
+            <button type="button" class="bg-red-600 w-1/2 text-md text-white rounded-md px-4 py-2 mr-4 hover:bg-red-700 hover:text-gray-100">Logout</button>
+        </div>
+    </div>
+</div>
+<div id="backdrop" class="hidden fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm"></div>
+<div class=" flex bg-gray-100">
     <!-- sidebar -->
     <div class="max-w-full w-1/4 max-h-full overflow-y-auto flex flex-col bg-gray-800 rounded-br-lg">
         <div class="flex flex-col max-h-screen mt-2">
@@ -174,14 +199,39 @@
         </div>
     </div>
     <!-- Main content -->
-    <div class="flex flex-col w-full max-h-screen overflow-y-auto ">
+    <div class="flex flex-col w-full max-h-screen overflow-y-auto relative ">
         <div>@yield('contents')</div>
     </div>
 </div>
 </body>
 <script>
-    const activeItems = document.getElementsByName("active");
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("toggle-logout");
+        const modal = document.getElementById("toggle-logout-active");
+        const backdrop = document.getElementById("backdrop");
+        const cancelButton = document.getElementById("cancel-button");
 
+        // Show the modal and backdrop
+        toggleButton.addEventListener("click", function () {
+            modal.classList.remove("hidden");
+            backdrop.classList.remove("hidden");
+        });
+
+        // Hide the modal and backdrop
+        cancelButton.addEventListener("click", function () {
+            modal.classList.add("hidden");
+            backdrop.classList.add("hidden");
+        });
+    });
+
+    const activeItems = document.getElementsByName("active");
+    document.addEventListener("DOMContentLoaded",function (){
+        const ButtonToggle=document.getElementById("toggle-logout");
+        ButtonToggle.addEventListener("click",function (){
+            this.classList.add("active-toggle");
+        });
+    })
+    let isToggled=false;
     // Load the active item from localStorage
     const savedActiveId = localStorage.getItem("activeItemId");
     if (savedActiveId) {
