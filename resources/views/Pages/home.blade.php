@@ -31,7 +31,7 @@
 </style>
 <body>
 <div class=" w-full ">
-@include('pages.header')
+    @include('pages.header')
         <div id="cartDialog" class=" p-4 fixed z-50 hidden flex right-0 top-1/4 transform -translate-y-1/2">
             <div class="bg-white w-80 h-70 rounded-lg shadow-lg p-4 relative">
 
@@ -210,7 +210,6 @@
                         </p>
                     </div>
                 </div>
-
                 <div class="flex flex-col gap-2 text-sm">
                     <p class="text-base font-bold tracking-wide text-gray-900">Popular Courses</p>
                     <a href="#">UPSC - Union Public Service Commission</a>
@@ -245,9 +244,9 @@
                     </li>
                 </ul>
             </div>
-
         </footer>
 
+    </div>
     </div>
 </body>
 
