@@ -234,6 +234,7 @@
     let isToggled=false;
     // Load the active item from localStorage
     const savedActiveId = localStorage.getItem("activeItemId");
+    const saveActiveName=localStorage.getItem("activeItemName");
     if (savedActiveId) {
         const activeItem = document.querySelector(`[data-id="${savedActiveId}"]`);
         if (activeItem) {

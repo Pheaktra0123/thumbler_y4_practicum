@@ -7,47 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <script defer src="home.js"></script> -->
 </head>
+<style>
+    .video-docker video {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 
+    .video-docker::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 <body>
 <div class=" w-full ">
 @include('pages.header')
-
-        <!-- <header
-            class="bg-black text-white w-full sticky top-0 z-50 flex flex-col overflow-hidden px-5 py-5 lg:mx-auto lg:flex-row lg:items-center">
-            <a href="" class="flex font-serif items-center whitespace-nowrap text-2xl font-bold text-white">
-                Tumbler Haven
-            </a>
-            <input type="checkbox" class="peer hidden" id="navbar-open" />
-            <label class="absolute top-5 right-5 cursor-pointer lg:hidden" for="navbar-open">
-                <span class="sr-only">Toggle Navigation</span>
-                <svg class="h-7 w-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16">
-                    </path>
-                </svg>
-            </label>
-            <nav aria-label="Header Navigation"
-                class="peer-checked:pt-8 peer-checked:max-h-60 align-center flex max-h-0 w-full flex-col items-center justify-center overflow-hidden transition-all lg:ml-24 lg:max-h-full lg:flex-row">
-                <ul class="flex w-full flex-col items-center space-y-2 lg:flex-row lg:justify-center lg:space-y-0">
-                    <li class="lg:mr-20"><a class="text-white transition hover:opacity-70" href="">Home</a></li>
-                    <li class="lg:mr-20"><a class="text-white transition hover:opacity-70" href="#about-us">About Us</a></li>
-                    <li class="lg:mr-20"><a class="text-white transition hover:opacity-70" href="customize">Customize</a></li>
-                </ul>
-                <hr class="mt-4 w-full lg:hidden" />
-                <div class="my-4 flex items-center space-x-6 space-y-2 lg:my-0 lg:ml-auto lg:space-x-8 lg:space-y-0">
-                    <a href="login" title="Login" class="font-bold text-white hover:opacity-70">Login</a>
-                    <button id="cartIcon" title="Cart" class="text-white hover:opacity-70">
-                        <svg class="h-8 w-8" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 3h2l.4 2M7 13h11l4-8H5.4M7 13L5.4 5M7 13l-1.4-2M10 21a1 1 0 100-2 1 1 0 000 2zm7 0a1 1 0 100-2 1 1 0 000 2z" />
-                        </svg>
-                    </button>
-                </div>
-            </nav>
-
-        </header> -->
-
         <div id="cartDialog" class=" p-4 fixed z-50 hidden flex right-0 top-1/4 transform -translate-y-1/2">
             <div class="bg-white w-80 h-70 rounded-lg shadow-lg p-4 relative">
 
@@ -67,58 +51,33 @@
             </div>
         </div>
 
-
-
-
-        <!-- forked from: https://codepen.io/cuonoj/pen/JjPmMaB -->
         <div>
-            <section class="relative h-screen flex flex-col items-center justify-center text-center text-white ">
+            <section class="relative h-screen flex justify-center text-center text-white ">
                 <div class="video-docker absolute top-0 left-0 w-full h-full overflow-hidden">
-                    <video class="min-w-full min-h-full absolute object-cover" src="Download.mp4" type="video/mp4"
+                    <video class="min-w-full min-h-full absolute object-cover" src="tumbler.mp4" type="video/mp4"
                         autoplay muted loop></video>
                 </div>
-                <div class=" space-y-7 video-content space-y-2 z-10">
+                <div class=" space-y-7 video-content z-10 mt-36">
                     <h1 class=" font-bold text-7xl">Built By TumblerHaven </h1>
                     <h3 class="font-light text-5xl">Created By You</h3>
                 </div>
             </section>
-
-            <style>
-                .video-docker video {
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                }
-
-                .video-docker::after {
-                    content: "";
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    top: 0;
-                    left: 0;
-                    background: rgba(0, 0, 0, 0.6);
-                    z-index: 1;
-                }
-
-                html {
-                    scroll-behavior: smooth;
-                }
-            </style>
         </div>
-    </div>
-
     <div class="flex-column">
-        <section class="w-screen py-20 bg-black text-white">
-            <h1 class=" text-bold mb-12 text-center font-sans text-3xl font-bold t ">Bring your imagination—customize
-                your favorite
-                TumblerHaven bottles, tumblers, and barware.</h1>
-            <div class="p-4 flex flex-wrap items-center justify-center">
-                <div class="flex-shrink-0 m-8 relative overflow-hidden bg-black rounded-lg max-w-sm shadow-lg group">
+        <section class="w-full py-16 bg-black text-white">
+            <h1 class="w-1/2 mx-auto text-bold mb-4 text-center font-sans text-4xl font-medium ">
+                Bring your imagination—customize
+            </h1>
+            <p class="font-normal text-md text-center">
+                    your favorite
+                    TumblerHaven bottles, tumblers, and barware.
+                </p>
+            <div class="p-2 flex flex-wrap items-center justify-center ">
+                <div class="flex-shrink-0 m-8 relative overflow-hidden bg-white/15 rounded-lg max-w-sm shadow-lg group">
                     <div
                         class="relative pt-14 px-14 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <div class="block absolute w-64 h-64 bottom-0 left-0 -mb-28 ml-4"
-                            style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
+                             style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
                         </div>
                         <img class="relative w-56" src="1.png" alt="">
                     </div>
@@ -131,11 +90,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex-shrink-0 m-8 relative overflow-hidden bg-black rounded-lg max-w-sm shadow-lg group">
+                <div class="flex-shrink-0 m-8 relative overflow-hidden bg-white/15 rounded-lg max-w-sm shadow-lg group">
                     <div
                         class="relative pt-14 px-14 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <div class="block absolute w-64 h-64 bottom-0 left-0 -mb-28 ml-4"
-                            style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
+                             style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
                         </div>
                         <img class="relative w-56" src="2.png" alt="">
                     </div>
@@ -148,11 +107,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex-shrink-0 m-8 relative overflow-hidden bg-black rounded-lg max-w-sm shadow-lg group">
+                <div class="flex-shrink-0 m-8 relative overflow-hidden bg-white/15 rounded-lg max-w-sm shadow-lg group">
                     <div
                         class="relative pt-14 px-14 flex items-center justify-center group-hover:scale-110 transition-transform">
                         <div class="block absolute w-64 h-64 bottom-0 left-0 -mb-28 ml-4"
-                            style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
+                             style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
                         </div>
                         <img class="relative w-56" src="3.png" alt="">
                     </div>
@@ -170,8 +129,6 @@
                 <h1 class="mb-0 mt-6 text-center text-3xl font-bold font-serif ">Grab yours now!!</h1>
             </div>
         </section>
-
-
         <section id="about-us" class="sm:mt-6 lg:mt-8 mt-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 class="mb-12 text-center font-medium text-6xl font-bold t ">About Us</h1>
             <div
@@ -203,7 +160,7 @@
                 class="mt-40 my-10 mx-auto max-w-7xl px-4 sm:px-6 md:px-8 lg:px-10 flex flex-col lg:flex-row items-center lg:items-start gap-8">
                 <div class="lg:w-1/2">
                     <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" src="aboutus2.png"
-                        alt="About Us">
+                         alt="About Us">
                 </div>
                 <div class="lg:w-1/2">
                     <h1 class="text-4xl tracking-tight font-extrabold text-gray-800 sm:text-5xl md:text-4xl">
@@ -222,7 +179,6 @@
             </div>
 
         </section>
-
         <div class="bg-black mx-auto py-10 grid max-w-screen-full text-black pl-6 pr-4 sm:px-20 ">
             <div class="text-center text-white">
                 <p class="mb-12 mt-12 text-center text-xl font-bold font-serif">Don't see what you looking for?</p>
@@ -233,8 +189,6 @@
                 </button>
             </div>
         </div>
-
-
         <footer class="px-3 pt-4 lg:px-9  bg-gray-50">
             <div class="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
 
@@ -280,13 +234,13 @@
                 <ul class="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
                     <li>
                         <a href="#"
-                            class="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400">Privacy
+                           class="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400">Privacy
                             &amp; Cookies Policy
                         </a>
                     </li>
                     <li>
                         <a href="#"
-                            class="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400">Disclaimer
+                           class="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400">Disclaimer
                         </a>
                     </li>
                 </ul>
@@ -294,6 +248,7 @@
 
         </footer>
 
+    </div>
 </body>
 
 </html>
