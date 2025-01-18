@@ -3,7 +3,6 @@
 @include("Component.header")
 <!doctype html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,8 +32,7 @@
 </style>
 <body>
 <div class=" w-full ">
-  
-        <div id="cartDialog" class=" p-4 fixed z-50 hidden flex right-0 top-1/4 transform -translate-y-1/2">
+        <div id="cartDialog" class=" p-4 fixed z-50 hidden flex right-0 top-28 transform -translate-y-1/2">
             <div class="bg-white w-80 h-70 rounded-lg shadow-lg p-4 relative">
 
                 <!-- Close Button -->
@@ -243,8 +241,6 @@
 </body>
 
 </html>
-
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Get references to the elements

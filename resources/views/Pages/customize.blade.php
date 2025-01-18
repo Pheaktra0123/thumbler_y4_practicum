@@ -1,8 +1,8 @@
 @extends("TailwindCssLink.style")
+@extends("Component.header")
 <!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
 
 <div class=" w-full "></div>
-@include('pages.header')
 
         <div class="py-4 p-20 flex flex-col items-start">
     <!-- <button onclick="history.back()"

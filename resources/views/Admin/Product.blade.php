@@ -44,10 +44,17 @@
                         </button>
                     </div>
 
-                    <div class="p-6 pt-0 text-center">
+                    <div class="p-6 pt-0 text-center w-11/12 mx-auto">
                         <div class="container mx-auto p-4">
                             <!-- Page Title -->
                             <h1 class="text-3xl font-bold text-[black] mb-6">Create Product</h1>
+
+                            <form action="">
+                                <div class="flex  gap-4">
+                                    <input type="text" placeholder="Product Name" class="w-full p-2 border border-gray-200 rounded-lg mb-4 outline-none">
+                                    <input type="text" placeholder="Product Description" class="w-full p-2 border border-gray-200 rounded-lg mb-4 outline-none">
+                                </div>
+                            </form>
 
                         </div>
                         <a href="#" onclick="closeModal('modelConfirm')"

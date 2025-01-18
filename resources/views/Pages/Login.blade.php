@@ -11,14 +11,14 @@
 </head>
 <body class="bg-black ">
         <main class="h-screen flex-col content-center">
-            <div class="bg-white w-sm mx-auto rounded-lg lg:w-1/4 ">
+            <div class="bg-white w-sm mx-auto rounded-lg lg:w-1/4 lg:mx-auto md:w-md md:mx-auto"> 
                 <div class="text-center space-y-2 py-3">
                     <h1 class="text-4xl font-bold">Welcome</h1>
                     <p class="text-md">Be the first to know about new releases, limited editions and exclusive deals.</p>
                     <h2 class="text-2xl font-bold mb-2">Log In</h2>
                 </div>
                 <div class="bg-gray-100 px-10 py-10 rounded-b-lg mt-2">
-                    <form class="" id="loginForm" action="{{'login.action'}}" method="post">
+                    <form class="" id="loginForm" action="{{route('login.action')}}" method="POST">
                         @csrf
                         <div class="w-full">
                             <div>
@@ -26,7 +26,7 @@
                                 Email
                             </div>
                             <div id="inputEmail" class="w-full border-b-2 outline-none ">
-                                <input type="email" id="email" autocomplete="off" required class="bg-gray-100 w-full border-none outline-none ">
+                                <input type="email" id="email" name="email" autocomplete="off" required class="bg-gray-100 w-full border-none outline-none ">
                             </div>
                         </div>
                         <div class="w-full mt-3">
@@ -35,7 +35,7 @@
                                 Password
                             </div>
                             <div id="inputPass" class="w-full border-b-2 outline-none">
-                                <input type="password" required id="password" class="bg-gray-100 w-full border-none outline-none ">
+                                <input type="password" name="password" required id="password" class="bg-gray-100 w-full border-none outline-none ">
                             </div>
                         </div>
                         <div class="mt-5 text-sm">
