@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,26 +14,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::controller(\App\Http\Controllers\AuthController::class)->group(function (){
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('register', 'register')->name('register');
+        Route::post('register', 'registerSave')->name('register.save');
 
-    Route::get('register','register')->name('register');
-    Route::post('register','registerSave')->name('register.save');
+        Route::get('login', 'login')->name('login');
+        Route::post('login', 'loginAction')->name('login.action');
 
-    Route::get('login','login')->name('login');
-    Route::post('login','loginAction')->name('login.action');
-
-    Route::get('logout', 'logout')->middleware('auth')->name('logout');
+        Route::get('logout', 'logout')->middleware('auth')->name('logout');
+    });
 });
-Route::get('/admin',function (){
-    return view('/Admin/AdminLogin');
+Route::get('/',[\App\Http\Controllers\HomeController::class,'index'])->name('home');
+Route::middleware(['auth','user-access:user'])->group(function (){
+
 });
+Route::middleware(['auth','user-access:admin'])->group(function (){
+
+});
+
 Route::get("/Tumblers",function (){
    return view("/Admin/Product");
 });
 Route::get('/nav',function (){
     return view('Admin/Dashbard');
-});
-Route::get('/', function () {
-    return view('/Pages/home');
 });
 Route::get('/customize', function () {
     return view('/Pages/customize');
@@ -43,5 +47,3 @@ Route::get('/customizedetails', function () {
 Route::get('/#about-us', function () {
     return view('/Pages/home/#about-us');
 });
-
-
