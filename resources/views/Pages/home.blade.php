@@ -1,4 +1,6 @@
 @extends("TailwindCssLink.style")
+@include("TailwindCssLink.fontStyle")
+@include("Component.header")
 <!doctype html>
 <html>
 
@@ -31,7 +33,7 @@
 </style>
 <body>
 <div class=" w-full ">
-    @include('pages.header')
+  
         <div id="cartDialog" class=" p-4 fixed z-50 hidden flex right-0 top-1/4 transform -translate-y-1/2">
             <div class="bg-white w-80 h-70 rounded-lg shadow-lg p-4 relative">
 
@@ -139,16 +141,10 @@
                         <!-- <span class="block text-indigo-600 xl:inline">online business</span> -->
                     </h1>
                     <p
-                        class="mt-3 text-base font-family text-black sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-l lg:mx-0">
+                        class="mt-3 text-base item-content-center font-family text-black sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-l lg:mx-0">
                         Founded in 1913 by inventor William Stanley Jr., Stanley has been there for generations of
                         adventures. We're built on invention, innovation and inspiration with a timeless spirit that
                         complements your wild imagination.
-                        Over 100 years later, a steady stream of products continues to honor the Stanley legacy, keeping
-                        your warms warm and your colds cold.
-                        We're there for all your adventures so you can make the most of your world (whether you're
-                        scaling a mountain or climbing an elm in your own backyard). We’ll be with you on your journey
-                        as we have with generations past, helping to build a more sustainable, less disposable life and
-                        world while opening the door to an awe-inspiring future.
                     </p>
                 </div>
                 <div class="lg:inset-y-0 lg:right-0 lg:w-1/2 my-4">
@@ -170,10 +166,6 @@
                         The most sustainable products are the kind that never need to be thrown away or replaced.
                         Stanley has created reusable, Built For Life™ products for over 100 years, reducing demand for
                         disposable products that end up in waste and water streams.
-                        But it’s not just about what we make, it’s also about how we make it. Stanley is committed
-                        to sustainable practices across our entire supply chain, from manufacturing to recycled
-                        materials to packaging.
-                        Learn more about Stanley and PMI's commitment to corporate social responsibility.
                     </p>
                 </div>
             </div>

@@ -10,7 +10,7 @@
 </head>
 <body class="bg-black">
 <main class="h-screen flex-col content-center">
-    <div class="bg-white w-1/4 mx-auto rounded-lg  ">
+    <div class="bg-white w-sm mx-auto rounded-lg lg:w-1/4 ">
         <div class="text-center space-y-2 py-3">
             <h1 class="text-4xl font-bold">Welcome</h1>
             <p class="text-md">Be the first to know about new releases, limited editions and exclusive deals.</p>

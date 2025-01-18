@@ -44,7 +44,7 @@ class AuthController extends Controller
         ]);
 
         // Redirect or return success
-        return redirect()->route('login')->with('success', 'Registration successful. Please login.');
+        return redirect()->route('home')->with('success', 'Registration successful. Please login.');
     }
     public function login()
     {
@@ -64,7 +64,7 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-
+ 
         if (auth()->user()->type == 'admin') {
             return redirect()->route('admin/home');
         } else {
