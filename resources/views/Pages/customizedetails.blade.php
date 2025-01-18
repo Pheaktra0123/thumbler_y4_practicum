@@ -10,271 +10,153 @@
 
 <body>
     <div class=" w-full ">
-    @include('pages.header')
-
-        <style>
-            /* General Styles */
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                line-height: 1.6;
-            }
-
-            /* Header */
-            .header {
-                background: black;
-                color: white;
-                padding: 10px 20px;
-            }
-
-            .header .container {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .header .nav a {
-                color: white;
-                margin-left: 20px;
-                text-decoration: none;
-                font-size: 14px;
-            }
-
-            .header .cart-icon {
-                font-size: 18px;
-            }
-
-            /* Product Section */
-            .product-details {
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .product-container {
-                display: flex;
-                gap: 20px;
-                max-width: 900px;
-                margin: 0 auto;
-            }
-
-            .product-image img {
-                width: 300px;
-                border-radius: 10px;
-            }
-
-            .product-info h2 {
-                font-size: 20px;
-                margin: 0 0 10px;
-            }
-
-            .rating {
-                margin: 10px 0;
-            }
-
-            .price p {
-                font-size: 24px;
-                font-weight: bold;
-                margin: 10px 0;
-            }
-
-            .quantity {
-                display: flex;
-                align-items: center;
-                margin: 20px 0;
-            }
-
-            .quantity label {
-                margin-right: 10px;
-            }
-
-            .quantity input {
-                width: 50px;
-                text-align: center;
-                margin: 0 10px;
-            }
-
-            .buttons {
-                display: flex;
-                gap: 10px;
-            }
-
-            .add-to-cart,
-            .customize {
-                padding: 10px 20px;
-                font-size: 14px;
-                border: none;
-                cursor: pointer;
-            }
-
-            .add-to-cart {
-                background: black;
-                color: white;
-            }
-
-            .customize {
-                background: #f0f0f0;
-                color: black;
-            }
-
-            /* Details Section */
-            .details {
-                margin-top: 40px;
-                max-width: 900px;
-                text-align: left;
-            }
-
-            .details h3 {
-                font-size: 18px;
-                margin-bottom: 10px;
-            }
-
-            .details p {
-                font-size: 14px;
-                margin-bottom: 10px;
-            }
-
-            .details ul {
-                list-style: none;
-                padding: 0;
-            }
-
-            .details ul li {
-                margin-bottom: 5px;
-            }
-        </style>
-        <main class="product-details">
-            <div class="product-container">
-                <div class="product-image">
-                    <img src="1.png" alt="The Black Chroma Quencher H2.0 Tumbler">
-                </div>
-                <div class="product-info">
-                    <h2>The Black Chroma Quencher H2.0 FlowState™ Tumbler | 40 OZ</h2>
-                    <div class="rating">
-                        <span>⭐⭐⭐⭐☆</span>
-                        <p>3.9 out of 5 stars, average rating value. Read 11,798 Reviews.</p>
+        @include('pages.header')
+        <div class="bg-gray-100">
+            <div class="container mx-auto px-4 py-8 mt-12">
+                <div class="flex flex-wrap -mx-4">
+                    <!-- Product Images -->
+                    <div class="w-full md:w-1/2 px-4 mb-8">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxoZWFkcGhvbmV8ZW58MHwwfHx8MTcyMTMwMzY5MHww&ixlib=rb-4.0.3&q=80&w=1080"
+                            alt="Product" class="w-full h-auto rounded-lg shadow-md mb-4" id="mainImage">
+                        <div class="flex gap-4 py-4 justify-center overflow-x-auto">
+                            <img src="https://images.unsplash.com/photo-1505751171710-1f6d0ace5a85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxMnx8aGVhZHBob25lfGVufDB8MHx8fDE3MjEzMDM2OTB8MA&ixlib=rb-4.0.3&q=80&w=1080"
+                                alt="Thumbnail 1"
+                                class="size-16 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
+                                onclick="changeImage(this.src)">
+                            <img src="https://images.unsplash.com/photo-1484704849700-f032a568e944?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw0fHxoZWFkcGhvbmV8ZW58MHwwfHx8MTcyMTMwMzY5MHww&ixlib=rb-4.0.3&q=80&w=1080"
+                                alt="Thumbnail 2"
+                                class="size-16 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
+                                onclick="changeImage(this.src)">
+                            <img src="https://images.unsplash.com/photo-1496957961599-e35b69ef5d7c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw4fHxoZWFkcGhvbmV8ZW58MHwwfHx8MTcyMTMwMzY5MHww&ixlib=rb-4.0.3&q=80&w=1080"
+                                alt="Thumbnail 3"
+                                class="size-16 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
+                                onclick="changeImage(this.src)">
+                            <img src="https://images.unsplash.com/photo-1528148343865-51218c4a13e6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwzfHxoZWFkcGhvbmV8ZW58MHwwfHx8MTcyMTMwMzY5MHww&ixlib=rb-4.0.3&q=80&w=1080"
+                                alt="Thumbnail 4"
+                                class="size-16 sm:size-20 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
+                                onclick="changeImage(this.src)">
+                        </div>
                     </div>
-                    <div class="price">
-                        <p>$55.00</p>
-                    </div>
-                    <div class="quantity">
-                        <label for="quantity">Qty</label>
-                        <button>-</button>
-                        <input type="number" id="quantity" value="0" min="0">
-                        <button>+</button>
-                    </div>
-                    <div class="buttons">
-                        <button class="add-to-cart">Add to Cart</button>
-                        <button class="customize">Customize</button>
+
+                    <!-- Product Details -->
+                    <div class="w-full md:w-1/2 px-4">
+                        <h2 class="text-3xl font-bold mb-2">Premium Wireless Headphones</h2>
+                        <p class="text-gray-600 mb-4">SKU: WH1000XM4</p>
+                        <div class="mb-4">
+                            <span class="text-2xl font-bold mr-2">$349.99</span>
+                            <span class="text-gray-500 line-through">$399.99</span>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="size-6 text-yellow-500">
+                                <path fill-rule="evenodd"
+                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="size-6 text-yellow-500">
+                                <path fill-rule="evenodd"
+                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="size-6 text-yellow-500">
+                                <path fill-rule="evenodd"
+                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="size-6 text-yellow-500">
+                                <path fill-rule="evenodd"
+                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="size-6 text-yellow-500">
+                                <path fill-rule="evenodd"
+                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span class="ml-2 text-gray-600">4.5 (120 reviews)</span>
+                        </div>
+                        <p class="text-gray-700 mb-6">Experience premium sound quality and industry-leading noise
+                            cancellation
+                            with
+                            these wireless headphones. Perfect for music lovers and frequent travelers.</p>
+
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold mb-2">Color:</h3>
+                            <div class="flex space-x-2">
+                                <button
+                                    class="w-8 h-8 bg-black rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"></button>
+                                <button
+                                    class="w-8 h-8 bg-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"></button>
+                                <button
+                                    class="w-8 h-8 bg-blue-500 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"></button>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">Quantity:</label>
+                            <input type="number" id="quantity" name="quantity" min="1" value="1"
+                                class="w-12 text-center rounded-md border-gray-300  shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        </div>
+
+                        <div class="flex space-x-4 mb-6">
+                            <button
+                                class="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                </svg>
+                                Add to Cart
+                            </button>
+                            <button
+                                class="bg-gray-200 flex gap-2 items-center  text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                </svg>
+                                Wishlist
+                            </button>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">Key Features:</h3>
+                            <ul class="list-disc list-inside text-gray-700">
+                                <li>Industry-leading noise cancellation</li>
+                                <li>30-hour battery life</li>
+                                <li>Touch sensor controls</li>
+                                <li>Speak-to-chat technology</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="details">
-                <h3>Details & Specifications</h3>
-                <p>
-                    A band of iridescent shimmer defines the new Black Chroma Collection.
-                    The sleek prism effect makes each piece unique...
-                </p>
-                <ul>
-                    <li>18/8 recycled stainless steel, BPA-free</li>
-                    <li>Double-wall vacuum insulation</li>
-                    <li>FlowState™ screw-on 3-position lid</li>
-                    <li>Reusable straw</li>
-                    <li>Comfort-grip handle</li>
-                    <li>Car cup holder compatible (base diameter: 3.1 inches)</li>
-                </ul>
+            <script>
+                function changeImage(src) {
+                    document.getElementById('mainImage').src = src;
+                }
+            </script>
+        </div>
+
+
+        <div class="bg-black mx-auto py-10 grid max-w-screen-full text-black pl-6 pr-4 sm:px-20 ">
+            <div class="text-center text-white">
+                <p class="mb-12 mt-12 text-center text-xl font-bold font-serif">Don't see what you looking for?</p>
             </div>
-
-        </main>
-
-        <div id="cartDialog" class=" p-4 fixed z-50 hidden flex right-0 top-1/4 transform -translate-y-1/2">
-            <div class="bg-white w-80 h-70 rounded-lg shadow-lg p-4 relative">
-
-                <!-- Close Button -->
-                <button id="closeCartDialog" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+            <div class="text-center mt-5 align-center">
+                <button class=" align-center bg-white hover:opacity-70 text-black font-bold py-2 px-4 rounded">
+                    Contact us
                 </button>
-                <!-- Dialog Content -->
-                <h3 class="text-xl font-bold mb-4">Your Cart</h3>
-                <p class="text-gray-600 text-center justify-center">Your cart is currently empty.</p>
-                <!-- <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Continue
-            Shopping</button> -->
             </div>
         </div>
 
+        @include('pages.footer')
 
-
-
-    </div>
-    </div>
-
-
-
-    <footer class="px-3 pt-4 lg:px-9  bg-gray-50">
-        <div class="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
-
-            <div class="sm:col-span-2">
-                <a href="#" class="inline-flex items-center">
-                    <span class="ml-2 text-xl font-bold tracking-wide text-gray-800">BE THE FIRST TO KNOW
-                    </span>
-                </a>
-                <div class="mt-6 lg:max-w-xl">
-                    <p class="text-sm text-gray-800">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi felis mi, faucibus dignissim
-                        lorem
-                        id, imperdiet interdum mauris. Vestibulum ultrices sed libero non porta. Vivamus malesuada
-                        urna eu
-                        nibh malesuada, non finibus massa laoreet. Nunc nisi velit, feugiat a semper quis, pulvinar
-                        id
-                        libero. Vivamus mi diam, consectetur non orci ut, tincidunt pretium justo. In vehicula porta
-                        molestie. Suspendisse potenti.
-                    </p>
-                </div>
-            </div>
-
-            <div class="flex flex-col gap-2 text-sm">
-                <p class="text-base font-bold tracking-wide text-gray-900">Popular Courses</p>
-                <a href="#">UPSC - Union Public Service Commission</a>
-                <a href="#">General Knowledge</a>
-                <a href="#">MBA</a>
-                <p class="text-base font-bold tracking-wide text-gray-900">Popular Topics</p>
-                <a href="#">Human Resource Management</a>
-                <a href="#">Operations Management</a>
-                <a href="#">Marketing Management</a>
-            </div>
-
-            <div class="w-full h-full">
-                <p class=" font-bold tracking-wide text-gray-900 text-center font-serif">Tumbler Haven </p>
-                <img src="footer.png" alt="">
-            </div>
-
-        </div>
-
-        <div class="flex flex-col-reverse justify-between pt-5 pb-10 border-t lg:flex-row">
-            <p class="text-sm text-gray-600">© Copyright 2023 Company. All rights reserved.</p>
-            <ul class="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
-                <li>
-                    <a href="#"
-                        class="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400">Privacy
-                        &amp; Cookies Policy
-                    </a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400">Disclaimer
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-    </footer>
 
 </body>
 
