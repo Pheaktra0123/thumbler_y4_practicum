@@ -1,4 +1,7 @@
+
+
 <!-- header.html -->
+<div class=" w-full ">
 <header
     class="bg-black/80  fixed text-white w-full  top-0 z-50 flex flex-col overflow-hidden px-5 py-2 lg:mx-auto lg:flex-row lg:items-center ">
     <a href="/" class="flex font-serif items-center whitespace-nowrap text-2xl font-bold text-white">
