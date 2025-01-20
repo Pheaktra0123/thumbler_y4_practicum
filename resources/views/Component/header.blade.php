@@ -1,8 +1,10 @@
+@section('title','Home')
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title')</title>
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"></script>
     <script>
         function toggleMenu() {
@@ -11,10 +13,11 @@
         }
     </script>
 </head>
+
 <body class="bg-gray-100">
     <nav class="fixed top-0 left-0 right-0 z-50 bg-white/50 bg-opacity-90 backdrop-blur-md">
         <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
+            <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0">
                     <a href="/" class="text-black font-bold text-2xl">
                         TUMBLER SHOP
@@ -22,11 +25,11 @@
                 </div>
                 <div class="hidden md:block uppercase">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Home</a>
-                        <a href="#" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Category</a>
-                        <a href="#" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Model</a>
-                        <a href="#" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
-                        <a href="#about-us" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">About Us</a>
+                        <a href="/" class="text-sm font-medium text-gray-900 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Home</a>
+                        <a href="/Categories_home" class="text-sm font-medium text-gray-900 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Category</a>
+                        <a href="/Model_home" class="text-sm font-medium text-gray-900 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Model</a>
+                        <a href="/Trending_home" class="text-sm font-medium text-gray-900 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
+                        <a href="#about-us" class="text-sm font-medium text-gray-900 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">About Us</a>
                     </div>
                 </div>
                 <div class="hidden md:block">
@@ -49,23 +52,13 @@
                             </svg>
                             <a href="#" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Cart</a>
                         </div>
-                        @if (Route::has('login'))
-                        @auth
-                        <div class="relative flex items-center place-items-center  justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                                <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
-                            </svg>
-                            <div id="" class="text-sm font-medium text-gray-900  px-3 rounded-md transition-colors duration-300">{{auth()->user()->username}}</div>
-                        </div>
-                        @else
+
                         <div class="relative flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                 <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
                             </svg>
                             <a href="/login" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Login</a>
                         </div>
-                        @endauth
-                        @endif
                     </div>
                 </div>
                 <div class="md:hidden">
@@ -120,10 +113,69 @@
         </div>
     </nav>
     <main>
-        <div class="max-w-7xl mx-auto ">
+        <div class="  ">
             <div>@yield('contents')</div>
         </div>
     </main>
+    <footer class="px-3 pt-4 lg:px-9  bg-gray-50">
+        <div class="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
+
+            <div class="sm:col-span-2">
+                <a href="#" class="inline-flex items-center">
+                    <span class="ml-2 text-xl font-bold tracking-wide text-gray-800">BE THE FIRST TO KNOW
+                    </span>
+                </a>
+                <div class="mt-6 lg:max-w-xl">
+                    <p class="text-sm text-gray-800">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi felis mi, faucibus dignissim
+                        lorem
+                        id, imperdiet interdum mauris. Vestibulum ultrices sed libero non porta. Vivamus malesuada
+                        urna eu
+                        nibh malesuada, non finibus massa laoreet. Nunc nisi velit, feugiat a semper quis, pulvinar
+                        id
+                        libero. Vivamus mi diam, consectetur non orci ut, tincidunt pretium justo. In vehicula porta
+                        molestie. Suspendisse potenti.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2 text-sm">
+                <p class="text-base font-bold tracking-wide text-gray-900">Popular Courses</p>
+                <a href="#">UPSC - Union Public Service Commission</a>
+                <a href="#">General Knowledge</a>
+                <a href="#">MBA</a>
+                <p class="text-base font-bold tracking-wide text-gray-900">Popular Topics</p>
+                <a href="#">Human Resource Management</a>
+                <a href="#">Operations Management</a>
+                <a href="#">Marketing Management</a>
+            </div>
+
+            <div class="w-full h-full">
+                <p class=" font-bold tracking-wide text-gray-900 text-center font-serif">Tumbler Haven </p>
+                <img src="footer.png" alt="">
+            </div>
+
+        </div>
+
+        <div class="flex flex-col-reverse justify-between pt-5 pb-10 border-t lg:flex-row">
+            <p class="text-sm text-gray-600">© Copyright 2023 Company. All rights reserved.</p>
+            <ul class="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
+                <li>
+                    <a href="#"
+                        class="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400">Privacy
+                        &amp; Cookies Policy
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400">Disclaimer
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </footer>
+
 </body>
 
 </html>
