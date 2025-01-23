@@ -8,14 +8,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
 </head>
 
 <body>
     <main>
         <div class="relative w-full h-[400px] object-cover" id="home">
             <div class="absolute inset-0 opacity-70">
-                <img src="https://image1.jdomni.in/banner/13062021/0A/52/CC/1AF5FC422867D96E06C4B7BD69_1623557926542.png" alt="Background Image" class="object-cover object-center w-full h-full" />
+                <img src="https://i.pinimg.com/736x/29/2d/e9/292de9f6fc20fea30b51d1d1cf5989c5.jpg" alt="Background Image" class="object-cover object-center w-full h-full" />
 
             </div>
             <div class="absolute inset-9 flex flex-col md:flex-row items-center justify-center">
@@ -25,7 +24,7 @@
                     <label
                         class="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300"
                         for="search-bar">
-                        <input id="search-bar" placeholder="your keyword here"
+                        <input id="search-bar" placeholder="Find your products here ... "
                             class="px-6 py-2 w-full rounded-md flex-1 outline-none bg-white">
                         <button
                             class="w-full md:w-auto px-6 py-3 bg-black border-black text-white fill-white active:scale-95 duration-100 border will-change-transform overflow-hidden relative rounded-xl transition-all disabled:opacity-70">
@@ -66,7 +65,7 @@
                 <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Our Categories</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="https://image3.jdomni.in/banner/13062021/42/5C/B1/45AC18B7F8EE562BC3DDB95D34_1623559815667.png?output-format=webp" alt="wheat flour grinding"
+                        <img src="image.png" alt="wheat flour grinding"
                             class="w-full h-64 object-cover">
                         <div class="p-6 text-center">
                             <h3 class="text-xl font-medium text-gray-800 mb-2">Wheat Flour Grinding</h3>
@@ -76,7 +75,7 @@
                         </div>
                     </div>
                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1606854428728-5fe3eea23475?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z3JhbSUyMGZsb3VyfGVufDB8fDB8fHww" alt="Coffee"
+                        <img src="【数量限定】まさにキャンパー好み！「ハイドロフラスク」の限定カラーモデル4色が登場.jpg" alt="Coffee"
                             class="w-full h-64 object-cover">
                         <div class="p-6 text-center">
                             <h3 class="text-xl font-medium text-gray-800 mb-2">Gram Flour Grinding</h3>
@@ -86,7 +85,7 @@
                         </div>
                     </div>
                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="https://image2.jdomni.in/banner/13062021/D2/99/0D/48D7F4AFC48C041DC8D80432E9_1623562146900.png?output-format=webp" alt="Coffee"
+                        <img src="image1.jpg" alt="Coffee"
                             class="w-full h-64 object-cover">
                         <div class="p-6 text-center">
                             <h3 class="text-xl font-medium text-gray-800 mb-2">Jowar Flour Grinding</h3>
