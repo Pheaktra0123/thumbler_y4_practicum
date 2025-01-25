@@ -1,6 +1,7 @@
 @section('title','Home')
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +28,7 @@
                     <div class="ml-10 flex items-baseline space-x-4">
                         <a href="/" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Home</a>
                         <a href="/Categories_home" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Category</a>
-                        <a href="/Model_home" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Model</a>
+                        <a href="/Model_home" class="text-lg font-medium text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Model</a>
                         <a href="/Trending_home" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
                         <a href="#about-us" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">About Us</a>
                     </div>
@@ -35,29 +36,40 @@
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center justify-center md:ml-6 gap-1 text-gray-700">
                         <div class="relative flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                                <path fill-rule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" />
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path fill-rule="evenodd" d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 0 0 .281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 1 0 3 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 0 0 2.273 1.765 11.842 11.842 0 0 0 .976.544l.062.029.018.008.006.003ZM10 11.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" clip-rule="evenodd" />
                             </svg>
-                            <a href="#" class="text-md font-medium text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Location</a>
+
+                            <a href="#" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Location</a>
                         </div>
                         <div class="relative flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                                <path fill-rule="evenodd" d="M20.599 1.5c-.376 0-.743.111-1.055.32l-5.08 3.385a18.747 18.747 0 0 0-3.471 2.987 10.04 10.04 0 0 1 4.815 4.815 18.748 18.748 0 0 0 2.987-3.472l3.386-5.079A1.902 1.902 0 0 0 20.599 1.5Zm-8.3 14.025a18.76 18.76 0 0 0 1.896-1.207 8.026 8.026 0 0 0-4.513-4.513A18.75 18.75 0 0 0 8.475 11.7l-.278.5a5.26 5.26 0 0 1 3.601 3.602l.502-.278ZM6.75 13.5A3.75 3.75 0 0 0 3 17.25a1.5 1.5 0 0 1-1.601 1.497.75.75 0 0 0-.7 1.123 5.25 5.25 0 0 0 9.8-2.62 3.75 3.75 0 0 0-3.75-3.75Z" clip-rule="evenodd" />
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path d="M15.993 1.385a1.87 1.87 0 0 1 2.623 2.622l-4.03 5.27a12.749 12.749 0 0 1-4.237 3.562 4.508 4.508 0 0 0-3.188-3.188 12.75 12.75 0 0 1 3.562-4.236l5.27-4.03ZM6 11a3 3 0 0 0-3 3 .5.5 0 0 1-.72.45.75.75 0 0 0-1.035.931A4.001 4.001 0 0 0 9 14.004V14a3.01 3.01 0 0 0-1.66-2.685A2.99 2.99 0 0 0 6 11Z" />
                             </svg>
-                            <a href="/customize" class="text-md font-medium text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Customize</a>
+
+                            <a href="/customize" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Customize</a>
                         </div>
-                        <div id="cartIcon" class="relative flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                                <path fill-rule="evenodd" d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 0 0 4.25 22.5h15.5a1.875 1.875 0 0 0 1.865-2.071l-1.263-12a1.875 1.875 0 0 0-1.865-1.679H16.5V6a4.5 4.5 0 1 0-9 0ZM12 3a3 3 0 0 0-3 3v.75h6V6a3 3 0 0 0-3-3Zm-3 8.25a3 3 0 1 0 6 0v-.75a.75.75 0 0 1 1.5 0v.75a4.5 4.5 0 1 1-9 0v-.75a.75.75 0 0 1 1.5 0v.75Z" clip-rule="evenodd" />
+                        <div id="cartIcon" class="relative flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path fill-rule="evenodd" d="M6 5v1H4.667a1.75 1.75 0 0 0-1.743 1.598l-.826 9.5A1.75 1.75 0 0 0 3.84 19H16.16a1.75 1.75 0 0 0 1.743-1.902l-.826-9.5A1.75 1.75 0 0 0 15.333 6H14V5a4 4 0 0 0-8 0Zm4-2.5A2.5 2.5 0 0 0 7.5 5v1h5V5A2.5 2.5 0 0 0 10 2.5ZM7.5 10a2.5 2.5 0 0 0 5 0V8.75a.75.75 0 0 1 1.5 0V10a4 4 0 0 1-8 0V8.75a.75.75 0 0 1 1.5 0V10Z" clip-rule="evenodd" />
                             </svg>
-                            <a href="#" class="text-md font-medium text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Cart</a>
+
+                            <span
+                                class="w-[16px] h-[16px] bg-red-500 text-white text-xs font-semibold rounded-full text-center content-items-center place-content-center absolute -top-2 right-8">
+                                0
+                            </span>
+                            <a
+                                href="#"
+                                class="ml-2 text-md font-medium text-gray-900 hover:text-gray-600 transition-colors duration-300">
+                                Cart
+                            </a>
                         </div>
 
                         <div class="relative flex items-center justify-center ml-8">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                                 <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
                             </svg>
-                            <a href="/login" class="text-md font-medium text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Login</a>
+                            <a href="/login" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Login</a>
                         </div>
                     </div>
                 </div>
@@ -74,7 +86,6 @@
                 </div>
             </div>
         </div>
-
         <div id="menu" class="md:hidden hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Home</a>
@@ -84,7 +95,7 @@
                 <a href="#about-us" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">About Us</a>
             </div>
             <hr class="border-gray-300 w-full">
-            <div class="flex item-center justify-center gap-2 p-4 ">
+            <div class="flex item-center justify-center gap-1 p-4 ">
                 <div class="relative flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                         <path fill-rule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" />

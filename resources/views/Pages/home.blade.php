@@ -2,6 +2,8 @@
 @extends("TailwindCssLink.fontStyle")
 @extends("Component.header")
 @section('contents')
+<script>document.documentElement.classList.add('js')</script>
+
 <style>
     .video-docker video {
         top: 50%;
@@ -69,16 +71,16 @@
         </section>
         <div>
             <section class="relative h-[500px] lg:min-h-screed md:min-h-screen flex justify-center item-center text-center text-white ">
-                <div class="video-docker  opacity-80 absolute top-0 left-0 w-full h-full overflow-hidden">
+                <div class="video-docker opacity-90 absolute top-0 left-0 w-full h-full overflow-hidden">
                     <video class="min-w-full min-h-full absolute object-cover" src="tumbler.mp4" type="video/mp4"
                         autoplay muted loop>
                     </video>
                 </div>
                 <div class="space-y-3 lg:space-y-7 video-content z-10 place-content-center px-3">
-                    <h1 class="text-3xl font-bold lg:text-7xl md:text-5xl">Built By <span class="animate-typing  overflow-hidden whitespace-nowrap border-r-4 border-r-white pr-5 text-7xl text-white font-bold"></span></h1>
+                    <h1 class="text-3xl font-bold lg:text-7xl md:text-5xl">Built By <span class="animate-typing  overflow-hidden whitespace-nowrap border-r-4 border-r-white pr-5 text-4xl lg:text-7xl text-white font-bold"></span></h1>
                     <h3 class="font-light text-xl lg:text-3xl md:text-2xl font-medium">Created By You</h3>
                     <p class="text-sm lg:text-xl font-normal">Start your day without plastic with Tumbler Haven</p>
-                    <button class="mx-auto flex justify-center item-center content-items-center gap-1 bg-white/40 hover:opacity-70 text-gray-700 text-md font-bold py-3 px-6 rounded-full" id="cartIcon">
+                    <button class="mx-auto flex justify-center item-center content-items-center gap-1 bg-white/60 hover:opacity-90 text-gray-700 text-md font-bold py-3 px-6 rounded-full" id="cartIcon">
                         Shop Now
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 content-center content-items-center ">
                             <path fill-rule="evenodd" d="M16.72 7.72a.75.75 0 0 1 1.06 0l3.75 3.75a.75.75 0 0 1 0 1.06l-3.75 3.75a.75.75 0 1 1-1.06-1.06l2.47-2.47H3a.75.75 0 0 1 0-1.5h16.19l-2.47-2.47a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
@@ -144,7 +146,7 @@
                     <div
                         class="xl:w-[80%] sm:w-[85%] w-[90%] mx-auto flex md:flex-row flex-col lg:gap-4 gap-2 justify-center lg:items-stretch md:items-center mt-4">
 
-                        <img class="md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="aboutus1.png" alt="billboard image" />
+                        <img class="delay-[200ms] duration-[600ms] taos:translate-x-[-100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="aboutus1.png" alt="billboard image" data-taos-offset="400" />
 
                         <div class="md:w-[50%] w-full bg-gray-100  md:p-4 p-0 rounded-md content-center">
                             <h2 class="text-3xl font-semibold text-gray-900 underline underline-offset-8 decoration-gray-700 ">Our Website</h2>
@@ -165,7 +167,7 @@
                                 sed necessitatibus aliquam error laborum delectus quaerat. Delectus hic error eligendi sed repellat natus fuga
                                 nobis tempora possimus ullam!</p>
                         </div>
-                        <img class="md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="aboutus2.png" alt="billboard image" />
+                        <img class="delay-[300ms] duration-[600ms] taos:translate-x-[100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="aboutus2.png" alt="billboard image" data-taos-offset="400"/>
 
                     </div>
                 </div>
@@ -178,7 +180,7 @@
                     <div
                         class="xl:w-[80%] sm:w-[85%] w-[90%] mx-auto flex md:flex-row flex-col lg:gap-4 gap-2 justify-center lg:items-stretch md:items-center mt-4">
 
-                        <img class="md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="https://i.pinimg.com/736x/2f/f3/d4/2ff3d4b27824c7ae338c586b3a71f919.jpg" alt="billboard image" />
+                        <img class="delay-[300ms] duration-[600ms] taos:translate-x-[-100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm animation transform" src="https://i.pinimg.com/736x/2f/f3/d4/2ff3d4b27824c7ae338c586b3a71f919.jpg" alt="billboard image" data-taos-offset="400" />
 
                         <div class="md:w-[50%] w-full bg-gray-100  md:p-4 p-0 rounded-md content-center">
                             <h2 class="text-3xl font-semibold text-gray-900 underline underline-offset-8 decoration-gray-700">Our Team</h2>
@@ -289,12 +291,12 @@
                 </div>
             </section>
             <!--contact us -->
-            <div class="bg-gray-900 mx-auto py-10 grid max-w-screen-full text-black pl-6 pr-4 sm:px-20 ">
+            <div class="bg-gray-800 mx-auto py-10 grid max-w-screen-full text-black pl-6 pr-4 sm:px-20 ">
                 <div class="text-center text-white">
                     <p class="mb-12 mt-12 text-center text-xl font-bold font-serif">Don't see what you looking for?</p>
                 </div>
-                <div class="text-center mt-5 align-center">
-                    <button class=" align-center bg-white hover:opacity-70 text-black font-bold py-2 px-4 rounded">
+                <div class="text-center align-center">
+                    <button class=" align-center bg-white hover:opacity-70 text-black font-medium py-3 px-6 rounded-full">
                         Contact us
                     </button>
                 </div>
@@ -311,6 +313,7 @@
         </button>
     </div>
 </main>
+<script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Get references to the elements
@@ -337,17 +340,10 @@
         });
     });
 
-    function goesToAboutUs() {
-        // Scroll smoothly to the About Us section
-        document.getElementById('about-us').scrollIntoView({
-            behavior: 'smooth'
-        });
-    }
-
     function goesToTop() {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth' // Smooth scrolling effect
+            behavior: 'smooth'
         });
 
         // Hide the button when it reaches the top

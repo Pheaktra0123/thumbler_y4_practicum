@@ -13,8 +13,8 @@
 <body>
     <main>
         <div class="relative w-full h-[400px] object-cover" id="home">
-            <div class="absolute inset-0 opacity-70">
-                <img src="https://i.pinimg.com/736x/29/2d/e9/292de9f6fc20fea30b51d1d1cf5989c5.jpg" alt="Background Image" class="object-cover object-center w-full h-full" />
+            <div class="absolute inset-0 ">
+                <img src="https://i.pinimg.com/736x/29/2d/e9/292de9f6fc20fea30b51d1d1cf5989c5.jpgff" alt="Background Image" class="object-cover object-center w-full h-full" />
 
             </div>
             <div class="absolute inset-9 flex flex-col md:flex-row items-center justify-center">
