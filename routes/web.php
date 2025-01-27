@@ -28,7 +28,7 @@ Route::controller(\App\Http\Controllers\AuthController::class)->group(function (
     });
 });
 
-// route for home page 
+// route for home page
 Route::get('/',[\App\Http\Controllers\HomeController::class,'index'])->name('home');
 
 //route for normal user
@@ -66,4 +66,13 @@ Route::get('/Model_home',function(){
 });
 Route::get('/Trending_home',function(){
     return view('/Pages/Home_Trending_Tumbler');
+});
+Route::get('/quencher_tumbler', function () {
+    return view('/Pages.quencher_tumbler');
+});
+Route::get('/cross_bottle', function () {
+    return view('/Pages.cross_bottle');
+});
+Route::get('/classic_bottle', function () {
+    return view('/Pages.classic_bottle');
 });
