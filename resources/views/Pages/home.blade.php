@@ -2,7 +2,9 @@
 @extends("TailwindCssLink.fontStyle")
 @extends("Component.header")
 @section('contents')
-<script>document.documentElement.classList.add('js')</script>
+<script>
+    document.documentElement.classList.add('js')
+</script>
 
 <style>
     .video-docker video {
@@ -49,26 +51,6 @@
 
 <main>
     <div class=" w-full ">
-        <section class="section-card-dialog">
-            <div id="cartDialog" class=" p-4 fixed z-50 hidden flex right-0 top-28 transform -translate-y-1/2">
-                <div class="bg-white w-80 h-70 rounded-lg shadow-lg p-4 relative">
-
-                    <!-- Close Button -->
-                    <button id="closeCartDialog" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                    <!-- Dialog Content -->
-                    <h3 class="text-xl font-bold mb-4">Your Cart</h3>
-                    <p class="text-gray-600 text-center justify-center">Your cart is currently empty.</p>
-                    <!-- <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Continue
-            Shopping</button> -->
-                </div>
-            </div>
-        </section>
         <div>
             <section class="relative h-[500px] lg:min-h-screed md:min-h-screen flex justify-center item-center text-center text-white ">
                 <div class="video-docker opacity-90 absolute top-0 left-0 w-full h-full overflow-hidden">
@@ -141,14 +123,18 @@
             <!--About page -->
             <section id="about-us" class="w-full mx-auto py-10 bg-gray-100">
 
-                <div class="w-full h-full flex flex-col items-center md:py-4 py-10">
+                <div class="w-full content-center content-item-center item-content-center  flex flex-col items-center md:py-4 ">
 
                     <div
-                        class="xl:w-[80%] sm:w-[85%] w-[90%] mx-auto flex md:flex-row flex-col lg:gap-4 gap-2 justify-center lg:items-stretch md:items-center mt-4">
+                        class=" relative flex w-full justify-between item-center content-center">
 
-                        <img class="delay-[200ms] duration-[600ms] taos:translate-x-[-100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="aboutus1.png" alt="billboard image" data-taos-offset="400" />
+                        <div class="flex w-full flex-row relative justify-center items-center gap-4 top-6">
+                            <img src="tumbler-remove-bg.png" class="-translate-y-16 drop-shadow-lg" alt="">
+                            <img src="tumbler2-remove-bg.png" class="absolute max-w-full translate-x-1/4 rotate-6 delay-[100ms] duration-[300ms] taos:translate-y-[100%] taos:opacity-0 hover:-translate-y-12 drop-shadow-lg" data-taos-offset="100" alt="">
+                            <img src="tumbler3-remove-bg.png" class="absolute top-2 -translate-x-1/4 -rotate-6 delay-[100ms] duration-[300ms] taos:translate-y-[100%] taos:opacity-0 hover:-translate-y-12 drop-shadow-lg" data-taos-offset="100" alt="">
+                        </div>
 
-                        <div class="md:w-[50%] w-full bg-gray-100  md:p-4 p-0 rounded-md content-center">
+                        <div class="relative  w-full bg-gray-100  md:p-4 p-0 rounded-md content-center">
                             <h2 class="text-3xl font-semibold text-gray-900 underline underline-offset-8 decoration-gray-700 ">Our Website</h2>
                             <p class="text-md mt-4 text-gray-600">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore placeat assumenda nam
                                 veritatis, magni doloremque pariatur quos fugit ipsa id voluptatibus deleniti officiis cum ratione eligendi
@@ -167,7 +153,7 @@
                                 sed necessitatibus aliquam error laborum delectus quaerat. Delectus hic error eligendi sed repellat natus fuga
                                 nobis tempora possimus ullam!</p>
                         </div>
-                        <img class="delay-[300ms] duration-[600ms] taos:translate-x-[100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="aboutus2.png" alt="billboard image" data-taos-offset="400"/>
+                        <img class="delay-[300ms] duration-[500ms] taos:translate-x-[100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="aboutus2.png" alt="billboard image" data-taos-offset="100" />
 
                     </div>
                 </div>
@@ -180,7 +166,7 @@
                     <div
                         class="xl:w-[80%] sm:w-[85%] w-[90%] mx-auto flex md:flex-row flex-col lg:gap-4 gap-2 justify-center lg:items-stretch md:items-center mt-4">
 
-                        <img class="delay-[300ms] duration-[600ms] taos:translate-x-[-100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm animation transform" src="https://i.pinimg.com/736x/2f/f3/d4/2ff3d4b27824c7ae338c586b3a71f919.jpg" alt="billboard image" data-taos-offset="400" />
+                        <img class="delay-[200ms] duration-[500ms] taos:translate-x-[-100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm animation transform" src="https://i.pinimg.com/736x/2f/f3/d4/2ff3d4b27824c7ae338c586b3a71f919.jpg" alt="billboard image" data-taos-offset="100" />
 
                         <div class="md:w-[50%] w-full bg-gray-100  md:p-4 p-0 rounded-md content-center">
                             <h2 class="text-3xl font-semibold text-gray-900 underline underline-offset-8 decoration-gray-700">Our Team</h2>
@@ -315,31 +301,6 @@
 </main>
 <script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Get references to the elements
-        const cartIcon = document.getElementById("cartIcon");
-        const cartDialog = document.getElementById("cartDialog");
-        const closeCartDialog = document.getElementById("closeCartDialog");
-
-        // Add event listener to the cart icon to open the cart dialog
-        cartIcon.addEventListener("click", function(e) {
-            e.preventDefault(); // Prevent the default anchor behavior (/# redirection)
-            cartDialog.classList.remove("hidden");
-        });
-
-        // Add event listener to the close button to hide the cart dialog
-        closeCartDialog.addEventListener("click", function() {
-            cartDialog.classList.add("hidden");
-        });
-
-        // Optional: Close the cart dialog when clicking outside of it
-        cartDialog.addEventListener("click", function(e) {
-            if (e.target === cartDialog) {
-                cartDialog.classList.add("hidden");
-            }
-        });
-    });
-
     function goesToTop() {
         window.scrollTo({
             top: 0,

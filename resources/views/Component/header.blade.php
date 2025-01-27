@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
     <script>
         function toggleMenu() {
             const menu = document.getElementById("menu");
@@ -21,7 +26,7 @@
             <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0">
                     <a href="/" class="text-gray-800 font-bold text-2xl">
-                        TUMBLER SHOP
+                        TUMBLER HAVEN
                     </a>
                 </div>
                 <div class="hidden md:block text-gray-700">
@@ -49,27 +54,67 @@
 
                             <a href="/customize" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Customize</a>
                         </div>
+                    </div>
+                </div>
+                <div class="block content-center justify-center ">
+                    <div class="flex items-center justify-center md:ml-6 gap-1 text-gray-700">
                         <div id="cartIcon" class="relative flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-6 w-8 h-8">
                                 <path fill-rule="evenodd" d="M6 5v1H4.667a1.75 1.75 0 0 0-1.743 1.598l-.826 9.5A1.75 1.75 0 0 0 3.84 19H16.16a1.75 1.75 0 0 0 1.743-1.902l-.826-9.5A1.75 1.75 0 0 0 15.333 6H14V5a4 4 0 0 0-8 0Zm4-2.5A2.5 2.5 0 0 0 7.5 5v1h5V5A2.5 2.5 0 0 0 10 2.5ZM7.5 10a2.5 2.5 0 0 0 5 0V8.75a.75.75 0 0 1 1.5 0V10a4 4 0 0 1-8 0V8.75a.75.75 0 0 1 1.5 0V10Z" clip-rule="evenodd" />
                             </svg>
 
                             <span
-                                class="w-[16px] h-[16px] bg-red-500 text-white text-xs font-semibold rounded-full text-center content-items-center place-content-center absolute -top-2 right-8">
+                                class="w-4 h-4 md:w-6 md:h-6 bg-red-500 text-white text-xs font-semibold rounded-full text-center content-items-center place-content-center absolute -top-1 md:-top-2 right-0 md:right-8">
                                 0
                             </span>
                             <a
                                 href="#"
-                                class="ml-2 text-md font-medium text-gray-900 hover:text-gray-600 transition-colors duration-300">
+                                class="hidden md:block ml-2 text-md font-normal text-gray-900 hover:text-gray-600 transition-colors duration-300">
                                 Cart
                             </a>
                         </div>
-
-                        <div class="relative flex items-center justify-center ml-8">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
+                        <div class="relative flex items-center justify-center md:ml-8">
+                            @if(Route::has('login'))
+                            @auth()
+                            <button  type="button" class="flex text-sm bg-white shadow-lg shadow-indigo-500/40 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 " id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                                <span class="sr-only">Open user menu</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 w-8 h-8">
+                                    <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow " id="user-dropdown">
+                                <div class="px-4 py-3">
+                                    <span class="block text-sm text-gray-900 ">{{auth()->user()->name}}</span>
+                                    <span class="block text-sm  text-gray-500 truncate ">{{auth()->user()->email}}</span>
+                                </div>
+                                <ul class="py-2" aria-labelledby="user-menu-button">
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Dashboard</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Settings</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Earnings</a>
+                                    </li>
+                                    <li id="show-alert-logout">
+                                        <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 pointer">Log out</div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button data-collapse-toggle="navbar-user" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
+                                <span class="sr-only">Open main menu</span>
+                                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
+                                </svg>
+                            </button>
+                            @else
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 w-8 h-8">
                                 <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
                             </svg>
-                            <a href="/login" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Login</a>
+                            <a href="{{ route('login') }}" class="hidden md:block md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse font-semibold text-gray-700">Log in</a>
+                            @endauth
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -108,23 +153,62 @@
                     </svg>
                     <a href="#" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Customize</a>
                 </div>
-                <div class="relative flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path fill-rule="evenodd" d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 0 0 4.25 22.5h15.5a1.875 1.875 0 0 0 1.865-2.071l-1.263-12a1.875 1.875 0 0 0-1.865-1.679H16.5V6a4.5 4.5 0 1 0-9 0ZM12 3a3 3 0 0 0-3 3v.75h6V6a3 3 0 0 0-3-3Zm-3 8.25a3 3 0 1 0 6 0v-.75a.75.75 0 0 1 1.5 0v.75a4.5 4.5 0 1 1-9 0v-.75a.75.75 0 0 1 1.5 0v.75Z" clip-rule="evenodd" />
-                    </svg>
-                    <a href="#" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Cart</a>
-                </div>
-                <div class="relative flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
-                    </svg>
-                    <a href="/login" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Login</a>
-                </div>
             </div>
         </div>
     </nav>
+
     <main>
-        <div class="  ">
+
+        <!-- alert logout -->
+        <section id="alert-logout" class="absolute top-24 left-0 right-0 z-50 flex justify-center items-center h-screen hidden ">
+            <div class="border rounded-lg shadow relative max-w-sm">
+                <div class="flex justify-end p-2">
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="p-6 pt-0 text-center">
+                    <svg class="w-20 h-20 text-red-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h3 class="text-xl font-normal text-gray-500 mt-5 mb-6">Are you sure you want to delete this user?</h3>
+                    <a href="#"
+                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+                        Yes, I'm sure
+                    </a>
+                    <a href="#"
+                        class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center">
+                        No, cancel
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section class="section-card-dialog">
+            <div id="cartDialog" class=" p-4 fixed z-50 hidden flex right-0 top-36 transform -translate-y-1/2">
+                <div class="bg-white w-80 h-70 rounded-lg shadow-lg p-4 relative">
+
+                    <!-- Close Button -->
+                    <button id="closeCartDialog" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <!-- Dialog Content -->
+                    <h3 class="text-xl font-bold mb-4">Your Cart</h3>
+                    <p class="text-gray-600 text-center justify-center">Your cart is currently empty.</p>
+                    <!-- <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Continue
+            Shopping</button> -->
+                </div>
+            </div>
+        </section>
+        <div class=" relative  ">
             <div>@yield('contents')</div>
         </div>
     </main>
@@ -186,7 +270,32 @@
         </div>
 
     </footer>
-
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get references to the elements
+        const cartIcon = document.getElementById("cartIcon");
+        const cartDialog = document.getElementById("cartDialog");
+        const closeCartDialog = document.getElementById("closeCartDialog");
+
+        // Add event listener to the cart icon to open the cart dialog
+        cartIcon.addEventListener("click", function(e) {
+            e.preventDefault(); // Prevent the default anchor behavior (/# redirection)
+            cartDialog.classList.remove("hidden");
+        });
+
+        // Add event listener to the close button to hide the cart dialog
+        closeCartDialog.addEventListener("click", function() {
+            cartDialog.classList.add("hidden");
+        });
+
+        // Optional: Close the cart dialog when clicking outside of it
+        cartDialog.addEventListener("click", function(e) {
+            if (e.target === cartDialog) {
+                cartDialog.classList.add("hidden");
+            }
+        });
+    });  
+</script>
 
 </html>
