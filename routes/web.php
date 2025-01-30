@@ -67,12 +67,12 @@ Route::get('/Model_home',function(){
 Route::get('/Trending_home',function(){
     return view('/Pages/Home_Trending_Tumbler');
 });
-Route::get('/quencher_tumbler', function () {
-    return view('/Pages.quencher_tumbler');
+Route::get('/yati', function () {
+    return view('/Pages.yati');
 });
-Route::get('/cross_bottle', function () {
-    return view('/Pages.cross_bottle');
+Route::get('/hydro_flask', function () {
+    return view('/Pages.hydro_flask');
 });
-Route::get('/classic_bottle', function () {
-    return view('/Pages.classic_bottle');
+Route::get('/stanley', function () {
+    return view('/Pages.stanley');
 });
