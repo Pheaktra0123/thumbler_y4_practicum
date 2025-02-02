@@ -1,13 +1,15 @@
 @extends('TailwindCssLink.style')
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login Admin</title>
 </head>
+
 <body>
     <div class="w-screen min-h-screen flex items-center justify-center bg-gray-50  px-4 sm:px-6 lg:px-8">
         <div class="relative py-3 sm:max-w-xs sm:mx-auto">
@@ -22,23 +24,26 @@
                         <span class="m-0 text-xs max-w-[90%] text-center text-[#8B8E98]">Get started with our app, just start section and enjoy experience.
                         </span>
                     </div>
+                </div>
+                <form action="{{route('login.action')}}" method="POST">
+                    @csrf
                     <div class="w-full flex flex-col gap-2">
-                        <label class="font-semibold text-xs text-gray-400 ">Username</label>
-                        <input class="border rounded-lg px-3 py-2 mb-5 text-sm w-full outline-none " placeholder="Username" />
+                        <label class="font-semibold text-xs text-gray-400 ">Email</label>
+                        <input name="email" class="border rounded-lg px-3 py-2 mb-5 text-sm w-full outline-none " placeholder="name@gmail.com" />
 
                     </div>
-                </div>
-                <div class="w-full flex flex-col gap-2">
-                    <label class="font-semibold text-xs text-gray-400 ">Password</label>
-                    <input type="password" class="border rounded-lg px-3 py-2 mb-5 text-sm w-full outline-none " placeholder="••••••••" />
+                    <div class="w-full flex flex-col gap-2">
+                        <label class="font-semibold text-xs text-gray-400 ">Password</label>
+                        <input name="password" type="password" class="border rounded-lg px-3 py-2 mb-5 text-sm w-full outline-none " placeholder="••••••••" />
 
-                </div>
-                <div className="mt-5">
-                    <button class="py-1 px-8 bg-blue-500 hover:bg-blue-800 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg cursor-pointer select-none">Login</button>
-                </div>
+                    </div>
+                    <div className="mt-5">
+                        <button class="py-1 px-8 bg-blue-500 hover:bg-blue-800 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg cursor-pointer select-none">Login</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    </div>
 </body>
+
 </html>

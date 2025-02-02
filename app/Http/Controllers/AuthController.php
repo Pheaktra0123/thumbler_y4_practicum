@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     //
-    public function  __construct()
+    public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
@@ -20,6 +20,8 @@ class AuthController extends Controller
     {
         return view('Pages/register');
     }
+
+    //user Register 
     public function registerSave(Request $request)
     {
         // Validate the input
@@ -41,15 +43,26 @@ class AuthController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'type' => "0"
         ]);
 
         // Redirect or return success
         return redirect()->route('login')->with('success', 'Registration successful. Please login.');
     }
+
+    //user for view form login
     public function login()
     {
         return view('Pages/login');
     }
+
+    //admin for view form login
+    public function LoginAdmin(){
+        
+        return view('Admin/AdminLogin');
+    }
+
+    //validate user and admin
     public function loginAction(Request $request)
     {
         Validator::make($request->all(), [
@@ -64,16 +77,17 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
- 
+
         if (auth()->user()->type == 'admin') {
-            return redirect()->route('admin/home');
+            return redirect()->route('Admin/Dashboard');
         } else {
             return redirect()->route('home');
         }
 
-        return redirect()->route('dashboard');
+        return redirect()->route('Admin/Dashboard');
     }
 
+    //logout auth
     public function logout(Request $request)
     {
         Auth::guard('web')->logout();

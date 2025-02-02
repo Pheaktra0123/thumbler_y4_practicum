@@ -68,7 +68,10 @@
     <div class="flex-col w-full mt-6">
         <div class="flex justify-center">
             <button id="cancel-button" type="button" class="border-2 w-1/2 border-gray-400 rounded-md text-md text-gray-900 px-4 py-2 mx-4 hover:bg-gray-400 hover:text-white">Cancel</button>
-            <button type="button" class="bg-red-600 w-1/2 text-md text-white rounded-md px-4 py-2 mr-4 hover:bg-red-700 hover:text-gray-100">Logout</button>
+            <a href="/logout"  class="bg-red-600 w-1/2 text-md text-white text-center rounded-md px-4 py-2 mr-4 hover:bg-red-700 hover:text-gray-100">
+                <button type="button">Logout</button>
+            </a>
+            
         </div>
     </div>
 </div>
@@ -86,7 +89,7 @@
                      mx-2">
                 <ul class="flex flex-col">
                     <li name="active" data-id="dashboard" class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700  hover:text-white active:bg-gray-900 focus:bg-gray-900">
-                        <a class="py-3 flex items-center" href="/nav">
+                        <a class="py-3 flex items-center" href="/Admin/Dashboard">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -118,17 +121,6 @@
                             Roles
                         </a>
                     </li>
-                    <li name="active" data-id="permissions" class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700">
-                        <a class="py-3 flex items-center" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor" class="w-4 mr-3">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-                            </svg>
-
-                            Permissions
-                        </a>
-                    </li>
                     <li  class="px-4 py-2 text-xs uppercase tracking-wider mx-1 rounded-md text-gray-500 font-bold">PRODUCT MANAGEMENT</li>
                     <li name="active" data-id="categories" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
                         <a class="py-3 flex items-center" href="#">
@@ -139,6 +131,27 @@
                             </svg>
 
                             Categories
+                        </a>
+                    </li>
+                    <li name="active" data-id="categories" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
+                        <a class="py-3 flex items-center" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="w-4 mr-3">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
+                            </svg>
+
+                           Model
+                        </a>
+                    </li>
+                    <li name="active" data-id="categories" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
+                        <a class="py-3 flex items-center" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="w-4 mr-3">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
+                            </svg>
+                            New Trending
                         </a>
                     </li>
                     <li name="active" data-id="products" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">

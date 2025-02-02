@@ -153,7 +153,7 @@
                                 sed necessitatibus aliquam error laborum delectus quaerat. Delectus hic error eligendi sed repellat natus fuga
                                 nobis tempora possimus ullam!</p>
                         </div>
-                        <img class="delay-[300ms] duration-[500ms] taos:translate-x-[100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="aboutus2.png" alt="billboard image" data-taos-offset="100" />
+                        <img class="delay-[300ms] duration-[500ms] taos:translate-y-[100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="aboutus2.png" alt="billboard image" data-taos-offset="100" />
 
                     </div>
                 </div>

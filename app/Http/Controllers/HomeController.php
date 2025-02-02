@@ -15,11 +15,17 @@ class HomeController extends Controller
     {
         return view('Pages/home');
     }
-
+    public function dashboard()
+    {
+        return view('User/user_dashboard');
+    }
+    public function userEdit(){
+        return view('User/Profile_Edit');
+    }
 
     public function adminHome()
     {
-        return view('dashboard');
+        return view('Admin/Dashboard');
     }
 
 }

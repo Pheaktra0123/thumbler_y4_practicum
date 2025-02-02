@@ -74,29 +74,27 @@
                         <img src="https://i.pinimg.com/736x/1b/f2/42/1bf242035250c76f75b73f1156c83e2f.jpg"
                             alt="wheat flour grinding" class="w-full h-64 object-cover">
                         <div class="p-6 text-center">
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">Classic Bottle</h3>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Stanley Brand</h3>
                             <p class="text-gray-700 text-base">Our wheat flour grinding service provides fresh,
                                 high-quality flour to businesses and individuals in the area.
                             </p>
-                            <a href="/classic_bottle"><button
-                                class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800
+                            <a href="/stanley"><button class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800
                                 focus:outline-none focus:bg-gray-800">
-                                View Product
-                            </button></a>
+                                    View All Items
+                                </button></a>
                         </div>
                     </div>
                     <div class="mt-10 bg-white rounded-lg shadow-md overflow-hidden">
                         <img src="https://i.pinimg.com/736x/54/1b/fb/541bfb96aba2623a6163a77e5f5188c0.jpg" alt="Coffee"
                             class="w-full h-64 object-cover">
                         <div class="p-6 text-center">
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">Cross Bottle</h3>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Hydro Flask Brand</h3>
                             <p class="text-gray-700 text-base">Our wheat flour grinding service provides fresh,
                                 high-quality flour to businesses and individuals in the area.</p>
-                                <a href="/cross_bottle"><button
-                                class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800
+                            <a href="/hydro_flask"><button class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800
                                 focus:outline-none focus:bg-gray-800">
-                                View Product
-                            </button></a>
+                                    View All Items
+                                </button></a>
 
                         </div>
                     </div>
@@ -104,14 +102,14 @@
                         <img src="https://i.pinimg.com/736x/81/f9/a5/81f9a5eacf7570b7c1e9b7d6847f18ac.jpg" alt="Coffee"
                             class="w-full h-64 object-cover">
                         <div class="p-6 text-center">
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">Quencher Tumbler </h3>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Yeti Brand</h3>
                             <p class="text-gray-700 text-base">Our wheat flour grinding service provides fresh,
                                 high-quality flour to businesses and individuals in the area.
                             </p>
-                            <a href="/quencher_tumbler"><button
-                                class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 focus:outline-none focus:bg-gray-800">
-                                View Product
-                            </button>
+                            <a href="/yati"><button
+                                    class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 focus:outline-none focus:bg-gray-800">
+                                    View All Items
+                                </button>
                             </a>
 
                         </div>
