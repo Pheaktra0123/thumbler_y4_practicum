@@ -123,7 +123,7 @@
                     </li>
                     <li  class="px-4 py-2 text-xs uppercase tracking-wider mx-1 rounded-md text-gray-500 font-bold">PRODUCT MANAGEMENT</li>
                     <li name="active" data-id="categories" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
-                        <a class="py-3 flex items-center" href="#">
+                        <a class="py-3 flex items-center" href="/Admin/Categories">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -133,8 +133,8 @@
                             Categories
                         </a>
                     </li>
-                    <li name="active" data-id="categories" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
-                        <a class="py-3 flex items-center" href="#">
+                    <li name="active" data-id="model" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
+                        <a class="py-3 flex items-center" href="/Admin/Model">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -144,7 +144,7 @@
                            Model
                         </a>
                     </li>
-                    <li name="active" data-id="categories" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
+                    <li name="active" data-id="trending" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
                         <a class="py-3 flex items-center" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 mr-3">

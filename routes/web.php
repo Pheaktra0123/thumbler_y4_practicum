@@ -65,6 +65,11 @@ Route::middleware(['auth','user-access:user'])->group(function (){
 //route for admin
 Route::middleware(['auth','user-access:admin'])->group(function (){
     Route::get('/Admin/Dashboard',[\App\Http\Controllers\HomeController::class,'adminHome'])->name('Admin/Dashboard');
+    Route::get('/Admin/Categories',[\App\Http\Controllers\CategoriesController::class,'categories'])->name('Admin/Categories');
+    Route::get('/Admin/Model',[\App\Http\Controllers\AdminController::class,'Model'])->name('Admin/Model');
+    Route::post('/Admin/Categories/Create',[\App\Http\Controllers\CategoriesController::class,'store'])->name('Categories.store');
+    Route::put('/Admin/Categories/Edit/{id}',[\App\Http\Controllers\CategoriesController::class,'update'])->name('Categories.edit');
+    Route::get('/Admin/Categories/Delete/{id}',[\App\Http\Controllers\CategoriesController::class,'destroy'])->name('Categories.delete');
 });
 
 
