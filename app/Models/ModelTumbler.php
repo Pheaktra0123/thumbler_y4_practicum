@@ -10,7 +10,8 @@ class ModelTumbler extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'Thumbnail'
+        'Thumbnail',
+        'categories_id',
     ];
     public function category()
     {

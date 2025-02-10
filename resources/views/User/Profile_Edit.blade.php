@@ -81,7 +81,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="relative hidden overflow-hidden rounded-full lg:block">
-                                                    <img class="relative h-40 w-40 rounded-full border" id="user-avatar" src="{{ auth()->user()->thumbnail ? asset(auth()->user()->thumbnail) : 'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=320&amp;h=320&amp;q=80' }}" alt="User Avatar">
+                                                    <img class="relative h-40 w-40 rounded-full border object-cover-center" id="user-avatar" src="{{ auth()->user()->thumbnail ? asset(auth()->user()->thumbnail) : 'placeholder-image.jpg' }}" alt="User Avatar">
                                                     <label for="desktop-user-photo" class="absolute inset-0 flex h-full w-full items-center justify-center bg-black bg-opacity-75 text-sm font-medium text-white opacity-0 focus-within:opacity-100 hover:opacity-100">
                                                         <span>Change</span>
                                                         <span class="sr-only"> user photo</span>

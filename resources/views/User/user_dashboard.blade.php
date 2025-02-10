@@ -112,13 +112,13 @@
                             <div class="border-b px-4 pb-6">
                                 <div class="text-center my-4">
                                     @if (auth()->check() && auth()->user()->thumbnail)
-                                    <img class="h-56 w-56 rounded-full border-4 border-gray-300 mx-auto my-4"
-                                        src="{{ auth()->user()->thumbnail ? asset(auth()->user()->thumbnail) : 'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=320&amp;h=320&amp;q=80' }}"
+                                    <img class="h-56 w-56 rounded-full border-4 border-gray-300 mx-auto my-4 object-cover"
+                                        src="{{ auth()->user()->thumbnail ? asset(auth()->user()->thumbnail) : 'https://www.google.com/url?sa=i&url=https%3A%2F%2Farchive.org%2Fdetails%2Fplaceholder-image&psig=AOvVaw171zx0ZPgJmEHD78-xsWOe&ust=1738733402782000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNDHo-ikqYsDFQAAAAAdAAAAABAE' }}"
                                         alt="Profile Image">
                                     @else
                                     <!-- Display a default image or a placeholder -->
                                     <img class="h-56 w-56 rounded-full border-4 border-gray-300 mx-auto my-4"
-                                        src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fdevelopers.elementor.com%2Fdocs%2Fhooks%2Fplaceholder-image%2F&psig=AOvVaw1rOU5vXDdfgNfpR60XjMZb&ust=1738507457285000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCKDv9I7boosDFQAAAAAdAAAAABAE"
+                                        src="https://www.google.com/url?sa=i&url=https%3A%2F%2Farchive.org%2Fdetails%2Fplaceholder-image&psig=AOvVaw171zx0ZPgJmEHD78-xsWOe&ust=1738733402782000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNDHo-ikqYsDFQAAAAAdAAAAABAE"
                                         alt="Default Profile Image">
                                     @endif
 
