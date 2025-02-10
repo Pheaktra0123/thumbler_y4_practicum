@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModelTumblerController;
+use App\Http\Controllers\TumblerController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -84,6 +85,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/Admin/model/delete/{id}', [\App\Http\Controllers\ModelTumblerController::class, 'destroy'])->name('Model.delete');
 
     //Route for Product
+    Route::get('/Admin/view/tumbler',[TumblerController::class, 'tumbler'])->name('Admin.view.tumbler');
     
 });
 

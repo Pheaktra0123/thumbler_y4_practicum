@@ -1,6 +1,6 @@
 @extends("TailwindCssLink.style")
 @extends("Component.Nav_Dashbord")
-@section('title','Admin Model')
+@section('title','tumbler')
 @section('contents')
 <!doctype html>
 <html lang="en">
@@ -10,7 +10,6 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>All Products</title>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.1/dist/flowbite.min.js"></script>
 </head>
