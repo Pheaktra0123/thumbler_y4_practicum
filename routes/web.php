@@ -41,13 +41,8 @@ Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('h
 Route::get('/#about-us', function () {
     return view('/Pages/home/#about-us');
 });
-<<<<<<< HEAD
 //model
-Route::get('/Model_home',function(){
-=======
-//model 
 Route::get('/Model_home', function () {
->>>>>>> 25f6209a2a8bf8b897ea289e1f0b4a88d4ca9682
     return view('/Pages/Home_Model_Tumbler');
 });
 //category
@@ -86,7 +81,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 
     //Route for Product
     Route::get('/Admin/view/tumbler',[TumblerController::class, 'tumbler'])->name('Admin.view.tumbler');
-    
+
 });
 
 
