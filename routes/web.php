@@ -39,7 +39,7 @@ Route::get('/',[\App\Http\Controllers\HomeController::class,'index'])->name('hom
 Route::get('/#about-us', function () {
     return view('/Pages/home/#about-us');
 });
-//model 
+//model
 Route::get('/Model_home',function(){
     return view('/Pages/Home_Model_Tumbler');
 });
@@ -89,4 +89,10 @@ Route::get('/hydro_flask', function () {
 });
 Route::get('/stanley', function () {
     return view('/Pages.stanley');
+});
+Route::get('/details_tumbler', function () {
+    return view('/Pages.details_tumbler');
+});
+Route::get('/customize_tumbler', function () {
+    return view('/Pages.customize_tumbler');
 });

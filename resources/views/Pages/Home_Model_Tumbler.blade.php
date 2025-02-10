@@ -75,9 +75,6 @@
                             alt="wheat flour grinding" class="w-full h-64 object-cover">
                         <div class="p-6 text-center">
                             <h3 class="text-xl font-bold text-gray-800 mb-2">Stanley Brand</h3>
-                            <p class="text-gray-700 text-base">Our wheat flour grinding service provides fresh,
-                                high-quality flour to businesses and individuals in the area.
-                            </p>
                             <a href="/stanley"><button class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800
                                 focus:outline-none focus:bg-gray-800">
                                     View All Items
@@ -89,8 +86,6 @@
                             class="w-full h-64 object-cover">
                         <div class="p-6 text-center">
                             <h3 class="text-xl font-bold text-gray-800 mb-2">Hydro Flask Brand</h3>
-                            <p class="text-gray-700 text-base">Our wheat flour grinding service provides fresh,
-                                high-quality flour to businesses and individuals in the area.</p>
                             <a href="/hydro_flask"><button class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800
                                 focus:outline-none focus:bg-gray-800">
                                     View All Items
@@ -103,9 +98,6 @@
                             class="w-full h-64 object-cover">
                         <div class="p-6 text-center">
                             <h3 class="text-xl font-bold text-gray-800 mb-2">Yeti Brand</h3>
-                            <p class="text-gray-700 text-base">Our wheat flour grinding service provides fresh,
-                                high-quality flour to businesses and individuals in the area.
-                            </p>
                             <a href="/yati"><button
                                     class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 focus:outline-none focus:bg-gray-800">
                                     View All Items
