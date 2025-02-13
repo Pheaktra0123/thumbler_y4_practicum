@@ -18,7 +18,7 @@
     <main>
         <section class="mb-10">
             <div class="flex gap-2 mt-5 mx-5 justify-between">
-                <h1 class="text-3xl font-bold text-gray-700">Categories</h1>
+                <h1 class="text-3xl font-bold text-gray-700 uppercase">Model</h1>
             </div>
             <div class="flex justify-between item-center place-content-center px-10">
                 <p class="text-lg content-center font-bold">All</p>

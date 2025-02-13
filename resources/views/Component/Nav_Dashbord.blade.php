@@ -26,7 +26,7 @@
 
 <body id="body">
     <header class="shadow-lg">
-        <nav class="flex justify-between px-10 py-4 item-center bg-gray-800 border-b-2">
+        <nav class="flex justify-between px-10 py-4 item-center bg-blue-900 border-b-2">
             <div class="text-xl text-gray-200 font-bold uppercase place-content-center">
                 Tumbler Haven
             </div>
@@ -68,7 +68,7 @@
     <div id="backdrop" class="hidden fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm"></div>
     <div class=" flex bg-gray-100">
         <!-- sidebar -->
-        <div class="max-w-full w-1/4 max-h-full overflow-y-auto flex flex-col bg-gray-800 rounded-br-lg">
+        <div class="max-w-full w-1/4 max-h-full overflow-y-auto flex flex-col bg-sky-900 rounded-br-lg">
             <div class="flex flex-col max-h-screen mt-2">
                 <nav class="text-sm text-gray-300 [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar-track]:bg-gray-100
