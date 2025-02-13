@@ -76,7 +76,7 @@
                             class="flex-1 bg-gray-900 dark:bg-gray-600 text-white py-3 px-6 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
                             Add to Cart
                         </button>
-                        <button
+                        <button id="customizeButton"
                             class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-3 px-6 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
                             Customize
                         </button>
@@ -185,20 +185,24 @@
         });
 
         // Adjust button styling and position
-        document.addEventListener("DOMContentLoaded", function () {
-            const buttonsContainer = document.querySelector(".flex.gap-4");
-            if (buttonsContainer) {
-                const addToCartButton = buttonsContainer.children[0]; // First button
-                const customizeButton = buttonsContainer.children[1]; // Second button
+        const buttonsContainer = document.querySelector(".flex.gap-4");
+        if (buttonsContainer) {
+            const addToCartButton = buttonsContainer.children[0];
+            const customizeButton = buttonsContainer.children[1];
 
-                // Force stacking order
-                buttonsContainer.innerHTML = ''; // Clear current order
-                buttonsContainer.appendChild(addToCartButton);
-                buttonsContainer.appendChild(customizeButton);
-            }
-        });
+            // Force stacking order
+            buttonsContainer.innerHTML = '';
+            buttonsContainer.appendChild(addToCartButton);
+            buttonsContainer.appendChild(customizeButton);
+        }
 
+        // Handle customize button click
+        const customizeButton = document.getElementById("customizeButton");
+        if (customizeButton) {
+            customizeButton.addEventListener("click", function () {
+                window.location.href = "/customize_tumbler";
+            });
+        }
     });
-
 </script>
 @endsection

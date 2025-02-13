@@ -9,11 +9,14 @@
 
         <div class="flex flex-col items-center relative">
             <div class="h-[560px] w-[350px] flex items-center justify-center mt-12 p-4">
-                <img class="w-full h-full object-cover rounded-lg" src="https://picresize.com/images/tstandley-back.png?101065" alt="Tumbler" id="tumblerImage">
+                <img class="w-full h-full  object-cover rounded-lg"
+                    src="black-nobg.png" alt="Tumbler"
+                    id="tumblerImage">
                 <!-- Overlay Text -->
-                <div id="textOverlay" class="absolute text-white text-3xl font-bold"></div>
+                <div id="textOverlay" class="absolute text-neutral-400 text-3xl font-bold"></div>
                 <!-- Upload Image Overlay -->
-                <img id="uploadedImage" class="absolute hidden" style="max-width: 100px; max-height: 100px; object-fit: contain;" alt="Uploaded Image">
+                <img id="uploadedImage" class="absolute hidden"
+                    style="max-width: 100px; max-height: 100px; object-fit: contain;" alt="Uploaded Image">
             </div>
         </div>
 
@@ -42,17 +45,23 @@
                         <span class="font-semibold text-gray-700 text-lg dark:text-gray-300 mb-2">Choose Color</span>
                         <div class="flex items-center space-x-2">
                             <button
-                                class="color-btn w-8 h-8 rounded-full bg-gray-800 border-2 border-transparent hover:border-gray-500 focus:border-gray-700"></button>
+                                class="color-btn w-8 h-8 rounded-full bg-gray-200 border-2 border-transparent hover:border-gray-500 focus:border-gray-700"
+                                data-color="white"></button>
                             <button
-                                class="color-btn w-8 h-8 rounded-full bg-red-500 border-2 border-transparent hover:border-red-500 focus:border-red-700"></button>
+                                class="color-btn w-8 h-8 rounded-full bg-sky-600 border-2 border-transparent hover:border-sky-600 focus:border-gray-700"
+                                data-color="skyblue"></button>
                             <button
-                                class="color-btn w-8 h-8 rounded-full bg-blue-500 border-2 border-transparent hover:border-blue-500 focus:border-blue-700"></button>
+                                class="color-btn w-8 h-8 rounded-full bg-blue-500 border-2 border-transparent hover:border-blue-500 focus:border-gray-700"
+                                data-color="blue"></button>
                             <button
-                                class="color-btn w-8 h-8 rounded-full bg-pink-500 border-2 border-transparent hover:border-pink-500 focus:border-pink-700"></button>
+                                class="color-btn w-8 h-8 rounded-full bg-pink-500 border-2 border-transparent hover:border-pink-500 focus:border-gray-700"
+                                data-color="pink"></button>
                             <button
-                                class="color-btn w-8 h-8 rounded-full bg-black border-2 border-transparent hover:border-black focus:border-gray-400"></button>
+                                class="color-btn w-8 h-8 rounded-full bg-black border-2 border-transparent hover:border-black focus:border-gray-700"
+                                data-color="black"></button>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -61,24 +70,49 @@
                 <label class="text-lg font-semibold text-gray-700">Engraving <span class="text-gray-500">+
                         $10</span></label>
                 <div class="mt-3 flex items-center gap-4">
-                    <input type="text" id="engravingText" placeholder="5 Letters only!" class="border p-3 rounded-lg text-center w-44">
-
-                    <select class="border p-3 rounded-lg w-44">
+                    <input type="text" id="engravingText" placeholder="6 Letters only!" maxlength="6"
+                        class="border p-3 rounded-lg text-center w-44 smalllcase">
+                    <select id="fontSelect" class="border p-3 rounded-lg w-44">
                         <option selected disabled>Select Font</option>
                         <option value="serif">Serif</option>
                         <option value="sans-serif">Sans-Serif</option>
                         <option value="cursive">Cursive</option>
+                        <option value="monospace">Monospace</option>
+                        <option value="fantasy">Fantasy</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Brush Script MT">Brush Script MT</option>
+                        <option value="Lobster">Lobster</option>
                     </select>
+
                     <div class="w-[3px] h-12 bg-gray-300 rounded-full"></div>
 
                     <!-- Upload Button (Aligned Properly) -->
                     <input type="file" id="uploadImage" class="hidden" accept="image/*">
                     <label for="uploadImage"
-                        class="border p-3 rounded-lg text-center border-black cursor-pointer font-semibold text-gray-700 w-44">
+                        class="border p-3 rounded-lg text-center border-black cursor-pointer font-semibold text-gray-700 w-40">
                         UPLOAD IMAGE
                     </label>
                     <!-- <button id="deleteImageBtn" class="mt-3 p-2 bg-red-500 text-white rounded-lg hidden">Delete Image</button> -->
-                    <button id="deleteImageBtn" class="mt-2 p-1 bg-red-500 text-white rounded text-xs w-20 h-8 hidden">Delete</button>
+                    <button id="deleteImageBtn"
+                        class="mt-2 p-1 bg-red-500 text-white rounded text-xs w-18 h-10 hidden">Delete</button>
+                    <!-- Custom Modal for Image Size Error -->
+                    <div id="imageSizeModal"
+                        class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                        <div class="bg-white p-6 rounded-lg max-w-md w-full">
+                            <h2 class="text-xl font-bold text-red-600">Image Size Exceeds Limit!</h2>
+                            <p class="text-gray-700 mt-2">Your image is too large! The maximum file size allowed is 1MB.
+                            </p>
+                            <p class="text-gray-700 mt-2">You can convert your image size here:</p>
+                            <a href="https://www.iloveimg.com/resize-image" target="_blank"
+                                class="text-blue-500 underline mt-2 block">Convert your image size here</a>
+                            <button id="closeModalBtn"
+                                class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">Close</button>
+                        </div>
+                    </div>
 
 
                 </div>
@@ -106,52 +140,6 @@
         </div>
     </div>
 </div>
-<!-- <script>
-    document.querySelectorAll(".color-btn").forEach(button => {
-        button.addEventListener("click", function () {
-            const newImage = this.getAttribute("data-image");
-            document.getElementById("tumblerImage").src = newImage;
-        });
-    });
-    document.getElementById("uploadImage").addEventListener("change", function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const uploadedImage = document.getElementById("uploadedImage");
-                uploadedImage.src = e.target.result;
-                uploadedImage.classList.remove("hidden");
-                document.getElementById("deleteImageBtn").classList.remove("hidden");
-
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-    document.getElementById("deleteImageBtn").addEventListener("click", function () {
-    const uploadedImage = document.getElementById("uploadedImage");
-    uploadedImage.src = ""; // Remove image source
-    uploadedImage.classList.add("hidden"); // Hide image
-
-    // Hide delete button
-    this.classList.add("hidden");
-
-    // Clear the input file selection (optional)
-    document.getElementById("uploadImage").value = "";
-});
-
-    document.getElementById('engravingText').addEventListener('input', function() {
-        const text = this.value;
-        const textOverlay = document.getElementById('textOverlay');
-
-        // Set the text overlay content
-        textOverlay.textContent = text;
-
-        // Position the text overlay on the image (you can adjust the position as needed)
-        textOverlay.style.top = '50%';
-        textOverlay.style.left = '50%'; // Adjust the horizontal position
-        textOverlay.style.transform = 'translate(-50%, -50%)';  // Center the text
-    });
-</script> -->
 <script>
     const uploadImage = document.getElementById("uploadImage");
     const engravingText = document.getElementById("engravingText");
@@ -159,17 +147,42 @@
     const uploadedImage = document.getElementById("uploadedImage");
     const deleteImageBtn = document.getElementById("deleteImageBtn");
     const textOverlay = document.getElementById("textOverlay");
-
     // Handle Image Upload
     uploadImage.addEventListener("change", function (event) {
         const file = event.target.files[0];
 
         if (file) {
+            // Check file size (1MB = 1048576 bytes)
+            if (file.size > 1048576) {
+                // Show the modal
+                document.getElementById("imageSizeModal").classList.remove("hidden");
+
+                // Clear the file input
+                uploadImage.value = "";
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function (e) {
+                // Remove previous image if any
+                uploadedImage.src = "";
+                uploadedImage.classList.add("hidden");
+
+                // Display new image
                 uploadedImage.src = e.target.result;
                 uploadedImage.classList.remove("hidden");
                 deleteImageBtn.classList.remove("hidden");
+
+                // Adjust size
+                uploadedImage.style.maxWidth = "98px";
+                uploadedImage.style.maxHeight = "100px";
+                uploadedImage.style.objectFit = "contain";
+
+                // Position the image
+                uploadedImage.style.position = "absolute";
+                uploadedImage.style.top = "46%";
+                uploadedImage.style.left = "50%";
+                uploadedImage.style.transform = "translate(-50%, -50%)";
 
                 // Disable engraving text and font selection
                 engravingText.disabled = true;
@@ -177,12 +190,19 @@
                 engravingText.classList.add("bg-gray-200", "cursor-not-allowed");
                 fontSelect.classList.add("bg-gray-200", "cursor-not-allowed");
 
-                // Clear text overlay when image is uploaded
+                // Clear text overlay when an image is uploaded
                 textOverlay.textContent = "";
             };
             reader.readAsDataURL(file);
         }
     });
+
+    // Close the modal when the "Close" button is clicked
+    document.getElementById("closeModalBtn").addEventListener("click", function () {
+        document.getElementById("imageSizeModal").classList.add("hidden");
+    });
+
+
 
     // Handle Delete Image
     deleteImageBtn.addEventListener("click", function () {
@@ -206,11 +226,13 @@
 
         // Position the text overlay (Center it)
         textOverlay.style.position = "absolute";
-        textOverlay.style.top = "40%";
-        textOverlay.style.left = "48%";
+        textOverlay.style.top = "44%";
+        textOverlay.style.left = "49%";
         textOverlay.style.transform = "translate(-50%, -50%)";
-        textOverlay.style.fontSize = "3rem";
+        textOverlay.style.fontSize = "1.5rem";
         textOverlay.style.fontWeight = "bold";
+        // textOverlay.style.color = "slate-200";
+
 
         // Disable Upload Image if text is entered
         if (this.value.trim() !== "") {
@@ -236,6 +258,32 @@
             uploadImage.classList.remove("cursor-not-allowed", "opacity-50");
         }
     });
+    // Select all color buttons
+    const colorButtons = document.querySelectorAll('.color-btn');
+    const tumblerImage = document.getElementById('tumblerImage');
+
+    // Function to change the image based on color selection
+    colorButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            // Get the color selected
+            const color = this.getAttribute('data-color');
+
+            // Change image based on color
+            if (color === 'white') {
+                tumblerImage.src = "https://picresize.com/images/twhite-nobg.png?806072";  // Update with the correct path for gray tumbler image
+            } else if (color === 'skyblue') {
+                tumblerImage.src = "https://picresize.com/images/tskyblue-removebg-preview.png?817071";  // Update with the correct path for red tumbler image
+            } else if (color === 'blue') {
+                tumblerImage.src = "https://picresize.com/images/tblue-gray-removebg-preview.png?467171";  // Update with the correct path for blue tumbler image
+            } else if (color === 'pink') {
+                tumblerImage.src = "https://picresize.com/images/thotpink-red-removebg-preview.png?459703";  // Update with the correct path for pink tumbler image
+            } else if (color === 'black') {
+                tumblerImage.src = "https://picresize.com/images/tstandley-back.png?400016";
+            }
+        });
+    });
+
+
 </script>
 
 @endsection

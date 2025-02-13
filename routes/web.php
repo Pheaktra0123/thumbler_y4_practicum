@@ -114,3 +114,4 @@ Route::get('/details_tumbler', function () {
 Route::get('/customize_tumbler', function () {
     return view('/Pages.customize_tumbler');
 });
+
