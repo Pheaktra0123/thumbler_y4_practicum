@@ -17,4 +17,9 @@ class ModelTumbler extends Model
     {
         return $this->belongsTo(Categories::class);
     }
+
+    public function tumbler()
+    {
+        return $this->hasMany(Tumbler::class);
+    }
 }

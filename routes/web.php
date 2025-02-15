@@ -81,7 +81,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 
     //Route for Product
     Route::get('/Admin/view/tumbler',[TumblerController::class, 'tumbler'])->name('Admin.view.tumbler');
-    Route::post('/Admin/store/tumbler',[TumblerController::class, 'store'])->name('Admin.store.tumbler');
+    Route::post('/Admin/store/tumbler',[TumblerController::class, 'store'])->name('tumbler.store');
     Route::get('/Admin/details/tumbler/{id}',[TumblerController::class, 'details'])->name('Admin.details.tumbler');
     Route::put('/Admin/update/tumbler/{id}',[TumblerController::class, 'update'])->name('Admin.update.tumbler');
     Route::get('/Admin/delete/tumbler/{id}',[TumblerController::class, 'destroy'])->name('Admin.delete.tumbler');
