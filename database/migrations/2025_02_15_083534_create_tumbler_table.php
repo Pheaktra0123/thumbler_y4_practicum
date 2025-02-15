@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('tumbler', function (Blueprint $table) {
             $table->id();
-            $table->string('model_name'); // Product name
-            $table->unsignedBigInteger('categories_id'); // Foreign key for category
-            $table->unsignedBigInteger('model_id'); // Foreign key for model
-            $table->decimal('price', 8, 2); // Product price
-            $table->integer('stock'); // Product stock
+            $table->string('name')->nullable(); // Product name
+            $table->unsignedBigInteger('categories_id')->nullable(); // Foreign key for category
+            $table->unsignedBigInteger('model_id')->nullable(); // Foreign key for model
+            $table->decimal('price', 8, 2)->nullable(); // Product price
+            $table->integer('stock')->nullable(); // Product stock
             $table->integer('rating')->nullable(); // Product rating
-            $table->text('description'); // Product description
-            $table->boolean('is_available')->default(true); // Product availability
+            $table->text('description')->nullable(); // Product description
+            $table->boolean('is_available')->default(true)->nullable(); // Product availability
             $table->json('colors')->nullable(); // Store colors as JSON
             $table->json('sizes')->nullable(); // Store sizes as JSON
-            $table->string('thumbnail')->nullable(); // Path to uploaded image
+            $table->json('thumbnails')->nullable(); // Path to uploaded image
             $table->timestamps();
 
             // Foreign key constraints

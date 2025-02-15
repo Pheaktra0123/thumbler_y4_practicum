@@ -58,7 +58,7 @@
                             </button>
                         </div>
                         <!-- Modal body -->
-                        <form class="p-4 md:p-5" action="{{ route('Admin.store.tumbler') }}" method="POST" enctype="multipart/form-data">
+                        <form class="p-4 md:p-5" action="{{ route('tumbler.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf <!-- Add CSRF token for security -->
                             <div class="grid gap-4 mb-4 grid-cols-2">
                                 <div class="col-span-2">
@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="col-span-2 sm:col-span-1">
                                     <label for="category" class="block mb-2 text-sm font-medium text-gray-900">Category</label>
-                                    <select id="category" name="categories_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                                    <select id="category" name="category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                         <option selected="">Select category</option>
                                         @foreach($categories as $category)
                                         <option value="{{$category->id}}">{{$category->name}}</option>
@@ -75,8 +75,8 @@
                                     </select>
                                 </div>
                                 <div class="col-span-2 sm:col-span-1">
-                                    <label for="category" class="block mb-2 text-sm font-medium text-gray-900">Model</label>
-                                    <select id="category" name="model_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                                    <label for="model" class="block mb-2 text-sm font-medium text-gray-900">Model</label>
+                                    <select id="model" name="model_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                         <option selected="">Select Model</option>
                                         @foreach($models as $model)
                                         <option value="{{$model->id}}">{{$model->name}}</option>
@@ -104,12 +104,12 @@
                                     <input type="hidden" name="colors" id="colors_json">
 
                                     <!-- Display area for added colors -->
-                                    <div id="color_display" class="mt-4 flex flex-wrap items-center gap-2 text-sm justify-start item-content-center place-item-center">
+                                    <div id="color_display" name="colors" class="mt-4 flex flex-wrap items-center gap-2 text-sm justify-start item-content-center place-item-center">
                                         <!-- Colors will be dynamically added here -->
                                     </div>
                                 </div>
                                 <div class="col-span-2 sm:col-span-1">
-                                    <label for="color_input" class="block mb-2 text-sm font-medium text-gray-900">Add Available Size</label>
+                                    <label for="sizes_input" class="block mb-2 text-sm font-medium text-gray-900">Add Available Size</label>
 
                                     <!-- Input for Size number -->
                                     <div class="flex space-x-2">
@@ -118,18 +118,26 @@
                                     </div>
 
                                     <!-- Display area for added size -->
-                                    <div id="size_display" class="mt-4  flex flex-wrap items-center gap-2 text-sm justify-start item-content-center place-item-center">
+                                    <div id="size_display"  name="sizes" class="mt-4  flex flex-wrap items-center gap-2 text-sm justify-start item-content-center place-item-center">
                                         <!-- Sizes will be dynamically added here -->
                                     </div>
+                                </div>
+                                <div class="col-span-2 sm:col-span-1">
+                                    <label for="is_available" class="block mb-2 text-sm font-medium text-gray-900">Category</label>
+                                    <select id="is_available" name="is_available" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                                        <option selected="">In Stock</option>
+                                        <option value="1">Available</option>
+                                        <option value="0">sold out</option>
+                                    </select>
                                 </div>
                                 <div class="col-span-2">
                                     <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Product Description</label>
                                     <textarea id="description" name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 " placeholder="Write product description here"></textarea>
                                 </div>
                                 <div class="col-span-2">
-                                    <label for="thumbnail" class="block mb-2 text-sm font-medium">Upload Category Image</label>
+                                    <label for="thumbnails" class="block mb-2 text-sm font-medium">Upload Category Images</label>
                                     <div class="w-[370px] relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
-                                        <input type="file" name="thumbnail" class="absolute inset-0 w-full h-full opacity-0 z-50" id="file-upload">
+                                        <input type="file" name="thumbnails[]" class="absolute inset-0 w-full h-full opacity-0 z-50" id="file-upload" multiple>
                                         <div class="text-center">
                                             <img class="mx-auto h-10 w-10" src="https://www.svgrepo.com/show/357902/image-upload.svg" alt="">
                                             <h3 class="mt-2 text-sm font-medium text-gray-900">
@@ -143,7 +151,7 @@
                                                 PNG, JPG, GIF up to 10MB
                                             </p>
                                         </div>
-                                        <img src="" class="mt-4 mx-auto max-h-40 hidden" id="preview">
+                                        <div id="preview-container" class="mt-4"></div>
                                     </div>
                                 </div>
                             </div>
@@ -222,25 +230,32 @@
     dropzone.addEventListener('drop', e => {
         e.preventDefault();
         dropzone.classList.remove('border-indigo-600');
-        var file = e.dataTransfer.files[0];
-        displayPreview(file);
+        var files = e.dataTransfer.files;
+        displayPreviews(files);
     });
 
     var input = document.getElementById('file-upload');
 
     input.addEventListener('change', e => {
-        var file = e.target.files[0];
-        displayPreview(file);
+        var files = e.target.files;
+        displayPreviews(files);
     });
 
-    function displayPreview(file) {
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            var preview = document.getElementById('preview');
-            preview.src = reader.result;
-            preview.classList.remove('hidden');
-        };
+    function displayPreviews(files) {
+        var previewContainer = document.getElementById('preview-container');
+        previewContainer.innerHTML = ''; // Clear previous previews
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                var img = document.createElement('img');
+                img.src = reader.result;
+                img.classList.add('max-h-40', 'mx-auto', 'mt-2');
+                previewContainer.appendChild(img);
+            };
+        }
     }
 
     function isValidColor(color) {

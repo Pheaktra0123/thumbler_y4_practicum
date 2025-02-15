@@ -10,7 +10,7 @@ class Tumbler extends Model
     use HasFactory;
     protected $fillable = [
         'tumbler_name',
-        'categories_id',
+        'category_id', // Corrected field name
         'model_id',
         'price',
         'stock',
@@ -19,10 +19,11 @@ class Tumbler extends Model
         'is_available',
         'colors',
         'sizes',
-        'thumbnail',
+        'thumbnails', // Corrected field name
     ];
      // Cast JSON fields to arrays
      protected $casts = [
+        'thumbnail'=> 'array',
         'colors' => 'array',
         'sizes' => 'array',
     ];
