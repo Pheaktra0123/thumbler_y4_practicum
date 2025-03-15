@@ -6,6 +6,7 @@ use App\Models\Categories;
 use App\Models\ModelTumbler;
 use App\Models\Tumbler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TumblerController extends Controller
 {
@@ -41,6 +42,9 @@ class TumblerController extends Controller
         // Handle multiple file uploads
         $thumbnailPaths = [];
         if ($request->hasFile('thumbnails')) {
+            // Debug line you can uncomment if needed
+            // Log::info('Found ' . count($request->file('thumbnails')) . ' files in request');
+            
             foreach ($request->file('thumbnails') as $thumbnail) {
                 $thumbnailPath = $thumbnail->store('thumbnails', 'public');
                 $thumbnailPaths[] = $thumbnailPath;
