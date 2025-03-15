@@ -14,11 +14,15 @@ class TumblerController extends Controller
     {
         $models = ModelTumbler::all();
         $categories = Categories::all();
-        return view("CRUD/Product_Crud/View_Product", compact('models', 'categories'));
+        $tumblers = Tumbler::all();
+        return view("CRUD/Product_Crud/View_Product", compact('models', 'categories','tumblers'));
     }
     // create new tumbler product
     public function store(Request $request)
     {
+        // Debugging: Dump the request data
+        //dd($request->all());
+
         // Validate the request
         $request->validate([
             'tumbler_name' => 'required|string|max:255',
@@ -28,12 +32,12 @@ class TumblerController extends Controller
             'stock' => 'required|integer|min:0',
             'description' => 'required|string',
             'is_available' => 'nullable|boolean',
-            'colors' => 'nullable|array',
+            'colors' => 'nullable',
             'sizes' => 'nullable|array',
             'thumbnails' => 'nullable|array',
             'thumbnails.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240', // 10MB max per file
         ]);
-    
+
         // Handle multiple file uploads
         $thumbnailPaths = [];
         if ($request->hasFile('thumbnails')) {
@@ -42,21 +46,40 @@ class TumblerController extends Controller
                 $thumbnailPaths[] = $thumbnailPath;
             }
         }
-    
+
+        // Process colors - ensure they're stored as a simple JSON array
+        $colors = [];
+        if ($request->has('colors')) {
+            $colorsInput = $request->input('colors');
+            if (is_array($colorsInput)) {
+                // If it's already an array, use it directly
+                $colors = $colorsInput;
+            } elseif (is_string($colorsInput)) {
+                // If it's a JSON string, decode it
+                $decodedColors = json_decode($colorsInput, true);
+                if (is_array($decodedColors)) {
+                    $colors = $decodedColors;
+                } else {
+                    // If it's a comma-separated string, split it
+                    $colors = array_map('trim', explode(',', $colorsInput));
+                }
+            }
+        }
+
         // Create a new product
         $tumbler = new Tumbler();
         $tumbler->tumbler_name = $request->input('tumbler_name');
-        $tumbler->category_id = $request->input('category_id'); // Corrected field name
+        $tumbler->category_id = $request->input('category_id');
         $tumbler->model_id = $request->input('model_id');
         $tumbler->price = $request->input('price');
         $tumbler->stock = $request->input('stock');
         $tumbler->description = $request->input('description');
         $tumbler->is_available = $request->input('is_available', true);
-        $tumbler->colors = $request->input('colors', []); // Store colors as JSON
-        $tumbler->sizes = $request->input('sizes', []); // Store sizes as JSON
-        $tumbler->thumbnails = json_encode($thumbnailPaths); // Store thumbnails as JSON
+        $tumbler->colors = json_encode($colors); // Store colors as a simple JSON array
+        $tumbler->sizes = json_encode($request->input('sizes', []));
+        $tumbler->thumbnails = json_encode($thumbnailPaths);
         $tumbler->save();
-    
+
         return redirect()->back()->with('success', 'Tumbler created successfully!');
     }
     // view details of tumbler products
@@ -66,47 +89,57 @@ class TumblerController extends Controller
         return view("CRUD/Product_Crud/View_Product_Details", compact('tumbler'));
     }
     // update tumbler product
-    // public function update(Request $request, $id){
-    //     // Validate the request
-    //     $request->validate([
-    //         'model_id' => 'required|exists:model_tumblers,id',
-    //         'category_id' => 'required|exists:categories,id',
-    //         'name' => 'required|string|max:255',
-    //         'price' => 'required|numeric',
-    //         'stock' => 'required|numeric',
-    //         'description' => 'required|string',
-    //         'color' => 'required|string',
-    //         'size' => 'required|numeric',
-    //         'rating' => 'required|numeric',
-    //         'is_available' => 'required|boolean',
-    //         'thumbnail' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:10240', // 10MB max
-    //     ]);
+    public function update(Request $request, $id)
+    {
+        // Validate the request
+        $request->validate([
+            'title' => 'required|string|max:255', // This is the field name from the form
+            'categories_id' => 'required|exists:categories,id',
+            'model_id' => 'required|exists:model_tumblers,id',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'description' => 'nullable|string',
+            'is_available' => 'nullable|boolean',
+            'colors' => 'nullable',
+            'sizes' => 'nullable',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+        ]);
 
-    //     // Find the tumbler by id
-    //     $tumbler = Tumbler::findOrFail($id);
+        // Find the tumbler by ID
+        $tumbler = Tumbler::findOrFail($id);
 
-    //     // Handle the file upload
-    //     if ($request->hasFile('thumbnail')) {
-    //         $image = $request->file('thumbnail');
-    //         $imageName = time() . '.' . $image->getClientOriginalExtension();
-    //         $imagePath = $image->storeAs('thumbnail', $imageName, 'public');
-    //         $tumbler->thumbnail = $imagePath;
-    //     }
+        // Handle thumbnail upload
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+            $tumbler->thumbnails = json_encode([$thumbnailPath]);
+        }
 
-    //     // Update the data in the database
-    //     $tumbler->model_id = $request->input('model_id');
-    //     $tumbler->category_id= $request->input('category_id');
-    //     $tumbler->name = $request->input('name');
-    //     $tumbler->price = $request->input('price');
-    //     $tumbler->stock = $request->input('stock');
-    //     $tumbler->description = $request->input('description');
-    //     $tumbler->color= $request->input('color');
-    //     $tumbler->size = $request->input('size');
-    //     $tumbler->rating = $request->input('rating');
-    //     $tumbler->is_available = $request->input('is_available');
-    //     $tumbler->save();
-    //     return redirect()->back()->with('success', 'Tumbler updated successfully!');
-    // }
+        // Process colors - handle the string input from the form
+        if ($request->has('colors')) {
+            $colors = is_array($request->colors) ? $request->colors : explode(',', $request->colors);
+            $colors = array_map('trim', $colors);
+            $tumbler->colors = json_encode($colors);
+        }
+
+        // Process sizes - handle the string input from the form
+        if ($request->has('sizes')) {
+            $sizes = is_array($request->sizes) ? $request->sizes : explode(',', $request->sizes);
+            $sizes = array_map('trim', $sizes);
+            $tumbler->sizes = json_encode($sizes);
+        }
+
+        // Update the tumbler
+        $tumbler->tumbler_name = $request->input('title'); // Map 'title' from form to 'tumbler_name' in DB
+        $tumbler->category_id = $request->input('categories_id');
+        $tumbler->model_id = $request->input('model_id');
+        $tumbler->price = $request->input('price');
+        $tumbler->stock = $request->input('stock');
+        $tumbler->description = $request->input('description', '');
+        $tumbler->is_available = $request->input('is_available', 1);
+        $tumbler->save();
+
+        return redirect()->back()->with('success', 'Tumbler updated successfully!');
+    }
 
     // delete tumbler product
     public function destroy($id)
