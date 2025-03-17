@@ -61,6 +61,7 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/User/Profile/Edit', [\App\Http\Controllers\HomeController::class, 'userEdit'])->name('User/Profile/Edit');
     Route::get('User/profile', [UserController::class, 'edit'])->name('user.profile');
     Route::put('/profile/update', [UserController::class, 'update'])->name('profile.update');
+    Route::get('User/Categories',[HomeController::class, 'Categories'])->name('user.categories');
 });
 
 //route for admin

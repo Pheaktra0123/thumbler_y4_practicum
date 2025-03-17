@@ -65,19 +65,24 @@
             <div class="container mx-auto px-4">
                 <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Our Categories</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="image.png" alt="wheat flour grinding"
-                            class="w-full h-64 object-cover object-center">
-                    </div>
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="【数量限定】まさにキャンパー好み！「ハイドロフラスク」の限定カラーモデル4色が登場.jpg" alt="Coffee"
-                            class="w-full h-64 object-cover object-center">
-                    </div>
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="image1.jpg" alt="Coffee"
-                            class="w-full h-64 object-cover object-center">
-                    </div>
+                    @if(!isset($Categories) || count($Categories) === 0)
+                        <div class="col-span-full">
+                            <p class="text-center text-gray-600">No categories found</p>
+                        </div>
+                    @else
+                        @foreach ($Categories as $category)
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden object-cover object-center">
+                                <img src="{{ $category->Thumbnail ? Storage::url($category->Thumbnail) : asset('default-image.jpg') }}" 
+                                    alt="{{ $category->name ?? 'Category Image' }}"
+                                    class="w-full h-64 object-cover object-center">
+                                <div class="p-4">
+                                    <h3 class="text-lg font-semibold">{{ $category->name ?? 'Unknown Category' }}</h3>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
+            </div>
         </section>
 
         <!-- All items section -->

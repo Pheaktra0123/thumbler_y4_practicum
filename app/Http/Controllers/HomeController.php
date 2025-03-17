@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Categories;
 
 class HomeController extends Controller
 {
@@ -15,7 +16,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('Pages/home');
+        $Categories = Categories::all();
+        return view('Pages.Home_Category', compact('Categories'));
     }
     public function dashboard()
     {
@@ -29,6 +31,10 @@ class HomeController extends Controller
     {
         $users=User::all();
         return view('Admin/Dashboard',compact('users'));
+    }
+    public function Categories(){
+        $Categories=Categories::all();
+        return view('Pages.Home_Category',compact('Categories'));
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +14,7 @@ class UserController extends Controller
        $user = Auth::user();
        return view('User/user_dashboard', compact('user'));
    }
+   
 
    // Method to handle the form submission and update the user's information
    public function update(Request $request)
@@ -48,4 +50,5 @@ class UserController extends Controller
        return redirect()->route('user.profile')->with('message', 'Profile updated successfully!');
 
    }
+    
 }

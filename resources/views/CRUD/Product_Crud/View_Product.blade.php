@@ -639,43 +639,6 @@
             
             // Update UI
             updatePreviews();
-            
-            // This is the key addition - update the form data with these files
-            updateFormFiles();
-        }
-        
-        // NEW FUNCTION: Create a FormData object with all selected files
-        function updateFormFiles() {
-            // Check if DataTransfer is supported
-            if (typeof DataTransfer !== 'undefined') {
-                // Use DataTransfer for modern browsers
-                const dataTransfer = new DataTransfer();
-                
-                // Add all selected files to the DataTransfer object
-                selectedFiles.forEach(file => {
-                    dataTransfer.items.add(file);
-                });
-                
-                // Set the file input's files to the DataTransfer's files
-                fileUpload.files = dataTransfer.files;
-            } else {
-                // For older browsers, we'll need a different approach
-                // This is a fallback that ensures the form knows there are files to process
-                console.log("DataTransfer not supported in this browser. Files may not be uploaded correctly.");
-                
-                // Add a hidden input to indicate files should be processed from the server's temp storage
-                const filesCount = document.getElementById('files-count');
-                if (!filesCount) {
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.id = 'files-count';
-                    hiddenInput.name = 'files_count';
-                    hiddenInput.value = selectedFiles.length;
-                    form.appendChild(hiddenInput);
-                } else {
-                    filesCount.value = selectedFiles.length;
-                }
-            }
         }
         
         // Update the preview area with thumbnails
