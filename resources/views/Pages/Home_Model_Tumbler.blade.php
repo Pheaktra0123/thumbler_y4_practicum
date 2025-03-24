@@ -62,53 +62,43 @@
             </div>
         </div>
 
-        <!-- our category section -->
-        <section class=" mt-10 py-10" id="services">
-            <div class=" container mx-auto px-4">
-                <h2
-                    class="relative text-4xl font-bold text-gray-800 mb-8 text-center before:absolute before:inset-x-0 before:top-1/2 before:h-0.5 before:bg-gray-300">
+        <!-- our model section -->
+        <section class="mt-10 py-10" id="services">
+            <div class="container mx-auto px-4">
+                <h2 class="relative text-4xl font-bold text-gray-800 mb-8 text-center before:absolute before:inset-x-0 before:top-1/2 before:h-0.5 before:bg-gray-300">
                     <span class="relative z-10 bg-gray-100 px-4">Our Top Model</span>
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="mt-10 bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="https://i.pinimg.com/736x/1b/f2/42/1bf242035250c76f75b73f1156c83e2f.jpg"
-                            alt="wheat flour grinding" class="w-full h-64 object-cover">
-                        <div class="p-6 text-center">
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">Stanley Brand</h3>
-                            <a href="/stanley"><button class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800
-                                focus:outline-none focus:bg-gray-800">
-                                    View All Items
-                                </button></a>
+                    @if(!isset($model) || count($model) === 0)
+                        <div class="col-span-full text-center">
+                            <p class="text-gray-500 text-lg">No models available at the moment.</p>
                         </div>
-                    </div>
-                    <div class="mt-10 bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="https://i.pinimg.com/736x/54/1b/fb/541bfb96aba2623a6163a77e5f5188c0.jpg" alt="Coffee"
-                            class="w-full h-64 object-cover">
-                        <div class="p-6 text-center">
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">Hydro Flask Brand</h3>
-                            <a href="/hydro_flask"><button class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800
-                                focus:outline-none focus:bg-gray-800">
-                                    View All Items
-                                </button></a>
-
-                        </div>
-                    </div>
-                    <div class="mt-10 bg-white rounded-lg shadow-md overflow-hidden">
-                        <img src="https://i.pinimg.com/736x/81/f9/a5/81f9a5eacf7570b7c1e9b7d6847f18ac.jpg" alt="Coffee"
-                            class="w-full h-64 object-cover">
-                        <div class="p-6 text-center">
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">Yeti Brand</h3>
-                            <a href="/yati"><button
-                                    class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 focus:outline-none focus:bg-gray-800">
-                                    View All Items
-                                </button>
-                            </a>
-
-                        </div>
-                    </div>
+                    @else
+                        @foreach ($model as $item)
+                            <div class="mt-10 bg-white rounded-lg shadow-md overflow-hidden object-cover object-center ">
+                                @if($item->Thumbnail)
+                                    <img src="{{Storage::url($item->Thumbnail)}}"
+                                        alt="{{ $item->name ?? 'Tumbler Model' }}" 
+                                        class="w-full h-64 object-cover object-center">
+                                @else
+                                    <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
+                                        <span class="text-gray-400">No image available</span>
+                                    </div>
+                                @endif
+                                <div class="p-6 text-center">
+                                    <h3 class="text-xl font-bold text-gray-800 mb-2">{{$item->name ?? 'Unnamed Model'}}</h3>
+                                    <a href="/stanley">
+                                        <button class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 focus:outline-none focus:bg-gray-800">
+                                            View All Items
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
+            </div>  
         </section>
-        </div>
     </main>
 </body>
 

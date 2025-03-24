@@ -61,38 +61,69 @@
         </div>
 
         <!-- our category section -->
-        <section class="py-10" id="services">
-            <div class="container mx-auto px-4">
+        <section class="mt-10" id="services">
+            <div class="container mx-auto">
                 <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Our Categories</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 ">
                     @if(!isset($Categories) || count($Categories) === 0)
-                        <div class="col-span-full">
-                            <p class="text-center text-gray-600">No categories found</p>
-                        </div>
+                    <div class="col-span-full">
+                        <p class="text-center text-gray-600">No categories found</p>
+                        <!-- Add this for debugging -->
+                        @if(config('app.debug'))
+                        <p class="text-center text-sm text-gray-500 mt-2">
+                            Debug: Categories variable is {{ isset($Categories) ? 'set' : 'not set' }}
+                            {{ isset($Categories) ? '(Count: ' . count($Categories) . ')' : '' }}
+                        </p>
+                        @endif
+                    </div>
                     @else
-                        @foreach ($Categories as $category)
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden object-cover object-center">
-                                <img src="{{ $category->Thumbnail ? Storage::url($category->Thumbnail) : asset('default-image.jpg') }}" 
-                                    alt="{{ $category->name ?? 'Category Image' }}"
-                                    class="w-full h-64 object-cover object-center">
-                                <div class="p-4">
-                                    <h3 class="text-lg font-semibold">{{ $category->name ?? 'Unknown Category' }}</h3>
+                    @foreach ($Categories as $category)
+                    <div class=" max-w-md">
+                        <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+                            <img class="h-64 w-full object-cover object-center" src="{{ $category->Thumbnail ? Storage::url($category->Thumbnail) : asset('default-image.jpg') }}"
+                                alt="{{ $category->name ?? 'Category Image' }}">
+                            <div class="p-6">
+                                <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORY</h2>
+                                <h1 class="title-font text-lg font-medium text-gray-900 mb-3">{{ $category->name ?? 'Unknown Category' }}</h1>
+                                <div class="flex items-center flex-wrap">
+                                    <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">
+                                        See all items
+                                        <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M5 12h14"></path>
+                                            <path d="M12 5l7 7-7 7"></path>
+                                        </svg>
+                                    </a>
+                                    <span class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
+                                        <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        1.2K
+                                    </span>
+                                    <span class="text-gray-400 inline-flex items-center leading-none text-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                        </svg>
+
+                                        {{$category->created_at->diffForHumans()}}
+                                    </span>
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
+                    </div>
+                    @endforeach
                     @endif
                 </div>
             </div>
         </section>
 
         <!-- All items section -->
-        <div class="text-center mb-6">
-            <h1 class="font-bold text-4xl ">Choose your own Product!!</h1>
-        </div>
+            <h1 class="font-bold text-4xl text-center mt-10 ">Choose your own Product!!</h1>
         <section id="Projects"
             class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14  mb-5">
             <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-                <a href="#" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0"  data-taos-offset="100">
+                <a href="#" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0" data-taos-offset="100">
                     <img src="cuz_1.png" alt="Product" class="h-80 w-72 object-cover rounded-t-xl" />
                     <div class="px-4 py-3 w-72">
                         <span class="text-gray-400 mr-3 uppercase text-xs">Mist</span>

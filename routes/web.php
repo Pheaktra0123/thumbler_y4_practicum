@@ -42,13 +42,7 @@ Route::get('/#about-us', function () {
     return view('/Pages/home/#about-us');
 });
 //model
-Route::get('/Model_home', function () {
-    return view('/Pages/Home_Model_Tumbler');
-});
-//category
-Route::get('/Categories_home', function () {
-    return view('/Pages/Home_Category');
-});
+Route::get('/Model_home', [App\Http\Controllers\HomeController::class, 'model'])->name('model.home');
 //new trending
 
 Route::get('/Trending_home', function () {
@@ -62,7 +56,8 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('User/profile', [UserController::class, 'edit'])->name('user.profile');
     Route::put('/profile/update', [UserController::class, 'update'])->name('profile.update');
     Route::get('User/Categories',[HomeController::class, 'Categories'])->name('user.categories');
-});
+    Route::get('User/Model',[HomeController::class, 'model'])->name('user.model');
+}); 
 
 //route for admin
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
@@ -87,10 +82,6 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/Admin/delete/tumbler/{id}',[TumblerController::class, 'destroy'])->name('Admin.delete.tumbler');
 
 });
-
-
-
-
 //test route
 
 Route::get("/Tumblers", function () {
@@ -102,20 +93,13 @@ Route::get('/customize', function () {
 Route::get('/customizedetails', function () {
     return view('/Pages/customizedetails');
 });
-
-Route::get('/yati', function () {
-    return view('/Pages.yati');
-});
-Route::get('/hydro_flask', function () {
-    return view('/Pages.hydro_flask');
-});
-Route::get('/stanley', function () {
-    return view('/Pages.stanley');
-});
 Route::get('/details_tumbler', function () {
     return view('/Pages.details_tumbler');
 });
 Route::get('/customize_tumbler', function () {
     return view('/Pages.customize_tumbler');
 });
+
+// Add this new route outside the middleware group
+Route::get('/Categories_home', [App\Http\Controllers\HomeController::class, 'Categories'])->name('categories.home');
 
