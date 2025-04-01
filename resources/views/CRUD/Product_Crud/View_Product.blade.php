@@ -96,15 +96,15 @@
                                     <div class="mb-2">
                                         <div class="flex items-center space-x-3 mb-3">
                                             <div class="relative">
-                                                <input type="color" id="color_picker" value="#3B82F6" 
+                                                <input type="color" id="color_picker" value="#3B82F6"
                                                     class="h-10 w-10 cursor-pointer rounded-lg border border-gray-300 p-0 shadow-sm">
                                                 <div class="absolute inset-0 rounded-lg pointer-events-none border border-white"></div>
                                             </div>
                                             <div class="flex-grow">
-                                                <input type="text" id="color_input" placeholder="Enter color code (e.g., #FF0000)" 
+                                                <input type="text" id="color_input" placeholder="Enter color code (e.g., #FF0000)"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                             </div>
-                                            <button type="button" onclick="addColor()" 
+                                            <button type="button" onclick="addColor()"
                                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -113,13 +113,13 @@
                                             </button>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
                                         <p class="text-xs text-gray-500 mb-2">Selected colors:</p>
                                         <input type="hidden" name="colors[]" id="colors_json">
                                         <div id="color_display" class="flex flex-wrap items-center gap-2 min-h-10"></div>
                                     </div>
-                                    
+
                                     <div class="mt-2">
                                         <p class="text-xs text-gray-500">Click on a color to remove it</p>
                                     </div>
@@ -166,9 +166,9 @@
                                                 PNG, JPG, GIF up to 10MB each
                                             </p>
                                         </div>
-                                        
+
                                         <div id="preview-container" class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-                                        
+
                                         <div class="mt-4 flex justify-between items-center" id="upload-stats" style="display: none;">
                                             <div class="text-sm text-gray-500">
                                                 <span id="upload-count">0</span> images selected
@@ -239,86 +239,86 @@
                                             <div class="flex flex-wrap gap-2">
                                                 @php
                                                 try {
-                                                    // Get the raw color data
-                                                    $colorsRaw = $tumbler->colors;
-                                                    $colors = [];
-                                                    
-                                                    // Debug the raw data
-                                                    // echo "<!-- Raw for tumbler {$tumbler->id}: " . htmlspecialchars(json_encode($colorsRaw)) . " -->";
-                                                    
-                                                    // Handle different formats
-                                                    if (is_string($colorsRaw)) {
-                                                        // Try to decode the JSON string
-                                                        $decoded = json_decode($colorsRaw, true);
-                                                        
-                                                        // If decoded successfully and it's an array
-                                                        if (is_array($decoded)) {
-                                                            foreach ($decoded as $item) {
-                                                                if (is_string($item)) {
-                                                                    // Check if it's a nested JSON string
-                                                                    if (strpos($item, '[') === 0 || strpos($item, '{') === 0) {
-                                                                        $nestedDecoded = json_decode($item, true);
-                                                                        if (is_array($nestedDecoded)) {
-                                                                            foreach ($nestedDecoded as $nestedItem) {
-                                                                                $colors[] = $nestedItem;
-                                                                            }
-                                                                        } else {
-                                                                            $colors[] = $item;
-                                                                        }
-                                                                    } else {
-                                                                        $colors[] = $item;
-                                                                    }
-                                                                } else if (is_array($item)) {
-                                                                    // If it's already an array, merge it
-                                                                    $colors = array_merge($colors, $item);
-                                                                }
-                                                            }
-                                                        } else {
-                                                            // If it's not a valid JSON, try to split by comma
-                                                            $colors = array_map('trim', explode(',', $colorsRaw));
-                                                        }
-                                                    } else if (is_array($colorsRaw)) {
-                                                        // If it's already an array, use it directly
-                                                        $colors = $colorsRaw;
-                                                    }
-                                                    
-                                                    // Debug the processed colors
-                                                    // echo "<!-- Processed for tumbler {$tumbler->id}: " . htmlspecialchars(json_encode($colors)) . " -->";
+                                                // Get the raw color data
+                                                $colorsRaw = $tumbler->colors;
+                                                $colors = [];
+
+                                                // Debug the raw data
+                                                // echo "<!-- Raw for tumbler {$tumbler->id}: " . htmlspecialchars(json_encode($colorsRaw)) . " -->";
+
+                                                // Handle different formats
+                                                if (is_string($colorsRaw)) {
+                                                // Try to decode the JSON string
+                                                $decoded = json_decode($colorsRaw, true);
+
+                                                // If decoded successfully and it's an array
+                                                if (is_array($decoded)) {
+                                                foreach ($decoded as $item) {
+                                                if (is_string($item)) {
+                                                // Check if it's a nested JSON string
+                                                if (strpos($item, '[') === 0 || strpos($item, '{') === 0) {
+                                                $nestedDecoded = json_decode($item, true);
+                                                if (is_array($nestedDecoded)) {
+                                                foreach ($nestedDecoded as $nestedItem) {
+                                                $colors[] = $nestedItem;
+                                                }
+                                                } else {
+                                                $colors[] = $item;
+                                                }
+                                                } else {
+                                                $colors[] = $item;
+                                                }
+                                                } else if (is_array($item)) {
+                                                // If it's already an array, merge it
+                                                $colors = array_merge($colors, $item);
+                                                }
+                                                }
+                                                } else {
+                                                // If it's not a valid JSON, try to split by comma
+                                                $colors = array_map('trim', explode(',', $colorsRaw));
+                                                }
+                                                } else if (is_array($colorsRaw)) {
+                                                // If it's already an array, use it directly
+                                                $colors = $colorsRaw;
+                                                }
+
+                                                // Debug the processed colors
+                                                // echo "<!-- Processed for tumbler {$tumbler->id}: " . htmlspecialchars(json_encode($colors)) . " -->";
                                                 } catch (Exception $e) {
-                                                    // Log the error
-                                                    // echo "<!-- Error for tumbler {$tumbler->id}: " . $e->getMessage() . " -->";
-                                                    $colors = [];
+                                                // Log the error
+                                                // echo "<!-- Error for tumbler {$tumbler->id}: " . $e->getMessage() . " -->";
+                                                $colors = [];
                                                 }
                                                 @endphp
 
                                                 @if(!empty($colors) && count($colors) > 0)
-                                                    @foreach($colors as $color)
-                                                        @php
-                                                        // Clean the color code - remove any extra quotes or brackets
-                                                        $cleanColor = is_string($color) ? trim($color, '"[]\\') : '';
-                                                        
-                                                        // If it's an RGB format like rgb(255,0,0), use it directly
-                                                        if (strpos($cleanColor, 'rgb') === 0) {
-                                                            // It's already in a valid format
-                                                        } 
-                                                        // If it's a hex color without #, add it
-                                                        else if (!empty($cleanColor) && $cleanColor[0] !== '#' && ctype_xdigit(str_replace(' ', '', $cleanColor))) {
-                                                            $cleanColor = '#' . $cleanColor;
-                                                        }
-                                                        
-                                                        // Final check to ensure we have a valid color
-                                                        if (empty($cleanColor)) {
-                                                            $cleanColor = '#cccccc'; // Default to gray if empty
-                                                        }
-                                                        @endphp
-                                                        
-                                                        <div class="w-6 h-6 rounded-full border border-gray-300" 
-                                                             style="background-color: {{$cleanColor}};" 
-                                                             title="{{$cleanColor}}">
-                                                        </div>
-                                                    @endforeach
+                                                @foreach($colors as $color)
+                                                @php
+                                                // Clean the color code - remove any extra quotes or brackets
+                                                $cleanColor = is_string($color) ? trim($color, '"[]\\') : '';
+
+                                                // If it's an RGB format like rgb(255,0,0), use it directly
+                                                if (strpos($cleanColor, 'rgb') === 0) {
+                                                // It's already in a valid format
+                                                }
+                                                // If it's a hex color without #, add it
+                                                else if (!empty($cleanColor) && $cleanColor[0] !== '#' && ctype_xdigit(str_replace(' ', '', $cleanColor))) {
+                                                $cleanColor = '#' . $cleanColor;
+                                                }
+
+                                                // Final check to ensure we have a valid color
+                                                if (empty($cleanColor)) {
+                                                $cleanColor = '#cccccc'; // Default to gray if empty
+                                                }
+                                                @endphp
+
+                                                <div class="w-6 h-6 rounded-full border border-gray-300"
+                                                    style="background-color: {{$cleanColor}};"
+                                                    title="{{$cleanColor}}">
+                                                </div>
+                                                @endforeach
                                                 @else
-                                                    <span class="text-gray-500">No colors available</span>
+                                                <span class="text-gray-500">No colors available</span>
                                                 @endif
                                             </div>
                                         </td>
@@ -419,15 +419,15 @@
                                                                     <div class="mb-2">
                                                                         <div class="flex items-center space-x-3 mb-3">
                                                                             <div class="relative">
-                                                                                <input type="color" id="edit_color_picker_{{$tumbler->id}}" value="#3B82F6" 
+                                                                                <input type="color" id="edit_color_picker_{{$tumbler->id}}" value="#3B82F6"
                                                                                     class="h-10 w-10 cursor-pointer rounded-lg border border-gray-300 p-0 shadow-sm">
                                                                                 <div class="absolute inset-0 rounded-lg pointer-events-none border border-white"></div>
-                                                                        </div>
+                                                                            </div>
                                                                             <div class="flex-grow">
-                                                                                <input type="text" id="edit_color_input_{{$tumbler->id}}" placeholder="Enter color code (e.g., #FF0000)" 
+                                                                                <input type="text" id="edit_color_input_{{$tumbler->id}}" placeholder="Enter color code (e.g., #FF0000)"
                                                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                                                             </div>
-                                                                            <button type="button" onclick="addEditColor({{$tumbler->id}})" 
+                                                                            <button type="button" onclick="addEditColor({{$tumbler->id}})"
                                                                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 flex items-center">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -436,82 +436,82 @@
                                                                             </button>
                                                                         </div>
                                                                     </div>
-                                                                    
+
                                                                     <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
                                                                         <p class="text-xs text-gray-500 mb-2">Selected colors:</p>
                                                                         <input type="hidden" name="colors[]" id="edit_colors_json_{{$tumbler->id}}">
                                                                         <div id="edit_color_display_{{$tumbler->id}}" class="flex flex-wrap items-center gap-2 min-h-10">
                                                                             @php
                                                                             try {
-                                                                                // Process colors for this specific tumbler
-                                                                                $colorsRaw = $tumbler->colors;
-                                                                                $colors = [];
-                                                                                
-                                                                                if (is_string($colorsRaw)) {
-                                                                                    $decoded = json_decode($colorsRaw, true);
-                                                                                    
-                                                                                    if (is_array($decoded)) {
-                                                                                        foreach ($decoded as $item) {
-                                                                                            if (is_string($item)) {
-                                                                                                if (strpos($item, '[') === 0 || strpos($item, '{') === 0) {
-                                                                                                    $nestedDecoded = json_decode($item, true);
-                                                                                                    if (is_array($nestedDecoded)) {
-                                                                                                        foreach ($nestedDecoded as $nestedItem) {
-                                                                                                            $colors[] = $nestedItem;
-                                                                                                        }
-                                                                                                    } else {
-                                                                                                        $colors[] = $item;
-                                                                                                    }
-                                                                                                } else {
-                                                                                                    $colors[] = $item;
-                                                                                                }
-                                                                                            } else if (is_array($item)) {
-                                                                                                $colors = array_merge($colors, $item);
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
+                                                                            // Process colors for this specific tumbler
+                                                                            $colorsRaw = $tumbler->colors;
+                                                                            $colors = [];
+
+                                                                            if (is_string($colorsRaw)) {
+                                                                            $decoded = json_decode($colorsRaw, true);
+
+                                                                            if (is_array($decoded)) {
+                                                                            foreach ($decoded as $item) {
+                                                                            if (is_string($item)) {
+                                                                            if (strpos($item, '[') === 0 || strpos($item, '{') === 0) {
+                                                                            $nestedDecoded = json_decode($item, true);
+                                                                            if (is_array($nestedDecoded)) {
+                                                                            foreach ($nestedDecoded as $nestedItem) {
+                                                                            $colors[] = $nestedItem;
+                                                                            }
+                                                                            } else {
+                                                                            $colors[] = $item;
+                                                                            }
+                                                                            } else {
+                                                                            $colors[] = $item;
+                                                                            }
+                                                                            } else if (is_array($item)) {
+                                                                            $colors = array_merge($colors, $item);
+                                                                            }
+                                                                            }
+                                                                            }
+                                                                            }
                                                                             } catch (Exception $e) {
-                                                                                $colors = [];
+                                                                            $colors = [];
                                                                             }
                                                                             @endphp
-                                                                            
+
                                                                             @if(!empty($colors) && count($colors) > 0)
-                                                                                @foreach($colors as $color)
-                                                                                    @php
-                                                                                    $cleanColor = is_string($color) ? trim($color, '"[]\\') : '';
-                                                                                    if (!empty($cleanColor) && $cleanColor[0] !== '#' && ctype_xdigit(str_replace(' ', '', $cleanColor))) {
-                                                                                        $cleanColor = '#' . $cleanColor;
-                                                                                    }
-                                                                                    if (empty($cleanColor)) {
-                                                                                        $cleanColor = '#cccccc';
-                                                                                    }
-                                                                                    @endphp
-                                                                                    <div class="w-10 h-10 rounded-lg border border-gray-300 relative group cursor-pointer" 
-                                                                                         style="background-color: {{$cleanColor}};" 
-                                                                                         title="{{$cleanColor}}"
-                                                                                         onclick="this.remove(); updateEditColorsJson({{$tumbler->id}});">
-                                                                                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                                                                            <svg class="w-5 h-5 text-white drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                                                            </svg>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                @endforeach
+                                                                            @foreach($colors as $color)
+                                                                            @php
+                                                                            $cleanColor = is_string($color) ? trim($color, '"[]\\') : '';
+                                                                            if (!empty($cleanColor) && $cleanColor[0] !== '#' && ctype_xdigit(str_replace(' ', '', $cleanColor))) {
+                                                                            $cleanColor = '#' . $cleanColor;
+                                                                            }
+                                                                            if (empty($cleanColor)) {
+                                                                            $cleanColor = '#cccccc';
+                                                                            }
+                                                                            @endphp
+                                                                            <div class="w-10 h-10 rounded-lg border border-gray-300 relative group cursor-pointer"
+                                                                                style="background-color: {{$cleanColor}};"
+                                                                                title="{{$cleanColor}}"
+                                                                                onclick="this.remove(); updateEditColorsJson({{$tumbler->id}});">
+                                                                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                                                                    <svg class="w-5 h-5 text-white drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                                                    </svg>
+                                                                                </div>
+                                                                            </div>
+                                                                            @endforeach
                                                                             @else
-                                                                                <p class="text-sm text-gray-400 italic">No colors added yet</p>
+                                                                            <p class="text-sm text-gray-400 italic">No colors added yet</p>
                                                                             @endif
                                                                         </div>
                                                                     </div>
-                                                                    
+
                                                                     <div class="mt-2">
                                                                         <p class="text-xs text-gray-500">Click on a color to remove it</p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-span-2 sm:col-span-1">
                                                                     <label for="sizes" class="block mb-2 text-sm font-medium text-gray-900">Size</label>
-                                                                    <input type="text" name="sizes" id="sizes" 
-                                                                           value="@php
+                                                                    <input type="text" name="sizes" id="sizes"
+                                                                        value="@php
                                                                                try {
                                                                                    $sizesRaw = $tumbler->sizes;
                                                                                    if (is_string($sizesRaw)) {
@@ -523,9 +523,9 @@
                                                                                } catch (Exception $e) {
                                                                                    // Silent fail
                                                                                }
-                                                                           @endphp" 
-                                                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" 
-                                                                           placeholder="Enter sizes (e.g., Small,Medium,Large)">
+                                                                           @endphp"
+                                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                                                        placeholder="Enter sizes (e.g., Small,Medium,Large)">
                                                                     <div class="mt-2 text-xs text-gray-500">Enter sizes separated by commas (e.g., 2L,3L,4L)</div>
                                                                 </div>
                                                                 <div class="col-span-2">
@@ -580,72 +580,72 @@
         const uploadStats = document.getElementById('upload-stats');
         const uploadCount = document.getElementById('upload-count');
         const clearUploads = document.getElementById('clear-uploads');
-        
+
         if (!dropzone || !fileUpload) return; // Exit if elements don't exist
-        
+
         // Track selected files
         let selectedFiles = [];
-        
+
         // Handle drag events
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropzone.addEventListener(eventName, preventDefaults, false);
         });
-        
+
         function preventDefaults(e) {
             e.preventDefault();
             e.stopPropagation();
         }
-        
+
         // Highlight dropzone when dragging files over it
         ['dragenter', 'dragover'].forEach(eventName => {
             dropzone.addEventListener(eventName, highlight, false);
         });
-        
+
         ['dragleave', 'drop'].forEach(eventName => {
             dropzone.addEventListener(eventName, unhighlight, false);
         });
-        
+
         function highlight() {
             dropzone.classList.add('border-blue-500', 'bg-blue-50');
         }
-        
+
         function unhighlight() {
             dropzone.classList.remove('border-blue-500', 'bg-blue-50');
         }
-        
+
         // Handle dropped files
         dropzone.addEventListener('drop', handleDrop, false);
-        
+
         function handleDrop(e) {
             const dt = e.dataTransfer;
             const files = dt.files;
             handleFiles(files);
         }
-        
+
         // Handle selected files from file input
         fileUpload.addEventListener('change', function() {
             handleFiles(this.files);
         });
-        
+
         // Process the files
         function handleFiles(files) {
             if (!files.length) return;
-            
+
             // Convert FileList to Array and filter for images
             const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
-            
+
             // Add new files to our tracked files
             selectedFiles = [...selectedFiles, ...newFiles];
-            
+
             // Update UI
             updatePreviews();
         }
-        
+
         // Update the preview area with thumbnails
         function updatePreviews() {
             // Clear existing previews
             previewContainer.innerHTML = '';
-            
+
             // Show/hide elements based on if we have files
             if (selectedFiles.length > 0) {
                 uploadPrompt.style.display = 'none';
@@ -655,27 +655,27 @@
                 uploadPrompt.style.display = 'block';
                 uploadStats.style.display = 'none';
             }
-            
+
             // Create preview for each file
             selectedFiles.forEach((file, index) => {
                 const reader = new FileReader();
-                
+
                 reader.onload = function(e) {
                     const preview = document.createElement('div');
                     preview.className = 'relative group';
-                    
+
                     // Create the image preview
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.className = 'h-24 w-full object-cover rounded-lg shadow-sm';
                     img.alt = file.name;
-                    
+
                     // Create the remove button
                     const removeBtn = document.createElement('button');
                     removeBtn.className = 'absolute top-1 right-1 bg-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200';
                     removeBtn.innerHTML = '<svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
                     removeBtn.title = 'Remove image';
-                    
+
                     // Add click handler to remove this file
                     removeBtn.addEventListener('click', function(e) {
                         e.preventDefault(); // Prevent form submission
@@ -683,23 +683,23 @@
                         updatePreviews();
                         updateFormFiles(); // Update the form files when a file is removed
                     });
-                    
+
                     // Create the file name label
                     const label = document.createElement('div');
                     label.className = 'mt-1 text-xs text-gray-500 truncate';
                     label.textContent = file.name;
-                    
+
                     // Assemble the preview
                     preview.appendChild(img);
                     preview.appendChild(removeBtn);
                     preview.appendChild(label);
                     previewContainer.appendChild(preview);
                 };
-                
+
                 reader.readAsDataURL(file);
             });
         }
-        
+
         // Clear all selected files
         if (clearUploads) {
             clearUploads.addEventListener('click', function(e) {
@@ -710,7 +710,7 @@
                 updateFormFiles(); // Update the form files when all files are cleared
             });
         }
-        
+
         // Handle form submission
         const form = dropzone.closest('form');
         if (form) {
@@ -808,21 +808,21 @@
         }
 
         const color = colorInput.value || colorPicker.value; // Use input text or picker value
-        
+
         if (color && isValidColor(color)) {
             // Create color circle display with animation
             const colorElement = document.createElement('div');
             colorElement.className = 'w-10 h-10 rounded-lg border border-gray-300 relative group cursor-pointer transition-all duration-200 transform hover:scale-110 hover:shadow-md';
             colorElement.style.backgroundColor = color;
             colorElement.title = color;
-            
+
             // Add a subtle checkmark overlay
             const overlay = document.createElement('div');
             overlay.className = 'absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200';
             overlay.innerHTML = '<svg class="w-5 h-5 text-white drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
-            
+
             colorElement.appendChild(overlay);
-            
+
             // Add click event to remove the color
             colorElement.addEventListener('click', function() {
                 // Add a fade-out animation
@@ -832,12 +832,12 @@
                     updateColorsJson();
                 }, 200);
             });
-            
+
             // Add a fade-in animation
             colorElement.style.opacity = '0';
             colorElement.style.transform = 'scale(0.8)';
             colorDisplay.appendChild(colorElement);
-            
+
             // Trigger animation
             setTimeout(() => {
                 colorElement.style.opacity = '1';
@@ -853,7 +853,7 @@
             setTimeout(() => {
                 colorInput.style.backgroundColor = '';
             }, 300);
-            
+
             // Flash the color picker to indicate success
             const originalColor = colorPicker.value;
             colorPicker.value = '#3B82F6';
@@ -867,12 +867,12 @@
                 colorInput.classList.remove('animate-shake');
             }, 500);
         }
-        
+
         function updateColorsJson() {
             const colorElements = colorDisplay.querySelectorAll('div[style^="background-color"]');
             const colors = Array.from(colorElements).map(el => el.style.backgroundColor);
             colorsJson.value = JSON.stringify(colors);
-            
+
             // Show/hide the "no colors" message
             if (colors.length === 0) {
                 const noColorsMsg = document.createElement('p');
@@ -884,7 +884,7 @@
                 if (existingMsg) existingMsg.remove();
             }
         }
-        
+
         // Initialize with empty state if needed
         if (colorDisplay.children.length === 0) {
             updateColorsJson();
@@ -915,7 +915,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const colorPicker = document.getElementById('color_picker');
         const colorInput = document.getElementById('color_input');
-        
+
         // Update text input when color picker changes with visual feedback
         colorPicker.addEventListener('input', function() {
             colorInput.value = this.value;
@@ -924,7 +924,7 @@
                 colorInput.style.borderColor = '';
             }, 500);
         });
-        
+
         // Update color picker when text input changes (if valid color)
         colorInput.addEventListener('input', function() {
             if (isValidColor(this.value)) {
@@ -934,7 +934,7 @@
                 this.style.borderColor = '';
             }
         });
-        
+
         // Add keypress event to allow adding color with Enter key
         colorInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -942,7 +942,7 @@
                 addColor();
             }
         });
-        
+
         // Initialize the color display
         const colorDisplay = document.getElementById('color_display');
         if (colorDisplay.children.length === 0) {
@@ -951,7 +951,7 @@
             noColorsMsg.textContent = 'No colors added yet';
             colorDisplay.appendChild(noColorsMsg);
         }
-        
+
         // Add this CSS for the shake animation
         const style = document.createElement('style');
         style.textContent = `

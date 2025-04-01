@@ -57,6 +57,7 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::put('/profile/update', [UserController::class, 'update'])->name('profile.update');
     Route::get('User/Categories',[HomeController::class, 'Categories'])->name('user.categories');
     Route::get('User/Model',[HomeController::class, 'model'])->name('user.model');
+    Route::get('User/Tumbler', [HomeController::class, 'tumbler'])->name('user.tumbler');
 }); 
 
 //route for admin
@@ -102,4 +103,21 @@ Route::get('/customize_tumbler', function () {
 
 // Add this new route outside the middleware group
 Route::get('/Categories_home', [App\Http\Controllers\HomeController::class, 'Categories'])->name('categories.home');
+
+// Update the existing routes
+Route::get('/Tumbler_home', [App\Http\Controllers\HomeController::class, 'tumbler'])->name('tumbler.home');
+Route::get('/details_tumbler/{id}', [App\Http\Controllers\TumblerController::class, 'details'])->name('tumbler.details');
+
+// Add this temporary route for debugging
+Route::get('/debug-tumblers', function() {
+    $tumblers = \App\Models\Tumbler::with(['category', 'model'])->get();
+    dd([
+        'tumbler_count' => $tumblers->count(),
+        'first_tumbler' => $tumblers->first(),
+        'has_category' => optional($tumblers->first())->category,
+        'has_model' => optional($tumblers->first())->model,
+    ]);
+});
+
+
 

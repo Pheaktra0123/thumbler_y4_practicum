@@ -21,15 +21,15 @@
             }
         </style>
         <!-- Product Section -->
-        <div class="bg-white py-0 w-full mt-20">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class=" py-0 w-full mt-24 p-10">
+            <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row -mx-4">
                     <div class="md:flex-1 px-4">
-                        <div class="h-[480px] flex items-center justify-center rounded-lg bg-gray-200 bg-gray-200 mb-4">
-                            <img class="w-100 h-100 object-cover rounded-lg product-image" src="1.png" alt="Product Image">
+                        <div class="h-[480px] flex items-center justify-center rounded-lg  mb-4">
+                            <img class="w-100 h-100 mx-auto object-cover rounded-lg product-image" src="1.png" alt="Product Image">
                         </div>
                     </div>
-                    <div class="md:flex-1 px-4">
+                    <div class=" px-4 content-center">
                         <h2 class="text-2xl font-bold text-gray-800 text-gray-200 mb-4">
                             The Black Chroma Quencher H2.0 FlowState™ Tumbler | 40 OZ
                         </h2>

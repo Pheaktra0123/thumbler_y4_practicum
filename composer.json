@@ -10,11 +10,8 @@
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-<<<<<<< HEAD
-        "nesbot/carbon": "^2.72"
-=======
+        "nesbot/carbon": "^2.72",
         "livewire/livewire": "^3.5"
->>>>>>> 25f6209a2a8bf8b897ea289e1f0b4a88d4ca9682
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
