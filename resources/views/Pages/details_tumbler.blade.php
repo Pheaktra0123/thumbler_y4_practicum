@@ -24,14 +24,23 @@
         <div class=" py-0 w-full mt-24 p-10">
             <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row -mx-4">
-                    <div class="md:flex-1 px-4">
+                    <div class="w-1/2 md:flex-1 px-4">
                         <div class="h-[480px] flex items-center justify-center rounded-lg  mb-4">
                             <img class="w-100 h-100 mx-auto object-cover rounded-lg product-image" src="1.png" alt="Product Image">
                         </div>
                     </div>
-                    <div class=" px-4 content-center">
-                        <h2 class="text-2xl font-bold text-gray-800 text-gray-200 mb-4">
-                            The Black Chroma Quencher H2.0 FlowState™ Tumbler | 40 OZ
+                    <div class="w-1/2 px-4 content-center">
+                        <h2 class="text-4xl font-bold text-gray-800 text-gray-200 mb-4">
+                         {{ $tumbler->tumbler_name }} | @php
+                                            $sizes = json_decode($tumbler->sizes, true);
+                                            if (is_array($sizes) && !empty($sizes)) {
+                                                // Clean and format the first size
+                                                $firstSize = trim(str_replace(['"', '[', ']'], '', $sizes[0]));
+                                                echo $firstSize;
+                                            } else {
+                                                echo 'N/A';
+                                            }
+                                        @endphp OZ
                         </h2>
                         <div class="flex items-center mt-2">
                             <span class="text-black-500">★★★★★</span>
@@ -40,11 +49,10 @@
                         <div class="flex mb-4">
                             <div>
                                 <span class="font-bold text-gray-700 text-gray-300">Availability:</span>
-                                <span class="text-gray-600 text-gray-300">In Stock</span>
+                                <span class="text-gray-600 text-gray-300">{{$tumbler->is_available?"In Stock":"Out Stock"}}</span>
                             </div>
                         </div>
-                        <p id="price" class="text-black text-black font-bold text-2xl mt-2">$55.00</p>
-
+                        <p id="price" class="text-black text-black font-bold text-2xl mt-2">{{$tumbler->price}}$</p>
                         <div class="flex items-center mb-4 mt-5">
                             <span class="mt-2 px-2 py-1 text-gray-700 text-gray-300">Qty</span>
                             <button id="decrement"
@@ -56,27 +64,34 @@
 
                         <div class="mb-4">
                             <span class="font-bold text-gray-700 text-gray-300">Select Color</span>
-
-                            <button class="color-btn w-6 h-6 rounded-full bg-rose-100 bg-rose-200 mr-2"
-                                data-color="gray"></button>
-                            <button class="color-btn w-6 h-6 rounded-full bg-amber-100 bg-amber-100 mr-2"
-                                data-color="red"></button>
-                            <button class="color-btn w-6 h-6 rounded-full bg-yellow-600 bg-yellow-600 mr-2"
-                                data-color="blue"></button>
-                            <button class="color-btn w-6 h-6 rounded-full bg-pink-500 bg-gray-200 mr-2"
-                                data-color="pink"></button>
-                            <button class="color-btn w-6 h-6 rounded-full bg-black bg-gray-200 mr-2"
-                                data-color="black"></button>
-
+                            <?php
+                            $tumbler_colors = json_decode($tumbler->tumbler_colors, true) ?? []; // Decode JSON and ensure it's an array
+                            ?>
+                            <div class="flex gap-2 mt-2">
+                                @forelse($tumbler_colors as $color)
+                                    <button class="color-btn w-6 h-6 rounded-full bg-{{$color}}-100 bg-{{$color}}-200 mr-2"
+                                            data-color="{{$color}}"></button>
+                                @empty
+                                    <span class="text-gray-500">No colors available</span>
+                                @endforelse
+                            </div>
                         </div>
 
                         <div class="flex gap-4 mb-4 w-full">
-                            <button
-                                class="flex-1 bg-gray-900 bg-gray-600 text-white py-3 px-6 rounded-full font-bold hover:bg-gray-800 hover:bg-gray-700">
-                                Add to Cart
-                            </button>
+                            @if($tumbler->is_available)
+                                <button
+                                    class="flex-1 bg-gray-900 bg-gray-600 text-white py-3 px-6 rounded-full font-bold hover:bg-gray-800 hover:bg-gray-700">
+                                    Add to Cart
+                                </button>
+                            @else
+                                <button
+                                    class="flex-1 bg-gray-400 text-white py-3 px-6 rounded-full font-bold cursor-not-allowed" 
+                                    disabled>
+                                    Out of Stock
+                                </button>
+                            @endif
                             <button id="customizeButton"
-                                class="flex-1 bg-gray-200 text-gray-800  py-3 px-6 rounded-full font-bold hover:bg-gray-300 ">
+                                class="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-full font-bold hover:bg-gray-300">
                                 Customize
                             </button>
                         </div>
@@ -140,7 +155,7 @@
             const decrementBtn = document.getElementById("decrement");
             const incrementBtn = document.getElementById("increment");
             const priceDisplay = document.getElementById("price");
-            const basePrice = 55.00;
+            const basePrice = parseFloat(priceDisplay.textContent.replace('$', ''));
             const productImage = document.querySelector(".product-image");
 
             // Mapping colors to image sources

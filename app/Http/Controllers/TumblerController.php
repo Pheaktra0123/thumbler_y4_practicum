@@ -90,7 +90,7 @@ class TumblerController extends Controller
     public function details($id)
     {
         $tumbler = Tumbler::findOrFail($id);
-        return view("CRUD/Product_Crud/View_Product_Details", compact('tumbler'));
+        return view("Pages/details_tumbler", compact('tumbler'));
     }
     // update tumbler product
     public function update(Request $request, $id)

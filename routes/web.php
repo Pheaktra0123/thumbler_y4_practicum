@@ -58,6 +58,7 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('User/Categories',[HomeController::class, 'Categories'])->name('user.categories');
     Route::get('User/Model',[HomeController::class, 'model'])->name('user.model');
     Route::get('User/Tumbler', [HomeController::class, 'tumbler'])->name('user.tumbler');
+   Route::get('User/Tumbler/details/{id}', [TumblerController::class, 'details'])->name('user.tumbler.details');
 }); 
 
 //route for admin
@@ -94,9 +95,7 @@ Route::get('/customize', function () {
 Route::get('/customizedetails', function () {
     return view('/Pages/customizedetails');
 });
-Route::get('/details_tumbler', function () {
-    return view('/Pages.details_tumbler');
-});
+
 Route::get('/customize_tumbler', function () {
     return view('/Pages.customize_tumbler');
 });
