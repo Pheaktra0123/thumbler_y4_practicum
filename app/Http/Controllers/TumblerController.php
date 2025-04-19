@@ -90,6 +90,18 @@ class TumblerController extends Controller
     public function details($id)
     {
         $tumbler = Tumbler::findOrFail($id);
+
+        // Decode colors properly
+        $decodedColors = json_decode($tumbler->colors, true);
+        if (is_array($decodedColors) && count($decodedColors) > 0) {
+            $tumbler->colors = json_decode($decodedColors[0], true); // Decode the inner JSON string
+        } else {
+            $tumbler->colors = [];
+        }
+
+        // Decode thumbnails
+        $tumbler->thumbnails = json_decode($tumbler->thumbnails, true) ?? [];
+
         return view("Pages/details_tumbler", compact('tumbler'));
     }
     // update tumbler product
@@ -116,6 +128,16 @@ class TumblerController extends Controller
         if ($request->hasFile('thumbnail')) {
             $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
             $tumbler->thumbnails = json_encode([$thumbnailPath]);
+        }
+
+        // Handle multiple file uploads
+        if ($request->hasFile('thumbnails')) {
+            $thumbnailPaths = [];
+            foreach ($request->file('thumbnails') as $thumbnail) {
+                $thumbnailPath = $thumbnail->store('thumbnails', 'public');
+                $thumbnailPaths[] = $thumbnailPath;
+            }
+            $tumbler->thumbnails = json_encode($thumbnailPaths); // Store as JSON
         }
 
         // Process colors - handle the string input from the form

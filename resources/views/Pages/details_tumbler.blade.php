@@ -25,8 +25,37 @@
             <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row -mx-4">
                     <div class="w-1/2 md:flex-1 px-4">
-                        <div class="h-[480px] flex items-center justify-center rounded-lg  mb-4">
-                            <img class="w-100 h-100 mx-auto object-cover rounded-lg product-image" src="1.png" alt="Product Image">
+                        <div class="h-[480px] flex items-center justify-center rounded-lg mb-4">
+                            @if(!empty($tumbler->thumbnails))
+                                <div id="image-carousel" class="relative w-full h-full">
+                                    <!-- Carousel wrapper -->
+                                    <div class="relative h-full overflow-hidden rounded-lg">
+                                        @foreach($tumbler->thumbnails as $index => $thumbnail)
+                                            <div class="{{ $index === 0 ? 'block' : 'hidden' }} duration-700 ease-in-out" data-carousel-item>
+                                                <img class="w-full h-full object-cover rounded-lg" 
+                                                     src="{{ asset('storage/' . $thumbnail) }}" 
+                                                     alt="Tumbler Image {{ $index + 1 }}">
+                                            </div>
+                                        @endforeach
+                                    </div>
+
+                                    <!-- Slider controls -->
+                                    <button type="button" class="absolute top-1/2 left-0 z-30 flex items-center justify-center w-10 h-10 bg-gray-200/50 rounded-full hover:bg-gray-300 focus:outline-none transition" data-carousel-prev>
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="absolute top-1/2 right-0 z-30 flex items-center justify-center w-10 h-10 bg-gray-200/50 rounded-full hover:bg-gray-300 focus:outline-none transition" data-carousel-next>
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            @else
+                                <img class="w-100 h-100 mx-auto object-cover rounded-lg product-image" 
+                                     src="{{ asset('images/default-placeholder.png') }}" 
+                                     alt="Default Image">
+                            @endif
                         </div>
                     </div>
                     <div class="w-1/2 px-4 content-center">
@@ -64,13 +93,10 @@
 
                         <div class="mb-4">
                             <span class="font-bold text-gray-700 text-gray-300">Select Color</span>
-                            <?php
-                            $tumbler_colors = json_decode($tumbler->tumbler_colors, true) ?? []; // Decode JSON and ensure it's an array
-                            ?>
                             <div class="flex gap-2 mt-2">
-                                @forelse($tumbler_colors as $color)
-                                    <button class="color-btn w-6 h-6 rounded-full bg-{{$color}}-100 bg-{{$color}}-200 mr-2"
-                                            data-color="{{$color}}"></button>
+                                @forelse($tumbler->colors as $color)
+                                    <button class="color-btn w-6 h-6 rounded-full" style="background-color: {{ $color }};" data-color="{{ $color }}">
+                                    </button>
                                 @empty
                                     <span class="text-gray-500">No colors available</span>
                                 @endforelse
@@ -219,6 +245,31 @@
                     window.location.href = "/customize_tumbler";
                 });
             }
+
+            const carouselItems = document.querySelectorAll("[data-carousel-item]");
+            const prevButton = document.querySelector("[data-carousel-prev]");
+            const nextButton = document.querySelector("[data-carousel-next]");
+            let currentIndex = 0;
+
+            function showSlide(index) {
+                carouselItems.forEach((item, i) => {
+                    item.classList.toggle("hidden", i !== index);
+                    item.classList.toggle("block", i === index);
+                });
+            }
+
+            prevButton.addEventListener("click", function () {
+                currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+                showSlide(currentIndex);
+            });
+
+            nextButton.addEventListener("click", function () {
+                currentIndex = (currentIndex + 1) % carouselItems.length;
+                showSlide(currentIndex);
+            });
+
+            // Initialize the first slide
+            showSlide(currentIndex);
         });
 
     </script>

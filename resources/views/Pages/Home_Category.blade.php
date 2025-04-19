@@ -58,9 +58,9 @@
 
         <!-- our category section -->
         <section class="mt-10" id="services">
-            <div class="container mx-auto">
+            <div class="container">
                 <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center font-serif">Our Categories</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 ">
+                <div class="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-8">
                     @if(!isset($Categories) || count($Categories) === 0)
                     <div class="col-span-full">
                         <p class="text-center text-gray-600">No categories found</p>
