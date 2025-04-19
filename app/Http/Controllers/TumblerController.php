@@ -14,9 +14,9 @@ class TumblerController extends Controller
     public function tumbler()
     {
         $models = ModelTumbler::all();
-        $categories = Categories::all();
-        $tumblers = Tumbler::all();
-        return view("CRUD/Product_Crud/View_Product", compact('models', 'categories','tumblers'));
+        $categories = Categories::paginate(6); // Paginate categories (6 per page)
+        $tumblers = Tumbler::paginate(8); // Paginate tumblers (8 per page)
+        return view("CRUD/Product_Crud/View_Product", compact('models', 'categories', 'tumblers'));
     }
     // create new tumbler product
     public function store(Request $request)

@@ -12,7 +12,6 @@ class CategoriesController extends Controller
     public function Categories()
     {
         $Categories = Categories::all();
-
         return view('CRUD/Tumbler_Crud/View_categories', compact('Categories'));
     }
     public function store(Request $request)

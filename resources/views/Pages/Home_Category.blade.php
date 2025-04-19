@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TumblerHaven - Your one-stop solution for tumbler grinding services. Explore our categories and find the perfect tumbler for you.">
 </head>
 
 <body">
@@ -24,10 +25,10 @@
                     <label
                         class="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300"
                         for="search-bar">
-                        <input id="search-bar" 
-                               name="query"
-                               placeholder="Find your products here ... "
-                               class="px-6 py-2 w-full rounded-md flex-1 outline-none bg-white">
+                        <input id="search-bar"
+                            name="query"
+                            placeholder="Find your products here ... "
+                            class="px-6 py-2 w-full rounded-md flex-1 outline-none bg-white">
                         <button id="search-button"
                             class="w-full md:w-auto px-6 py-3 bg-black border-black text-white fill-white active:scale-95 duration-100 border will-change-transform overflow-hidden relative rounded-xl transition-all disabled:opacity-70">
                             <div class="relative">
@@ -115,130 +116,102 @@
         </section>
 
         <!-- All items section -->
-            <h1 class="font-bold text-4xl text-center mt-10 font-serif ">Choose your own Tumbler!!</h1>
-            <p class="text-center text-gray-600 font-serif opacity-50 mt-5">One stop solution for flour grinding services</p>
-            <div class="flex justify-between items-center px-10 mb-24 ">
-               <h3 class="text-lg font-medium opacity-40  text-center font-serif ">Recently Tumbler</h3>
-               <p class="text-lg font-medium opacity-50  text-center ">Total Item {{$tumblers->count()}}</p>
-            </div>
-        <section id="Projects"
-            class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mb-5">
-            @if(!isset($tumblers) || $tumblers->isEmpty())
+        <h1 class="font-bold text-4xl text-center mt-10 font-serif ">Choose your own Tumbler!!</h1>
+        <p class="text-center text-gray-600 font-serif opacity-50 mt-5">One stop solution for flour grinding services</p>
+        <div class="flex justify-between items-center px-10 mb-24 ">
+            <h3 class="text-lg font-medium opacity-40  text-center font-serif ">Recently Tumbler</h3>
+            <p class="text-lg font-medium opacity-50  text-center ">Total Item {{$tumblers->count()}}</p>
+        </div>
+        <section id="Projects" class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mb-5">
+            @forelse ($tumblers as $tumbler)
+                <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                    <a href="{{ route('tumbler.details', $tumbler->id) }}" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0" data-taos-offset="100">
+                        <img src="{{ !empty($tumbler->thumbnails) ? Storage::url(json_decode($tumbler->thumbnails)[0]) : asset('cuz_1.png') }}" alt="{{ $tumbler->tumbler_name }}" class="h-80 w-72 object-cover rounded-t-xl" />
+                        <div class="px-4 py-3 w-72">
+                            <span class="text-gray-400 mr-3 uppercase text-xs">{{ $tumbler->category->name ?? 'Unknown Category' }}</span>
+                            <div>
+                                <p class="text-s mt-2 font-bold text-black truncate block capitalize">{{ $tumbler->tumbler_name }}</p>
+                                <p class="flex items-center text-s font-semibold text-black cursor-auto my-3">
+                                    {{ $tumbler->model->name ?? 'Unknown Model' }} |
+                                    @php
+                                        $sizes = json_decode($tumbler->sizes, true);
+                                        if (is_array($sizes) && !empty($sizes)) {
+                                            $firstSize = trim(str_replace(['"', '[', ']'], '', $sizes[0]));
+                                            echo $firstSize;
+                                        } else {
+                                            echo 'N/A';
+                                        }
+                                    @endphp
+                                </p>
+                            </div>
+                            <div class="flex items-center">
+                                <p class="text-lg font-semibold text-black cursor-auto my-3">${{ number_format($tumbler->price, 2) }}</p>
+                                @if($tumbler->original_price)
+                                    <del>
+                                        <p class="text-sm text-gray-600 cursor-auto ml-2">${{ number_format($tumbler->original_price, 2) }}</p>
+                                    </del>
+                                @endif
+                                <div class="ml-auto">
+                                    @if($tumbler->stock > 0)
+                                        <p class="text-sm text-gray-600 ml-2 border-b border-black cursor-pointer">Add to Cart</p>
+                                    @else
+                                        <p class="text-sm text-red-600 ml-2">Out of Stock</p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            @empty
                 <div class="col-span-full text-center text-gray-600 mt-10 mb-10">
                     <p>No tumblers available</p>
                 </div>
-            @else
-                @foreach ($tumblers as $tumbler)
-                    <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-                        <a href="{{ route('tumbler.details', $tumbler->id) }}" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0" data-taos-offset="100">
-                            <img src="{{ !empty($tumbler->thumbnails) ? Storage::url(json_decode($tumbler->thumbnails)[0]) : asset('cuz_1.png') }}" 
-                                 alt="{{ $tumbler->tumbler_name }}" 
-                                 class="h-80 w-72 object-cover rounded-t-xl" />
-                            <div class="px-4 py-3 w-72">
-                                <span class="text-gray-400 mr-3 uppercase text-xs">{{ $tumbler->category->name ?? 'Unknown Category' }}</span>
-                                <div>
-                                    <p class="text-s mt-2 font-bold text-black truncate block capitalize">{{ $tumbler->tumbler_name }}</p>
-                                    <p class="flex items-center text-s font-semibold text-black cursor-auto my-3">
-                                        {{ $tumbler->model->name ?? 'Unknown Model' }} | 
-                                        @php
-                                            $sizes = json_decode($tumbler->sizes, true);
-                                            if (is_array($sizes) && !empty($sizes)) {
-                                                // Clean and format the first size
-                                                $firstSize = trim(str_replace(['"', '[', ']'], '', $sizes[0]));
-                                                echo $firstSize;
-                                            } else {
-                                                echo 'N/A';
-                                            }
-                                        @endphp
-                                    </p>
-                                </div>
-                                <!-- Star Rating -->
-                                <div class="flex items-center mt-1 mb-3">
-                                    @for($i = 0; $i < 5; $i++)
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"
-                                            class="h-5 w-5 {{ $i < ($tumbler->rating ?? 0) ? 'text-black' : 'text-gray-300' }}">
-                                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                                        </svg>
-                                    @endfor
-                                </div>
-                                <div class="flex items-center">
-                                    <p class="text-lg font-semibold text-black cursor-auto my-3">${{ number_format($tumbler->price, 2) }}</p>
-                                    @if($tumbler->original_price)
-                                        <del>
-                                            <p class="text-sm text-gray-600 cursor-auto ml-2">${{ number_format($tumbler->original_price, 2) }}</p>
-                                        </del>
-                                    @endif
-                                    <div class="ml-auto">
-                                        @if($tumbler->stock > 0)
-                                            <p class="text-sm text-gray-600 ml-2 border-b border-black cursor-pointer">Add to Cart</p>
-                                        @else
-                                            <p class="text-sm text-red-600 ml-2">Out of Stock</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                @endforeach
-            @endif
+            @endforelse
         </section>
+
+        <!-- Pagination Links -->
+        <div class="mt-6">
+            <div class="flex justify-center">
+                {{ $tumblers->links('vendor.pagination.custom') }}
+            </div>
+        </div>
 
         <!-- Add this section where you want to display the results -->
         <div id="search-results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
             <!-- Results will be dynamically inserted here -->
         </div>
     </main>
-
-    <!-- @if(config('app.debug'))
-        <div class="p-4 bg-gray-100 mb-4">
-            <h3 class="font-bold">Debug Information:</h3>
-            <pre>
-                Categories: {{ isset($Categories) ? $Categories->count() : 'not set' }} items
-                ModelTumbler: {{ isset($ModelTumbler) ? $ModelTumbler->count() : 'not set' }} items
-                Tumblers: {{ isset($tumblers) ? $tumblers->count() : 'not set' }} items
-                
-                @if(isset($tumblers) && $tumblers->isNotEmpty())
-                    First Tumbler Details:
-                    - ID: {{ $tumblers->first()->id }}
-                    - Name: {{ $tumblers->first()->tumbler_name }}
-                    - Category: {{ optional($tumblers->first()->category)->name }}
-                    - Model: {{ optional($tumblers->first()->model)->name }}
-                @endif
-            </pre>
-        </div>
-    @endif -->
-
     @push('scripts')
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchBar = document.getElementById('search-bar');
-        const searchButton = document.getElementById('search-button');
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const resultsContainer = document.getElementById('search-results');
-        let searchTimeout;
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBar = document.getElementById('search-bar');
+            const searchButton = document.getElementById('search-button');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const resultsContainer = document.getElementById('search-results');
+            let searchTimeout;
 
-        function performSearch() {
-            const query = searchBar.value;
-            if (query.length < 2) return; // Don't search for very short queries
+            function performSearch() {
+                const query = searchBar.value;
+                if (query.length < 2) return; // Don't search for very short queries
 
-            loadingSpinner.classList.remove('opacity-0');
-            
-            fetch(`/search?query=${encodeURIComponent(query)}`, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                resultsContainer.innerHTML = ''; // Clear existing results
-                
-                if (data.tumblers.length === 0) {
-                    resultsContainer.innerHTML = '<div class="col-span-full text-center">No products found</div>';
-                    return;
-                }
+                loadingSpinner.classList.remove('opacity-0');
 
-                data.tumblers.forEach(tumbler => {
-                    const card = `
+                fetch(`/search?query=${encodeURIComponent(query)}`, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        resultsContainer.innerHTML = ''; // Clear existing results
+
+                        if (data.tumblers.length === 0) {
+                            resultsContainer.innerHTML = '<div class="col-span-full text-center">No products found</div>';
+                            return;
+                        }
+
+                        data.tumblers.forEach(tumbler => {
+                            const card = `
                         <div class="bg-white rounded-lg shadow-md p-4">
                             <img src="${tumbler.image_url || '/default-tumbler.jpg'}" alt="${tumbler.name}" class="w-full h-48 object-cover rounded-md">
                             <h3 class="mt-2 text-lg font-semibold">${tumbler.name}</h3>
@@ -246,41 +219,45 @@
                             <p class="mt-2 text-green-600 font-bold">$${tumbler.price}</p>
                         </div>
                     `;
-                    resultsContainer.innerHTML += card;
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                resultsContainer.innerHTML = '<div class="col-span-full text-center text-red-500">An error occurred while searching</div>';
-            })
-            .finally(() => {
-                loadingSpinner.classList.add('opacity-0');
+                            resultsContainer.innerHTML += card;
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        resultsContainer.innerHTML = '<div class="col-span-full text-center text-red-500">An error occurred while searching</div>';
+                    })
+                    .finally(() => {
+                        loadingSpinner.classList.add('opacity-0');
+                    });
+            }
+
+            // Search as you type with debouncing
+            searchBar.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(performSearch, 300);
             });
-        }
 
-        // Search as you type with debouncing
-        searchBar.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(performSearch, 300);
-        });
-
-        // Search when search button is clicked
-        searchButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            performSearch();
-        });
-
-        // Search when Enter key is pressed
-        searchBar.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
+            // Search when search button is clicked
+            searchButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 performSearch();
-            }
+            });
+
+            // Search when Enter key is pressed
+            searchBar.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performSearch();
+                }
+            });
         });
-    });
     </script>
     @endpush
-</body>
+    <!-- Loading Spinner -->
+    <div id="pagination-loading-spinner" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+    </body>
 
 </html>
 @endsection

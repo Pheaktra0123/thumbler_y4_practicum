@@ -39,24 +39,10 @@ class HomeController extends Controller
     public function Categories()
     {
         try {
-            $Categories = Categories::all();
+            $Categories = Categories::all(); // Paginate categories (6 per page)
             $ModelTumbler = ModelTumbler::all();
-            $tumblers = Tumbler::with(['category', 'model'])->get();
+            $tumblers = Tumbler::with(['category', 'model'])->paginate(4); // Paginate tumblers (8 per page)
             
-            // Add debugging for both Categories and Tumblers
-            if ($Categories->isEmpty()) {
-                Log::info('No categories found in the database');
-            } else {
-                Log::info('Categories found: ' . $Categories->count());
-            }
-
-            if ($tumblers->isEmpty()) {
-                Log::info('No tumblers found in the database');
-            } else {
-                Log::info('Tumblers found: ' . $tumblers->count());
-            }
-            
-            // Pass all variables to the view using compact
             return view('Pages.Home_Category', compact('Categories', 'ModelTumbler', 'tumblers'));
         } catch (\Exception $e) {
             Log::error('Error fetching data: ' . $e->getMessage());
@@ -107,19 +93,14 @@ class HomeController extends Controller
             ->orWhereHas('model', function($q) use ($query) {
                 $q->where('name', 'LIKE', "%{$query}%");
             })
-            ->get();
+            ->paginate(8); // Paginate search results (8 per page)
 
-        if ($request->ajax()) {
-            return response()->json([
-                'tumblers' => $tumblers,
-                'status' => 'success'
-            ]);
-        }
-
-        $Categories = Categories::all();
+        $Categories = Categories::paginate(6); // Paginate categories (6 per page)
         $ModelTumbler = ModelTumbler::all();
         
         return view('Pages.Home_Category', compact('tumblers', 'Categories', 'ModelTumbler', 'query'));
     }
+
+   
 
 }
