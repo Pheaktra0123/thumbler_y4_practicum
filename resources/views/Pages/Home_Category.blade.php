@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="TumblerHaven - Your one-stop solution for tumbler grinding services. Explore our categories and find the perfect tumbler for you.">
+    <meta name="description" content="TumblerHaven - Your one-stop solution for tumbler grinding services. Explore our categories and find the perfect tumbler for you.">2      
 </head>
 
 <body">

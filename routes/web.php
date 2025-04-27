@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModelTumblerController;
@@ -64,7 +65,11 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 //route for admin
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/Admin/Dashboard', [\App\Http\Controllers\HomeController::class, 'adminHome'])->name('Admin/Dashboard');
-
+    //User Route
+    Route::get('/Admin/customer',[AdminController::class,'customer']);
+    Route::get('/Admin/customer/edit/{id}',[AdminController::class,'editRole'])->name('Admin.customer.edit');
+    Route::put('/Admin/customer/update/{id}',[AdminController::class,'updateRole'])->name('admin.updateRole');
+    Route::get('/Admin/customer/delete/{id}',[AdminController::class,'deleteRole'])->name('admin.deleteRole');
     //Route for Categories
     Route::get('/Admin/Categories', [\App\Http\Controllers\CategoriesController::class, 'categories'])->name('Admin/Categories');
     Route::post('/Admin/Categories/Create', [\App\Http\Controllers\CategoriesController::class, 'store'])->name('Categories.store');
