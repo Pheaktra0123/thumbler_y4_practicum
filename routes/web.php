@@ -56,20 +56,23 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/User/Profile/Edit', [\App\Http\Controllers\HomeController::class, 'userEdit'])->name('User/Profile/Edit');
     Route::get('User/profile', [UserController::class, 'edit'])->name('user.profile');
     Route::put('/profile/update', [UserController::class, 'update'])->name('profile.update');
-    Route::get('User/Categories',[HomeController::class, 'Categories'])->name('user.categories');
-    Route::get('User/Model',[HomeController::class, 'model'])->name('user.model');
+    Route::get('User/Categories', [HomeController::class, 'Categories'])->name('user.categories');
+    Route::get('User/Model', [HomeController::class, 'model'])->name('user.model');
     Route::get('User/Tumbler', [HomeController::class, 'tumbler'])->name('user.tumbler');
-   Route::get('User/Tumbler/details/{id}', [TumblerController::class, 'details'])->name('user.tumbler.details');
-}); 
+    Route::get('User/Tumbler/details/{id}', [TumblerController::class, 'details'])->name('user.tumbler.details');
+});
 
 //route for admin
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/Admin/Dashboard', [\App\Http\Controllers\HomeController::class, 'adminHome'])->name('Admin/Dashboard');
     //User Route
-    Route::get('/Admin/customer',[AdminController::class,'customer']);
-    Route::get('/Admin/customer/edit/{id}',[AdminController::class,'editRole'])->name('Admin.customer.edit');
-    Route::put('/Admin/customer/update/{id}',[AdminController::class,'updateRole'])->name('admin.updateRole');
-    Route::get('/Admin/customer/delete/{id}',[AdminController::class,'deleteRole'])->name('admin.deleteRole');
+    Route::get('/Admin/customer', [AdminController::class, 'customer']);
+    Route::get('/Admin/customer/edit/{id}', [AdminController::class, 'editRole'])->name('Admin.customer.edit');
+    // For updating user role
+    Route::put('/admin/users/{user}/update', [AdminController::class, 'updateRole'])->name('admin.updateRole');
+
+    // For deleting user
+    Route::delete('/admin/users/{user}/delete', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
     //Route for Categories
     Route::get('/Admin/Categories', [\App\Http\Controllers\CategoriesController::class, 'categories'])->name('Admin/Categories');
     Route::post('/Admin/Categories/Create', [\App\Http\Controllers\CategoriesController::class, 'store'])->name('Categories.store');
@@ -83,11 +86,10 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/Admin/model/delete/{id}', [\App\Http\Controllers\ModelTumblerController::class, 'destroy'])->name('Model.delete');
 
     //Route for Product
-    Route::get('/Admin/view/tumbler',[TumblerController::class, 'tumbler'])->name('Admin.view.tumbler');
-    Route::post('/Admin/store/tumbler',[TumblerController::class, 'store'])->name('tumbler.store');
-    Route::put('/Admin/update/tumbler/{id}',[TumblerController::class, 'update'])->name('update.tumbler');
-    Route::get('/Admin/delete/tumbler/{id}',[TumblerController::class, 'destroy'])->name('Admin.delete.tumbler');
-
+    Route::get('/Admin/view/tumbler', [TumblerController::class, 'tumbler'])->name('Admin.view.tumbler');
+    Route::post('/Admin/store/tumbler', [TumblerController::class, 'store'])->name('tumbler.store');
+    Route::put('/Admin/update/tumbler/{id}', [TumblerController::class, 'update'])->name('update.tumbler');
+    Route::get('/Admin/delete/tumbler/{id}', [TumblerController::class, 'destroy'])->name('Admin.delete.tumbler');
 });
 //test route
 
@@ -113,7 +115,7 @@ Route::get('/Tumbler_home', [App\Http\Controllers\HomeController::class, 'tumble
 Route::get('/details_tumbler/{id}', [App\Http\Controllers\TumblerController::class, 'details'])->name('tumbler.details');
 
 // Add this temporary route for debugging
-Route::get('/debug-tumblers', function() {
+Route::get('/debug-tumblers', function () {
     $tumblers = \App\Models\Tumbler::with(['category', 'model'])->get();
     dd([
         'tumbler_count' => $tumblers->count(),
@@ -122,6 +124,3 @@ Route::get('/debug-tumblers', function() {
         'has_model' => optional($tumblers->first())->model,
     ]);
 });
-
-
-

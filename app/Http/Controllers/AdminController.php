@@ -20,18 +20,16 @@ class  AdminController extends Controller
         $users=User::find($id);
         return view('Admin/Auth',compact('users'));
     }
-    public function updateRole(Request $request, $id)
-    {
-        $request->validate([
-            'type' => 'required|in:user,admin', // Validate the type field
-        ]);
+    public function updateRole(Request $request, User $user)
+{
+    $validated = $request->validate([
+        'type' => 'required|integer|in:0,1',
+    ]);
 
-        $user = User::findOrFail($id); // Find the user by ID
-        $user->type = $request->type; // Update the type
-        $user->save(); // Save the changes
+    $user->update($validated);
 
-        return redirect()->back()->with('success', 'User Role Updated Successfully');
-    }
+    return back()->with('success', 'User role updated successfully');
+}
     public function deleteRole($id){
         $users=User::find($id);
         $users->delete();

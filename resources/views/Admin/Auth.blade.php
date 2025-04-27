@@ -1,6 +1,7 @@
 @extends("TailwindCssLink.style")
 @extends("Component.Nav_Dashbord")
 @section("contents")
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <table class="min-w-full divide-y divide-gray-200 overflow-x-auto">
     <thead class="bg-gray-50">
         <tr>
@@ -74,7 +75,7 @@
                     </button>
 
                     <!-- Delete Button -->
-                    <form action="{{ route('admin.deleteRole', $user->id) }}" method="POST" class="inline delete-role-form">
+                    <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" class="inline delete-role-form">
                         @csrf
                         @method('DELETE')
                         <button type="button" class="ml-2 text-red-600 hover:text-red-900 delete-role-btn" data-id="{{ $user->id }}">
@@ -105,8 +106,8 @@
                 <div class="mb-4">
                     <label for="type" class="block text-sm font-medium text-gray-700">Role</label>
                     <select name="type" id="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
+                        <option value="0">User</option>
+                        <option value="1">Admin</option>
                     </select>
                 </div>
                 <div class="flex justify-end">
@@ -144,7 +145,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-
         const editButtons = document.querySelectorAll('.edit-role-btn');
         const modal = document.getElementById('editRoleModal');
         const form = document.getElementById('editRoleForm');
@@ -164,12 +164,13 @@
                 const username = this.getAttribute('data-username');
                 const type = this.getAttribute('data-type');
 
-                // Populate the modal with user data
                 userIdInput.value = userId;
                 usernameInput.value = username;
                 typeSelect.value = type;
 
-                // Show the modal
+                // Update the form action URL
+                form.action = `/admin/users/${userId}/update`;
+                
                 modal.classList.remove('hidden');
             });
         });
@@ -180,75 +181,26 @@
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-
-            const userId = userIdInput.value;
-            const formData = new FormData(form);
-
-            fetch(`/admin/update-role/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Role updated successfully!');
-                    location.reload();
-                } else {
-                    alert('Failed to update role.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+            
+            // Use traditional form submission instead of fetch
+            this.submit();
         });
 
+        // Delete functionality remains the same
         deleteButtons.forEach(button => {
             button.addEventListener('click', function () {
-                deleteForm = this.closest('.delete-role-form'); // Get the parent form
-                deleteModal.classList.remove('hidden'); // Show the delete confirmation modal
-            });
-        });
-
-        cancelDeleteBtn.addEventListener('click', function () {
-            deleteModal.classList.add('hidden'); // Hide the delete confirmation modal
-        });
-
-        confirmDeleteBtn.addEventListener('click', function () {
-            if (deleteForm) {
-                deleteForm.submit(); // Submit the form if confirmed
-            }
-        });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const deleteButtons = document.querySelectorAll('.delete-role-btn');
-        const deleteModal = document.getElementById('deleteRoleModal');
-        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-        let formToSubmit = null;
-
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const form = this.closest('.delete-role-form'); // Get the parent form
-                formToSubmit = form; // Store the form to submit later
-
-                // Show the delete confirmation modal
+                deleteForm = this.closest('.delete-role-form');
                 deleteModal.classList.remove('hidden');
             });
         });
 
         cancelDeleteBtn.addEventListener('click', function () {
-            // Hide the delete confirmation modal
             deleteModal.classList.add('hidden');
-            formToSubmit = null; // Reset the form reference
         });
 
         confirmDeleteBtn.addEventListener('click', function () {
-            if (formToSubmit) {
-                formToSubmit.submit(); // Submit the form if confirmed
+            if (deleteForm) {
+                deleteForm.submit();
             }
         });
     });
