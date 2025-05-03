@@ -11,7 +11,16 @@ class CategoriesController extends Controller
     //
     public function Categories()
     {
+        $query = Categories::query();
+        $query->when(request('search'), function ($q) {
+            $q->where('name', 'like', '%' . request('search') . '%');
+        });
+        $query->when(request('sort'), function ($q) {
+            $q->orderBy('name', request('sort'));
+        });
         $Categories = Categories::all();
+        $Categories = $query->paginate(10)->withQueryString();
+        $Categories->appends(request()->query());
         return view('CRUD/Tumbler_Crud/View_categories', compact('Categories'));
     }
     public function store(Request $request)
