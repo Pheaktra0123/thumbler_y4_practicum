@@ -20,6 +20,17 @@
             menu.classList.toggle("hidden");
         }
     </script>
+    <style>
+        .swal2-confirm {
+            background-color: #f53636 !important; /* Red color */
+            color: #fff !important; /* White text */
+        }
+
+        .swal2-cancel {
+            background-color: #d5d5d5 !important; /* Gray color */
+            color: #000 !important; /* Black text */
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100">
@@ -277,9 +288,10 @@
             text: "You will be logged out!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#f53636',
-            cancelButtonColor: '#d5d5d5',
-            confirmButtonText: 'Yes, log out!'
+            confirmButtonColor: '#f53636', // Red color for the confirm button
+            cancelButtonColor: '#d5d5d5', // Gray color for the cancel button
+            confirmButtonText: 'Yes, log out!',
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = "/logout";

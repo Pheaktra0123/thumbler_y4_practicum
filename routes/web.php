@@ -49,17 +49,20 @@ Route::get('/Model_home', [App\Http\Controllers\HomeController::class, 'model'])
 Route::get('/Trending_home', function () {
     return view('/Pages/Home_Trending_Tumbler');
 });
-
+Route::get('/categories', [App\Http\Controllers\HomeController::class, 'Categories'])->name('search.categories');
 //route for normal user
 Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/User/Dashboard', [\App\Http\Controllers\HomeController::class, 'dashboard'])->name('User/Dashboard');
     Route::get('/User/Profile/Edit', [\App\Http\Controllers\HomeController::class, 'userEdit'])->name('User/Profile/Edit');
     Route::get('User/profile', [UserController::class, 'edit'])->name('user.profile');
     Route::put('/profile/update', [UserController::class, 'update'])->name('profile.update');
-    Route::get('User/Categories', [HomeController::class, 'Categories'])->name('user.categories');
     Route::get('User/Model', [HomeController::class, 'model'])->name('user.model');
     Route::get('User/Tumbler', [HomeController::class, 'tumbler'])->name('user.tumbler');
     Route::get('User/Tumbler/details/{id}', [TumblerController::class, 'details'])->name('user.tumbler.details');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('User/Categories', [HomeController::class, 'Categories'])->name('user.categories');
 });
 
 //route for admin
@@ -125,3 +128,5 @@ Route::get('/debug-tumblers', function () {
         'has_model' => optional($tumblers->first())->model,
     ]);
 });
+
+Route::get('/search', [HomeController::class, 'search'])->name('search.categories');

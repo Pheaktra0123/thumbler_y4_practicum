@@ -138,7 +138,7 @@
                         <div class="overflow-hidden ">
                             <table class=" min-w-full rounded-xl">
                                 <thead>
-                                    <tr class="bg-gray-50">
+                                    <tr class="bg-gray-100">
                                         <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize rounded-t-xl">ID</th>
                                         <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize"> Category</th>
                                         <th scope="col" class="p-5 text-left text-sm leading-6 font-semibold text-gray-900 capitalize"> Total Model</th>
@@ -151,11 +151,11 @@
                                     <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
 
                                         <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 ">{{$category->id}}</td>
-                                        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {{$category->name}}</td>
-                                        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                        <td class="p-5 whitespace-nowrap text-sm  font-medium text-gray-900"> {{$category->name}}</td>
+                                        <td class="p-5 whitespace-nowrap text-sm font-medium text-gray-900">
                                             {{ $category->models?->count() ?? 0 }}
                                         </td>
-                                        <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 object-cover object">
+                                        <td class="p-5 whitespace-nowrap text-sm  font-medium text-gray-900 object-cover object">
                                             <img src="{{Storage::url( $category->Thumbnail ) }}" style="width: 70px; height:70px;" alt="Img">
                                         </td>
 

@@ -95,7 +95,7 @@
                             <span class="font-bold text-gray-700 text-gray-300">Select Color</span>
                             <div class="flex gap-2 mt-2">
                                 @forelse($tumbler->colors as $color)
-                                    <button class="color-btn w-6 h-6 rounded-full" style="background-color: {{ $color }};" data-color="{{ $color }}">
+                                    <button class="color-btn w-6 h-6 rounded-full" style="background-color: {{ $color }}" data-color="{{ $color }}">
                                     </button>
                                 @empty
                                     <span class="text-gray-500">No colors available</span>
