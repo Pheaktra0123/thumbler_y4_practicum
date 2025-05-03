@@ -70,7 +70,8 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/Admin/customer/edit/{id}', [AdminController::class, 'editRole'])->name('Admin.customer.edit');
     // For updating user role
     Route::put('/admin/users/{user}/update', [AdminController::class, 'updateRole'])->name('admin.updateRole');
-
+    // For viewing all users
+    Route::get('/admin/users', [AdminController::class, 'ListRole'])->name('admin.users.role');
     // For deleting user
     Route::delete('/admin/users/{user}/delete', [AdminController::class, 'deleteUser'])->name('admin.deleteUser');
     //Route for Categories

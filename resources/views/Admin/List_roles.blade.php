@@ -3,13 +3,22 @@
 @section("contents")
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <table class="mx-auto divide-y divide-gray-200 overflow-x-auto bg-white shadow-md rounded-lg w-11/12 rounded-lg">
-<div class="relative max-w-sm mx-auto mt-4 mb-4">
-        <input class="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" type="search" placeholder="Search">
-        <button class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-700 bg-gray-100 border border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.795 13.408l5.204 5.204a1 1 0 01-1.414 1.414l-5.204-5.204a7.5 7.5 0 111.414-1.414zM8.5 14A5.5 5.5 0 103 8.5 5.506 5.506 0 008.5 14z" />
-            </svg>
-        </button>
+    <div class="relative max-w-sm mx-auto mt-4 mb-4">
+        <form action="{{ route('admin.users.role') }}" method="GET">
+            <input 
+                class="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                type="search" 
+                name="search" 
+                value="{{ request('search') }}" 
+                placeholder="Search by username, email, or role">
+            <button 
+                type="submit" 
+                class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-700 bg-gray-100 border border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M14.795 13.408l5.204 5.204a1 1 0 01-1.414 1.414l-5.204-5.204a7.5 7.5 0 111.414-1.414zM8.5 14A5.5 5.5 0 103 8.5 5.506 5.506 0 008.5 14z" />
+                </svg>
+            </button>
+        </form>
     </div>
     <thead class="bg-gray-50">
         <tr>
@@ -35,71 +44,67 @@
     </thead>
     <tbody class="bg-white divide-y divide-gray-200">
         @foreach($users as $user)
-            <tr>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 h-10 w-10">
-                            <img class="h-10 w-10 rounded-full" src="{{ asset($user->thumbnail) }}" alt="">
+        <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                        <img class="h-10 w-10 rounded-full" src="{{ asset($user->thumbnail) }}" alt="">
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">
+                            {{ $user->username }}
                         </div>
-                        <div class="ml-4">
-                            <div class="text-sm font-medium text-gray-900">
-                                {{ $user->username }}
-                            </div>
-                            <div class="text-sm text-gray-500">
-                                {{ $user->email }}
-                            </div>
+                        <div class="text-sm text-gray-500">
+                            {{ $user->email }}
                         </div>
                     </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Regional Paradigm Technician</div>
-                    <div class="text-sm text-gray-500">Optimization</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @if($user->status === 'active')
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            Active
-                        </span>
-                    @else
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                            Offline
-                        </span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{ $user->type }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{ $user->email }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <!-- Edit Button -->
-                    <button 
-                        class="text-indigo-600 hover:text-indigo-900 edit-role-btn" 
-                        data-id="{{ $user->id }}" 
-                        data-username="{{ $user->username }}" 
-                        data-type="{{ $user->type }}">
-                        Edit
-                    </button>
+                </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">Regional Paradigm Technician</div>
+                <div class="text-sm text-gray-500">Optimization</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                @if($user->status === 'active')
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                    Active
+                </span>
+                @else
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                    Offline
+                </span>
+                @endif
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ $user->type }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ $user->email }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <!-- Edit Button -->
+                <button
+                    class="text-indigo-600 hover:text-indigo-900 edit-role-btn"
+                    data-id="{{ $user->id }}"
+                    data-username="{{ $user->username }}"
+                    data-type="{{ $user->type }}">
+                    Edit
+                </button>
 
-                    <!-- Delete Button -->
-                    <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" class="inline delete-role-form">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="ml-2 text-red-600 hover:text-red-900 delete-role-btn" data-id="{{ $user->id }}">
-                            Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
+                <!-- Delete Button -->
+                <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" class="inline delete-role-form">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="ml-2 text-red-600 hover:text-red-900 delete-role-btn" data-id="{{ $user->id }}">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
         @endforeach
     </tbody>
 </table>
-<div>
-    <div class="flex justify-center mt-4">
-        {{ $users->links('vendor.pagination.custom') }}
-    </div>
-</div>
+
 <!-- Modal -->
 <div id="editRoleModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg shadow-lg w-1/3">
@@ -117,7 +122,7 @@
                 </div>
                 <div class="mb-4">
                     <label for="type" class="block text-sm font-medium text-gray-700">Role</label>
-                    <select name="type" id="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <select  name="type" id="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                         <option value="0">User</option>
                         <option value="1">Admin</option>
                     </select>
@@ -134,7 +139,9 @@
         </div>
     </div>
 </div>
-
+<div>
+  {{$users->links('vendor.pagination.custom')}}
+</div>
 <!-- Delete Confirmation Modal -->
 <div id="deleteRoleModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg shadow-lg w-1/3">
@@ -154,9 +161,9 @@
         </div>
     </div>
 </div>
-
+</div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const editButtons = document.querySelectorAll('.edit-role-btn');
         const modal = document.getElementById('editRoleModal');
         const form = document.getElementById('editRoleForm');
@@ -171,7 +178,7 @@
         let deleteForm = null;
 
         editButtons.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 const userId = this.getAttribute('data-id');
                 const username = this.getAttribute('data-username');
                 const type = this.getAttribute('data-type');
@@ -182,35 +189,35 @@
 
                 // Update the form action URL
                 form.action = `/admin/users/${userId}/update`;
-                
+
                 modal.classList.remove('hidden');
             });
         });
-        
-        cancelBtn.addEventListener('click', function () {
+
+        cancelBtn.addEventListener('click', function() {
             modal.classList.add('hidden');
         });
 
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             // Use traditional form submission instead of fetch
             this.submit();
         });
 
         // Delete functionality remains the same
         deleteButtons.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 deleteForm = this.closest('.delete-role-form');
                 deleteModal.classList.remove('hidden');
             });
         });
 
-        cancelDeleteBtn.addEventListener('click', function () {
+        cancelDeleteBtn.addEventListener('click', function() {
             deleteModal.classList.add('hidden');
         });
 
-        confirmDeleteBtn.addEventListener('click', function () {
+        confirmDeleteBtn.addEventListener('click', function() {
             if (deleteForm) {
                 deleteForm.submit();
             }
