@@ -15,7 +15,7 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('index','Categories','model');
+        $this->middleware('auth')->except('index','Categories','model','search');
     }
 
     public function index()
@@ -84,21 +84,21 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        
+
+        // Search tumblers
         $tumblers = Tumbler::with(['category', 'model'])
             ->where('tumbler_name', 'LIKE', "%{$query}%")
-            ->orWhereHas('category', function($q) use ($query) {
+            ->orWhereHas('category', function ($q) use ($query) {
                 $q->where('name', 'LIKE', "%{$query}%");
             })
-            ->orWhereHas('model', function($q) use ($query) {
+            ->orWhereHas('model', function ($q) use ($query) {
                 $q->where('name', 'LIKE', "%{$query}%");
             })
-            ->paginate(8); // Paginate search results (8 per page)
+            ->paginate(4); // Paginate the results
 
-        $Categories = Categories::paginate(6); // Paginate categories (6 per page)
-        $ModelTumbler = ModelTumbler::all();
-        
-        return view('Pages.Home_Category', compact('tumblers', 'Categories', 'ModelTumbler', 'query'));
+        $Categories = Categories::paginate(6);
+
+        return view('Pages.Home_Category', compact('tumblers', 'Categories', 'query'));
     }
 
    

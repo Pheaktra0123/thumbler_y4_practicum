@@ -9,19 +9,17 @@ use Illuminate\Support\Facades\Storage;
 class CategoriesController extends Controller
 {
     //
-    public function Categories()
+    public function Categories(Request $request)
     {
         $query = Categories::query();
-        $query->when(request('search'), function ($q) {
-            $q->where('name', 'like', '%' . request('search') . '%');
-        });
-        $query->when(request('sort'), function ($q) {
-            $q->orderBy('name', request('sort'));
-        });
-        $Categories = Categories::all();
-        $Categories = $query->paginate(10)->withQueryString();
-        $Categories->appends(request()->query());
-        return view('CRUD/Tumbler_Crud/View_categories', compact('Categories'));
+
+        // Apply search filter if a search query is provided
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $Categories = $query->paginate(4); // Paginate the results
+        return view('CRUD.Tumbler_Crud.View_Categories', compact('Categories'));
     }
     public function store(Request $request)
     {

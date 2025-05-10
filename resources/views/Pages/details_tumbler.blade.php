@@ -21,18 +21,18 @@
             }
         </style>
         <!-- Product Section -->
-        <div class=" py-0 w-full mt-24 p-10">
-            <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class=" py-0 mt-24 mx-auto lg:mt-48 md:mt-40 p-10">
+            <div class=" mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row -mx-4">
-                    <div class="w-1/2 md:flex-1 px-4">
+                    <div class=" md:flex-1 px-4">
                         <div class="h-[480px] flex items-center justify-center rounded-lg mb-4">
                             @if(!empty($tumbler->thumbnails))
-                                <div id="image-carousel" class="relative w-full h-full">
+                                <div id="image-carousel" class="relative w-full ">
                                     <!-- Carousel wrapper -->
-                                    <div class="relative h-full overflow-hidden rounded-lg">
+                                    <div class="relative  overflow-hidden rounded-lg">
                                         @foreach($tumbler->thumbnails as $index => $thumbnail)
                                             <div class="{{ $index === 0 ? 'block' : 'hidden' }} duration-700 ease-in-out" data-carousel-item>
-                                                <img class="w-full h-full object-cover rounded-lg" 
+                                                <img class="w-fit min-h-fit max-auto object-cover rounded-lg" 
                                                      src="{{ asset('storage/' . $thumbnail) }}" 
                                                      alt="Tumbler Image {{ $index + 1 }}">
                                             </div>

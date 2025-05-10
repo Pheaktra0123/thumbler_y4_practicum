@@ -47,9 +47,9 @@
 
         <!-- our category section -->
         <section class="mt-10" id="services">
-            <div class="container">
+            <div class="container w-full mx-auto px-4">
                 <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center font-serif">Our Categories</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-8">
+                <div class="w-11/12 mx-auto flex flex-wrap gap-10 justify-center items-center">
                     @if(!isset($Categories) || count($Categories) === 0)
                     <div class="col-span-full">
                         <p class="text-center text-gray-600">No categories found</p>
@@ -110,11 +110,11 @@
             <h3 class="text-lg font-medium opacity-40  text-center font-serif ">Recently Tumbler</h3>
             <p class="text-lg font-medium opacity-50  text-center ">Total Item {{$tumblers->count()}}</p>
         </div>
-        <section id="Projects" class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mb-5">
+        <section id="Projects" class="flex justify-center items-center flex-wrap gap-10 px-10">
             @forelse ($tumblers as $tumbler)
-                <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-                    <a href="{{ route('tumbler.details', $tumbler->id) }}" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0" data-taos-offset="100">
-                        <img src="{{ !empty($tumbler->thumbnails) ? Storage::url(json_decode($tumbler->thumbnails)[0]) : asset('cuz_1.png') }}" alt="{{ $tumbler->tumbler_name }}" class="h-80 w-72 object-cover rounded-t-xl" />
+                <div class="w-72 bg-white object-center object-cover shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                    <a href="{{ route('tumbler.details', $tumbler->id) }}" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0 object-center object-cover" data-taos-offset="100">
+                        <img src="{{ !empty($tumbler->thumbnails) ? Storage::url(json_decode($tumbler->thumbnails)[0]) : asset('cuz_1.png') }}" alt="{{ $tumbler->tumbler_name }}" class="h-96 w-72 object-cover object-center rounded-t-xl" />
                         <div class="px-4 py-3 w-72">
                             <span class="text-gray-400 mr-3 uppercase text-xs">{{ $tumbler->category->name ?? 'Unknown Category' }}</span>
                             <div>
