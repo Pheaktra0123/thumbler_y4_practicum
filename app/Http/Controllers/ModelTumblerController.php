@@ -13,8 +13,11 @@ class ModelTumblerController extends Controller
     //
     public function Model()
     {
-        $Models = ModelTumbler::all();
-        $categories = Categories::all();
+        $query = ModelTumbler::query();
+        $query->with('category'); // Eager load the category relationship
+        $query->orderBy('created_at', 'Asc'); // Order by created_at in ascending order
+        $Models = $query->paginate(4); // Paginate the results (5 per page)
+        $categories = Categories::all(); // Get all categories
         return view('CRUD/Model_Crud/View_model', compact('Models', 'categories'));
     }
     public function store(Request $request)
