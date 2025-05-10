@@ -64,40 +64,11 @@
 
         paginationLinks.forEach(link => {
             link.addEventListener('click', function (e) {
-                e.preventDefault(); // Prevent default link behavior
+                // Remove e.preventDefault() to allow default navigation
                 const url = this.href; // Get the URL of the clicked link
 
                 // Show the loading spinner
                 loadingSpinner.classList.remove('hidden');
-
-                // Fetch the new content
-                fetch(url, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => response.text())
-                .then(html => {
-                    // Parse the response and replace the content
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const newContent = doc.querySelector('main').innerHTML;
-
-                    document.querySelector('main').innerHTML = newContent;
-
-                    // Reinitialize the script for new pagination links
-                    document.dispatchEvent(new Event('DOMContentLoaded'));
-                })
-                .catch(error => {
-                    console.error('Error fetching pagination content:', error);
-                })
-                .finally(() => {
-                    // Ensure the spinner is visible for at least 3 seconds
-                    setTimeout(() => {
-                        console.log('Hiding spinner after 3 seconds'); // Debugging log
-                        loadingSpinner.classList.add('hidden');
-                    }, 3000); // 3-second delay
-                });
             });
         });
     });

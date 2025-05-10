@@ -38,7 +38,7 @@
 </style>
 <body>
 <div class="bg-gray-100 p-4">
-    <div class="container mx-auto ">
+    <div class="container mx-auto w-11/12">
         <h1 class="text-4xl font-bold text-gray-700 text-start mb-8">
             Welcome to Admin Dashboard
         </h1>
@@ -79,7 +79,7 @@
         </div>
     </div>
 </div>
-<div class="flex justify-center w-full">
+<div class="flex justify-center w-11/12 mx-auto mt-8">
     <div x-data="app()" x-cloak class="px-4 w-[70%]">
         <div class="">
             <div class=" p-2 rounded-lg bg-white">

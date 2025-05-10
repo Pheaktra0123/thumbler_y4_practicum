@@ -13,7 +13,7 @@ class  AdminController extends Controller
         $this->middleware('auth');
     }
     public function customer(){
-        $users=User::where('type','user')->paginate(10);
+        $users=User::where('type','user')->paginate(5);
 
         return view('Admin/Auth',compact('users'));
     }
@@ -66,7 +66,7 @@ class  AdminController extends Controller
                   ->orWhere('type', 'like', "%$search%");
         }
 
-        $users = $query->paginate(10); // Paginate the results
+        $users = $query->paginate(6); // Paginate the results
         return view('Admin/List_roles', compact('users'));
     }
 }

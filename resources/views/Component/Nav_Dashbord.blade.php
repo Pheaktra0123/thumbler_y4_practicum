@@ -22,12 +22,10 @@
         /* Apply the blur effect */
     }
 </style>
-
-
 <body id="body">
     <header class="shadow-lg">
-        <nav class="flex justify-between px-10 py-4 item-center bg-blue-900 border-b-2">
-            <div class="text-xl text-gray-200 font-bold uppercase place-content-center">
+        <nav class="flex justify-between item-center bg-blue-900 p-3">
+            <div class="text-xl text-gray-200 font-bold uppercase">
                 Tumbler Haven
             </div>
             <div class="place-content-center">
@@ -66,10 +64,10 @@
         </div>
     </div>
     <div id="backdrop" class="hidden fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm"></div>
-    <div class=" flex bg-gray-100">
+    <div class=" flex bg-gray-100 ">
         <!-- sidebar -->
-        <div class="max-w-full w-1/4 max-h-full overflow-y-auto flex flex-col bg-sky-900 rounded-br-lg">
-            <div class="flex flex-col max-h-screen mt-2">
+        <div class="max-w-full w-1/4 flex flex-col bg-sky-900 rounded-br-lg">
+            <div class="flex flex-col mt-2">
                 <nav class="text-sm text-gray-300 [&::-webkit-scrollbar]:w-2
             [&::-webkit-scrollbar-track]:bg-gray-100
             [&::-webkit-scrollbar-track]:rounded-sm
@@ -78,7 +76,7 @@
             [&::-webkit-scrollbar-thumb]:
                      mx-2">
                     <ul class="flex flex-col">
-                        <li name="active" data-id="dashboard" class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700  hover:text-white active:bg-gray-900 focus:bg-gray-900">
+                        <li name="active" data-id="dashboard" class="px-4 cursor-pointer mx-1 rounded-md hover:bg-gray-700  hover:text-white active:bg-gray-900 ">
                             <a class="py-3 flex items-center" href="/Admin/Dashboard">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" class="w-4 mr-3">
@@ -199,7 +197,7 @@
         </div>
         <!-- Main content -->
         <div class="flex flex-col w-full max-h-screen overflow-y-auto relative ">
-            <div>@yield('contents')</div>
+            <div class="">@yield('contents')</div>
         </div>
     </div>
 </body>
