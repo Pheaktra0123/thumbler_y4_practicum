@@ -11,11 +11,18 @@ use Illuminate\Support\Facades\Storage;
 class ModelTumblerController extends Controller
 {
     //
-    public function Model()
+    public function Model(Request $request)
     {
         $query = ModelTumbler::query();
         $query->with('category'); // Eager load the category relationship
         $query->orderBy('created_at', 'Asc'); // Order by created_at in ascending order
+
+        // Add this block for search
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+
         $Models = $query->paginate(4); // Paginate the results (5 per page)
         $categories = Categories::all(); // Get all categories
         return view('CRUD/Model_Crud/View_model', compact('Models', 'categories'));

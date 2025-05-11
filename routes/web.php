@@ -81,13 +81,13 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/Admin/Categories', [\App\Http\Controllers\CategoriesController::class, 'categories'])->name('Admin/Categories');
     Route::post('/Admin/Categories/Create', [\App\Http\Controllers\CategoriesController::class, 'store'])->name('Categories.store');
     Route::put('/Admin/Categories/Edit/{id}', [\App\Http\Controllers\CategoriesController::class, 'update'])->name('Categories.edit');
-    Route::get('/Admin/Categories/Delete/{id}', [\App\Http\Controllers\CategoriesController::class, 'destroy'])->name('Categories.delete');
+    Route::post('/Admin/Categories/Delete/{id}', [\App\Http\Controllers\CategoriesController::class, 'destroy'])->name('Categories.delete');
 
     //Route for Model
     Route::get('/Admin/Model', [\App\Http\Controllers\ModelTumblerController::class, 'Model'])->name('Admin/Model');
     Route::post('/Admin/model/create', [\App\Http\Controllers\ModelTumblerController::class, 'store'])->name('Model.store');
     Route::put('/Admin/model/edit/{id}', [\App\Http\Controllers\ModelTumblerController::class, 'update'])->name('model.update');
-    Route::get('/Admin/model/delete/{id}', [\App\Http\Controllers\ModelTumblerController::class, 'destroy'])->name('Model.delete');
+    Route::post('/Admin/model/delete/{id}', [\App\Http\Controllers\ModelTumblerController::class, 'destroy'])->name('Model.delete');
 
     //Route for Product
     Route::get('/Admin/view/tumbler', [TumblerController::class, 'tumbler'])->name('Admin.view.tumbler');
