@@ -123,12 +123,15 @@
                                     {{ $tumbler->model->name ?? 'Unknown Model' }} |
                                     @php
                                         $sizes = json_decode($tumbler->sizes, true);
-                                        if (is_array($sizes) && !empty($sizes)) {
-                                            $firstSize = trim(str_replace(['"', '[', ']'], '', $sizes[0]));
-                                            echo $firstSize;
-                                        } else {
-                                            echo 'N/A';
+                                        $firstSize = 'N/A';
+                                        if (is_array($sizes)) {
+                                            // Remove empty values and reindex
+                                            $sizes = array_values(array_filter($sizes));
+                                            if (isset($sizes[0]) && !empty($sizes[0])) {
+                                                $firstSize = trim(str_replace(['"', '[', ']'], '', $sizes[0]));
+                                            }
                                         }
+                                        echo $firstSize;
                                     @endphp
                                 </p>
                             </div>

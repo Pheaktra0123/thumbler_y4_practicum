@@ -20,7 +20,18 @@
     <main>
         <section class="w-full mb-10">
             <h1 class="text-4xl text-gray-800 uppercase text-center font-medium ">Categories</h1>
+        
             <div class="w-11/12 mx-auto flex justify-between item-center place-items-center mt-5">
+                <div class="flex">
+                    <form action="{{ route('Admin/Categories') }}" method="GET">
+                        <input
+                            class="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            type="search"
+                            name="search"
+                            value="{{ request('search') }}"
+                            placeholder="Search model categories ">
+                    </form>
+                </div>
                 <div class="flex justify-between item-center place-items-center">
                     <div class="relative flex text-gray-500 focus-within:text-gray-900 mb-4 w-full">
                         <!-- Search input would go here -->
