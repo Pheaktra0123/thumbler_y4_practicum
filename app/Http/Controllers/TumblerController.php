@@ -172,6 +172,6 @@ class TumblerController extends Controller
     {
         $tumbler = Tumbler::findOrFail($id);
         $tumbler->delete();
-        return redirect()->back()->with('success', 'Tumbler deleted successfully!');
+        return response()->json(['success' => true]);
     }
 }
