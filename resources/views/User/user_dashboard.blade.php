@@ -113,12 +113,12 @@
                                 <div class="text-center my-4">
                                     @if (auth()->check() && auth()->user()->thumbnail)
                                     <img class="h-56 w-56 rounded-full border-4 border-gray-300 mx-auto my-4 object-cover"
-                                        src="{{ auth()->user()->thumbnail ? asset(auth()->user()->thumbnail) : 'https://www.google.com/url?sa=i&url=https%3A%2F%2Farchive.org%2Fdetails%2Fplaceholder-image&psig=AOvVaw171zx0ZPgJmEHD78-xsWOe&ust=1738733402782000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNDHo-ikqYsDFQAAAAAdAAAAABAE' }}"
+                                        src="{{ auth()->user()->thumbnail ? asset(auth()->user()->thumbnail) : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg' }}"
                                         alt="Profile Image">
                                     @else
                                     <!-- Display a default image or a placeholder -->
                                     <img class="h-56 w-56 rounded-full border-4 border-gray-300 mx-auto my-4"
-                                        src="https://www.google.com/url?sa=i&url=https%3A%2F%2Farchive.org%2Fdetails%2Fplaceholder-image&psig=AOvVaw171zx0ZPgJmEHD78-xsWOe&ust=1738733402782000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNDHo-ikqYsDFQAAAAAdAAAAABAE"
+                                        src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
                                         alt="Default Profile Image">
                                     @endif
 
