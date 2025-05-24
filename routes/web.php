@@ -59,6 +59,11 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('User/Model', [HomeController::class, 'model'])->name('user.model');
     Route::get('User/Tumbler', [HomeController::class, 'tumbler'])->name('user.tumbler');
     Route::get('User/Tumbler/details/{id}', [TumblerController::class, 'details'])->name('user.tumbler.details');
+
+    Route::get('user/viewCart',[HomeController::class, 'cart'])->name('user.viewCart');
+    Route::post('/add-to-cart/{id}', [HomeController::class, 'addToCart'])->name('add.to.cart');
+    Route::post('/remove-from-cart/{key}', [HomeController::class, 'removeFromCart'])->name('remove.from.cart');
+    Route::post('/cart/update-quantity/{key}', [\App\Http\Controllers\HomeController::class, 'updateCartQuantity'])->name('update.cart.quantity');
 });
 
 Route::middleware(['auth'])->group(function () {

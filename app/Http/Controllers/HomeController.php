@@ -58,28 +58,6 @@ class HomeController extends Controller
         $model=ModelTumbler::all();
         return view('Pages.Home_Model_Tumbler',compact('model'));
     }
-    // public function tumbler()
-    // {
-    //     try {
-    //         $tumblers = Tumbler::with(['category', 'model'])->get();
-    //         $Categories = Categories::all(); // We need both Categories and Tumblers
-            
-    //         // Add debugging
-    //         if ($tumblers->isEmpty()) {
-    //             Log::info('No tumblers found in the database');
-    //         } else {
-    //             Log::info('Tumblers found: ' . $tumblers->count());
-    //         }
-            
-    //         return view('Pages.Home_Category', compact('tumblers', 'Categories'));
-    //     } catch (\Exception $e) {
-    //         Log::error('Error fetching tumblers: ' . $e->getMessage());
-    //         return view('Pages.Home_Category', [
-    //             'tumblers' => collect([]),
-    //             'Categories' => Categories::all()
-    //         ]);
-    //     }
-    // }
 
     public function search(Request $request)
     {
@@ -100,7 +78,94 @@ class HomeController extends Controller
 
         return view('Pages.Home_Category', compact('tumblers', 'Categories', 'query'));
     }
+    public function addToCart(Request $request, $id)
+    {
+        $tumbler = Tumbler::findOrFail($id);
+        $cart = session()->get('cart', []);
 
-   
+        $quantity = (int) $request->input('quantity', 1);
+        $color = $request->input('color', '');
 
+        // Use a unique key for each color variation
+        $cartKey = $id . '_' . $color;
+
+        if (isset($cart[$cartKey])) {
+            $cart[$cartKey]['quantity'] += $quantity;
+        } else {
+            $image = $tumbler->thumbnails;
+            if (is_string($image)) {
+                $decoded = json_decode($image, true);
+                if (is_array($decoded)) {
+                    $image = $decoded[0] ?? null;
+                }
+            }
+            $cart[$cartKey] = [
+                "name" => $tumbler->tumbler_name,
+                "quantity" => $quantity,
+                "price" => $tumbler->price,
+                "image" => $image,
+                "color" => $color,
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        if ($request->ajax()) {
+            $cartCount = array_sum(array_column(session('cart', []), 'quantity'));
+            return response()->json(['cartCount' => $cartCount]);
+        }
+        return redirect()->route('user.viewCart')->with('success', 'Tumbler added to cart successfully!');
+    }
+    public function cart()
+    {
+        return view('Pages.cart');
+    }
+    public function removeFromCart($key)
+    {
+        $cart = session()->get('cart', []);
+        if (isset($cart[$key])) {
+            unset($cart[$key]);
+            session()->put('cart', $cart);
+        }
+        return redirect()->back()->with('success', 'Tumbler removed from cart successfully!');
+    }
+    public function clearCart()
+    {
+        session()->forget('cart');
+        return redirect()->back()->with('success', 'Cart cleared successfully!');
+    }
+    public function checkout()
+    {
+        $cart = session()->get('cart');
+        if (!$cart) {
+            return redirect()->back()->with('error', 'Your cart is empty!');
+        }
+
+        return view('Pages.checkout', compact('cart'));
+    }
+    public function order(Request $request)
+    {
+        $cart = session()->get('cart');
+        if (!$cart) {
+            return redirect()->back()->with('error', 'Your cart is empty!');
+        }
+
+        // Here you would typically save the order to the database
+        // For now, we'll just clear the cart and show a success message
+        session()->forget('cart');
+        return redirect()->back()->with('success', 'Order placed successfully!');
+    }
+    public function updateCartQuantity(Request $request, $key)
+    {
+        $cart = session()->get('cart', []);
+        if (isset($cart[$key])) {
+            if ($request->input('action') === 'increase') {
+                $cart[$key]['quantity'] += 1;
+            } elseif ($request->input('action') === 'decrease' && $cart[$key]['quantity'] > 1) {
+                $cart[$key]['quantity'] -= 1;
+            }
+            session()->put('cart', $cart);
+        }
+        return redirect()->back();
+    }
 }

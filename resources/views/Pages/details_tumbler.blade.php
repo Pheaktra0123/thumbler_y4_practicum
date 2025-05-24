@@ -21,41 +21,30 @@
             }
         </style>
         <!-- Product Section -->
-        <div class=" py-0 mt-24 mx-auto lg:mt-48 md:mt-40 p-10">
+        <div class=" py-0 mt-24 mx-auto  p-10">
             <div class=" mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row -mx-4">
                     <div class=" md:flex-1 px-4">
                         <div class="h-[480px] flex items-center justify-center rounded-lg mb-4">
-                            @if(!empty($tumbler->thumbnails))
-                                <div id="image-carousel" class="relative w-full ">
-                                    <!-- Carousel wrapper -->
-                                    <div class="relative  overflow-hidden rounded-lg">
-                                        @foreach($tumbler->thumbnails as $index => $thumbnail)
-                                            <div class="{{ $index === 0 ? 'block' : 'hidden' }} duration-700 ease-in-out" data-carousel-item>
-                                                <img class="w-fit min-h-fit max-auto object-cover rounded-lg" 
-                                                     src="{{ asset('storage/' . $thumbnail) }}" 
-                                                     alt="Tumbler Image {{ $index + 1 }}">
-                                            </div>
-                                        @endforeach
-                                    </div>
-
-                                    <!-- Slider controls -->
-                                    <button type="button" class="absolute top-1/2 left-0 z-30 flex items-center justify-center w-10 h-10 bg-gray-200/50 rounded-full hover:bg-gray-300 focus:outline-none transition" data-carousel-prev>
-                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" class="absolute top-1/2 right-0 z-30 flex items-center justify-center w-10 h-10 bg-gray-200/50 rounded-full hover:bg-gray-300 focus:outline-none transition" data-carousel-next>
-                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                        </svg>
-                                    </button>
+                            <!-- Product Images -->
+                            <div class="space-y-4">
+                                <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
+                                    @if(!empty($tumbler->thumbnails))
+                                        <img src="{{ asset('storage/' . $tumbler->thumbnails[0]) }}" alt="Tumbler" class="w-full h-full object-cover"/>
+                                    @else
+                                        <img src="{{ asset('images/default-placeholder.png') }}" alt="Default Image" class="w-full h-full object-cover"/>
+                                    @endif
                                 </div>
-                            @else
-                                <img class="w-100 h-100 mx-auto object-cover rounded-lg product-image" 
-                                     src="{{ asset('images/default-placeholder.png') }}" 
-                                     alt="Default Image">
-                            @endif
+                                @if(!empty($tumbler->thumbnails) && count($tumbler->thumbnails) > 1)
+                                <div class="grid grid-cols-4 gap-4">
+                                    @foreach($tumbler->thumbnails as $thumb)
+                                        <button class="aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 border-primary">
+                                            <img src="{{ asset('storage/' . $thumb) }}" alt="Thumbnail" class="w-full h-full object-cover"/>
+                                        </button>
+                                    @endforeach
+                                </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     <div class="w-1/2 px-4 content-center">
@@ -94,7 +83,21 @@
                         <div class="mb-4">
                             <span class="font-bold text-gray-700 text-gray-300">Select Color</span>
                             <div class="flex gap-2 mt-2">
-                                @forelse($tumbler->colors as $color)
+                                @php
+                                    $colorsRaw = $tumbler->colors ?? [];
+                                    if (is_string($colorsRaw)) {
+                                        $colorsArr = json_decode($colorsRaw, true);
+                                        if (!is_array($colorsArr)) {
+                                            // Try comma-separated fallback
+                                            $colorsArr = array_filter(array_map('trim', explode(',', $colorsRaw)));
+                                        }
+                                    } elseif (is_array($colorsRaw)) {
+                                        $colorsArr = $colorsRaw;
+                                    } else {
+                                        $colorsArr = [];
+                                    }
+                                @endphp
+                                @forelse($colorsArr as $color)
                                     <button class="color-btn w-6 h-6 rounded-full" style="background-color: {{ $color }}" data-color="{{ $color }}">
                                     </button>
                                 @empty
@@ -105,10 +108,16 @@
 
                         <div class="flex gap-4 mb-4 w-full">
                             @if($tumbler->is_available)
-                                <button
-                                    class="flex-1 bg-gray-900 bg-gray-600 text-white py-3 px-6 rounded-full font-bold hover:bg-gray-800 hover:bg-gray-700">
-                                    Add to Cart
-                                </button>
+                                <form method="POST" action="{{ route('add.to.cart', $tumbler->id) }}" class="flex-1" id="addToCartForm">
+                                    @csrf
+                                    <input type="hidden" name="quantity" id="cartQuantity" value="1">
+                                    <input type="hidden" name="color" id="cartColor" value="{{ isset($colorsArr[0]) ? $colorsArr[0] : '' }}">
+                                    <button
+                                        type="submit"
+                                        class="w-full bg-gray-900 text-white py-3 px-6 rounded-full font-bold hover:bg-gray-800">
+                                        Add to Cart
+                                    </button>
+                                </form>
                             @else
                                 <button
                                     class="flex-1 bg-gray-400 text-white py-3 px-6 rounded-full font-bold cursor-not-allowed" 
@@ -201,12 +210,20 @@
                 priceDisplay.textContent = `$${(basePrice * quantity).toFixed(2)}`;
             }
 
+            const cartQuantityInput = document.getElementById("cartQuantity");
+            const cartColorInput = document.getElementById("cartColor");
+
+            // Update hidden quantity input when quantity changes
+            function updateCartQuantity() {
+                if (cartQuantityInput) cartQuantityInput.value = quantity;
+            }
             decrementBtn.addEventListener("click", function () {
                 updateQuantity(-1);
+                updateCartQuantity();
             });
-
             incrementBtn.addEventListener("click", function () {
                 updateQuantity(1);
+                updateCartQuantity();
             });
 
             // Handle color selection
@@ -226,17 +243,21 @@
                 }
             }
 
-            // Auto-select the first color button on page load
-            if (colorButtons.length > 0) {
-                selectColor(colorButtons[0]);
+            // Update hidden color input when color changes
+            function updateCartColor(selectedColor) {
+                if (cartColorInput) cartColorInput.value = selectedColor;
             }
-
-            // Add event listener to each color button
             colorButtons.forEach(button => {
                 button.addEventListener("click", function () {
                     selectColor(this);
+                    updateCartColor(this.getAttribute("data-color"));
                 });
             });
+            // Set default color on load
+            if (colorButtons.length > 0) {
+                selectColor(colorButtons[0]);
+                updateCartColor(colorButtons[0].getAttribute("data-color"));
+            }
 
             // Handle customize button click
             const customizeButton = document.getElementById("customizeButton");
@@ -272,5 +293,33 @@
             showSlide(currentIndex);
         });
 
+        document.addEventListener("DOMContentLoaded", function () {
+            const addToCartForm = document.getElementById('addToCartForm');
+            if (addToCartForm) {
+                addToCartForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(addToCartForm);
+                    fetch(addToCartForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                            'X-Requested-With': 'XMLHttpRequest', // <-- Add this line
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.cartCount !== undefined) {
+                            document.querySelectorAll('.cart-badge').forEach(el => {
+                                el.textContent = data.cartCount;
+                            });
+                        }
+                        Swal.fire('Added to cart!', '', 'success');
+                    })
+                    .catch(() => Swal.fire('Failed to add to cart!', '', 'error'));
+                });
+            }
+        });
     </script>
 @endsection

@@ -168,7 +168,7 @@
 
                                     <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
                                         <p class="text-xs text-gray-500 mb-2">Selected colors:</p>
-                                        <input type="hidden" name="colors[]" id="colors_json">
+                                        <input type="hidden" name="colors" id="colors_json">
                                         <div id="color_display" class="flex flex-wrap items-center gap-2 min-h-10"></div>
                                     </div>
 
@@ -183,7 +183,7 @@
                                         <input type="number" id="size_input" placeholder="Enter item size available (e.g.2l,3l)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                         <button type="button" onclick="addSize()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5">Add Size</button>
                                     </div>
-                                    <input type="hidden" name="sizes[]" id="sizes_json">
+                                    <input type="hidden" name="sizes" id="sizes_json">
                                     <div id="size_display" class="mt-4 flex flex-wrap items-center gap-2 text-sm justify-start item-content-center place-item-center"></div>
                                 </div>
                                 <div class="col-span-2 sm:col-span-1">
@@ -497,7 +497,7 @@
                                                                     <div class="w-[370px] relative border-2 border-gray-300 border-dashed rounded-lg p-6">
                                                                         <input type="file" name="thumbnail" class="absolute inset-0 w-full h-full opacity-0 z-50" id="edit_file_upload_{{$tumbler->id}}">
                                                                         <div class="text-center">
-                                                                            <img id="edit_preview_img_{{$tumbler->id}}" class="mx-auto h-24 w-24" src="{{ Storage::url($tumbler->Thumbnail ?? $model->Thumbnail) }}" alt="Current Thumbnail">
+                                                                            <img id="edit_preview_img_{{$tumbler->id}}" class="mx-auto h-24 w-24" src="{{ Storage::url($tumbler->thumbnails ? (is_array(json_decode($tumbler->thumbnails)) ? json_decode($tumbler->thumbnails)[0] : $tumbler->thumbnails) : 'default.png') }}" alt="Current Thumbnail">
                                                                             <h3 class="mt-2 text-sm font-medium text-gray-900">
                                                                                 <label for="edit_file_upload_{{$tumbler->id}}" class="relative cursor-pointer">
                                                                                     <span>Drag and drop</span>
@@ -1088,22 +1088,7 @@
                 $decoded = json_decode($colorsRaw, true);
                 if (is_array($decoded)) {
                     foreach($decoded as $item) {
-                        if (is_string($item)) {
-                            if (strpos($item, '[') === 0 || strpos($item, '{') === 0) {
-                                $nestedDecoded = json_decode($item, true);
-                                if (is_array($nestedDecoded)) {
-                                    foreach($nestedDecoded as $nestedItem) {
-                                        $colors[] = $nestedItem;
-                                    }
-                                } else {
-                                    $colors[] = $item;
-                                }
-                            } else {
-                                $colors[] = $item;
-                            }
-                        } else if (is_array($item)) {
-                            $colors = array_merge($colors, $item);
-                        }
+                        $colors[] = $item;
                     }
                 }
             }
