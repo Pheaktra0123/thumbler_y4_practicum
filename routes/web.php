@@ -50,6 +50,7 @@ Route::get('/Trending_home', function () {
     return view('/Pages/Home_Trending_Tumbler');
 });
 Route::get('/categories', [App\Http\Controllers\HomeController::class, 'Categories'])->name('search.categories');
+Route::get('/category/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByCategory'])->name('category.tumblers');
 //route for normal user
 Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/User/Dashboard', [\App\Http\Controllers\HomeController::class, 'dashboard'])->name('User/Dashboard');

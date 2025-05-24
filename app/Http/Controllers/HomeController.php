@@ -168,4 +168,20 @@ class HomeController extends Controller
         }
         return redirect()->back();
     }
+    public function filterByCategory($categoryId)
+    {
+        $tumblers = Tumbler::where('category_id', $categoryId)->paginate(4);
+        $Categories = Categories::all();
+        $ModelTumbler = ModelTumbler::all();
+
+        return view('Pages.category', compact('tumblers', 'Categories', 'ModelTumbler'));
+    }
+    public function filterByModel($modelId)
+    {
+        $tumblers = Tumbler::where('model_id', $modelId)->paginate(4);
+        $Categories = Categories::all();
+        $ModelTumbler = ModelTumbler::all();
+
+        return view('Pages.Home_Category', compact('tumblers', 'Categories', 'ModelTumbler'));
+    }
 }

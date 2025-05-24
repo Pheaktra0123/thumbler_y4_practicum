@@ -1,7 +1,6 @@
 @extends('Component.header')@extends('TailwindCssLink.style')
 @section('title','Category Tumbler')
 @section('contents')
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,66 +43,7 @@
 
             </div>
         </div>
-
-        <!-- our category section -->
-        <section class="mt-10" id="services">
-            <div class="container w-full mx-auto px-4">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center font-serif">Our Categories</h2>
-                <div class="w-11/12 mx-auto flex flex-wrap gap-10 justify-center items-center">
-                    @if(!isset($Categories) || count($Categories) === 0)
-                    <div class="col-span-full">
-                        <p class="text-center text-gray-600">No categories found</p>
-                        <!-- Add this for debugging -->
-                        @if(config('app.debug'))
-                        <p class="text-center text-sm text-gray-500 mt-2">
-                            Debug: Categories variable is {{ isset($Categories) ? 'set' : 'not set' }}
-                            {{ isset($Categories) ? '(Count: ' . count($Categories) . ')' : '' }}
-                        </p>
-                        @endif
-                    </div>
-                    @else
-                    @foreach ($Categories as $category)
-                    <div class=" max-w-md">
-                        <div class="h-full shadow-sm border-gray-200 border-opacity-60 rounded-lg overflow-hidden hover:shadow-xl duration-300 hover:scale-105  ">
-                            <img class="h-64 w-full object-cover object-center " src="{{ $category->Thumbnail ? Storage::url($category->Thumbnail) : asset('default-image.jpg') }}"
-                                alt="{{ $category->name ?? 'Category Image' }}">
-                            <div class="p-6">
-                                <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORY</h2>
-                                <h1 class="title-font text-lg font-medium text-gray-900 mb-3 font-mono">{{ $category->name ?? 'Unknown Category' }}</h1>
-                                <div class="flex items-center flex-wrap">
-                                    <a href="{{ route('category.tumblers', $category->id) }}" class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0 font-sans">
-                                        See all items
-                                        <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M5 12h14"></path>
-                                            <path d="M12 5l7 7-7 7"></path>
-                                        </svg>
-                                    </a>
-                                    <span class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
-                                        <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                            <circle cx="12" cy="12" r="3"></circle>
-                                        </svg>
-                                        1.2K
-                                    </span>
-                                    <span class="text-gray-400 inline-flex items-center leading-none text-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                        </svg>
-
-                                        {{$category->created_at->diffForHumans()}}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                    @endif
-                </div>
-            </div>
-        </section>
-
-        <!-- All items section -->
+  <!-- All items section -->
         <h1 class="font-bold text-4xl text-center mt-10 font-serif ">Choose your own Tumbler!!</h1>
         <p class="text-center text-gray-600 font-serif opacity-50 mt-5">One stop solution for flour grinding services</p>
         <div class="flex justify-between items-center px-10 mb-24 ">
