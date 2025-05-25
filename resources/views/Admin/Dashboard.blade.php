@@ -8,6 +8,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <title>Document</title>
 </head>
 <style>
@@ -42,41 +45,96 @@
         <h1 class="text-4xl font-bold text-gray-700 text-start mb-8">
             Welcome to Admin Dashboard
         </h1>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white rounded-lg shadow-sm p-5 flex gap-16">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-10 h-10 font-bold text-sky-900 ">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                    </svg>
-                    <h2 class="text-xl font-bold text-gray-600 mb-4">Customers</h2>
+         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Revenue Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Revenue</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">$48,291</p>
+                            <div class="flex items-center mt-2">
+                                <span class="text-green-600 text-sm font-medium flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i>
+                                    12%
+                                </span>
+                                <span class="text-gray-500 text-sm ml-2">vs last month</span>
+                            </div>
+                        </div>
+                        <div class="w-12 h-12 bg-cordes-blue bg-opacity-10 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-dollar-sign text-cordes-blue text-xl"></i>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-3xl text-gray-600 font-bold place-content-center">
-                    {{$users->count()}}
-                </p>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm p-5 flex gap-16">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-10 h-10 text-sky-900">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                    </svg>
-                    <h2 class="text-xl font-bold text-gray-600 mb-4 mt-2">Orders</h2>
+
+                <!-- Users Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Users</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">{{
+                                auth()->user()->count() ? auth()->user()->count() : 0
+                            }}</p>
+                            <div class="flex items-center mt-2">
+                                <span class="text-green-600 text-sm font-medium flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i>
+                                   {{ auth()->user()->count() ? auth()->user()->count() * 0.1 : 0 }}%
+                                </span>
+                                <span class="text-gray-500 text-sm ml-2">
+                                    {{ auth()->user()->count() ? 'vs last month' : 'No users yet' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-green-600 text-xl"></i>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-3xl text-gray-600 font-bold place-content-center">
-                    1000
-                </p>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm p-5 flex gap-16">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-10 h-10 text-sky-900">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
-                    </svg>
-                    <h2 class="text-xl font-bold text-gray-600 mb-4 mt-2">Payments</h2>
+
+                <!-- Orders Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Orders</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">2,847</p>
+                            <div class="flex items-center mt-2">
+                                <span class="text-green-600 text-sm font-medium flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i>
+                                    15%
+                                </span>
+                                <span class="text-gray-500 text-sm ml-2">vs last month</span>
+                            </div>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-shopping-cart text-orange-600 text-xl"></i>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-3xl text-gray-600 font-bold place-content-center">
-                    1000$
-                </p>
+
+                <!-- Products Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Products</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">
+                                {{ $tumblers->count() ? $tumblers->count() : 0 }}
+                            </p>
+                            <div class="flex items-center mt-2">
+                                <span class="text-green-600 text-sm font-medium flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i>
+                                    {{ $tumblers->count() ? round($tumblers->count() * 0.05, 2) : 0 }}%
+                                </span>
+                                <span class="text-gray-500 text-sm ml-2">{{
+                                    $tumblers->count() ? 'vs last month' : 'No products yet'
+                                }}</span>
+                            </div>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-box text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+
     </div>
 </div>
 <div class="flex justify-center w-11/12 mx-auto mt-8">

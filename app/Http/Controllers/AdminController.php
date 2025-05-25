@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categories;
+use App\Models\Tumbler;
 use App\Models\User;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class  AdminController extends Controller
@@ -43,12 +45,15 @@ class  AdminController extends Controller
     }
     public function index()
     {
-        return view('pages/home');
+        $tumblers=Tumbler::all();
+        return view('pages/home',compact('tumblers'));
     }
 
     public function adminHome()
     {
-        return view('dashboard');
+        $users = User::all();
+        $tumbler = Tumbler::count();
+        return view('dashboard', compact('users', 'tumblers'));
     }
 
     public function Model(){
@@ -68,5 +73,10 @@ class  AdminController extends Controller
 
         $users = $query->paginate(6); // Paginate the results
         return view('Admin/List_roles', compact('users'));
+    }
+    public function viewOrder()
+    {
+        $orders = Order::with('user')->latest()->get();
+        return view('Admin.order', compact('orders'));
     }
 }

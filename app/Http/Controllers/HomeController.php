@@ -34,7 +34,8 @@ class HomeController extends Controller
     public function adminHome()
     {
         $users=User::all();
-        return view('Admin/Dashboard',compact('users'));
+        $tumblers = Tumbler::get();
+        return view('Admin/Dashboard',compact('users','tumblers'));
     }
     public function Categories()
     {
@@ -129,6 +130,12 @@ class HomeController extends Controller
     }
     public function cart()
     {
+        $users = User::all();
+        $cart = session()->get('cart', []);
+        if (empty($cart)) {
+            return redirect()->back()->with('error', 'Your cart is empty!');
+        }
+
         return view('Pages.cart');
     }
     public function removeFromCart($key)

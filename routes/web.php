@@ -112,6 +112,9 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::post('/Admin/store/tumbler', [TumblerController::class, 'store'])->name('tumbler.store');
     Route::put('/Admin/update/tumbler/{id}', [TumblerController::class, 'update'])->name('update.tumbler');
     Route::delete('/Admin/delete/tumbler/{id}', [TumblerController::class, 'destroy'])->name('Admin.delete.tumbler');
+
+    //Route for Order
+    Route::get('/Admin/Order', [\App\Http\Controllers\AdminController::class, 'viewOrder'])->name('Admin.Order');
 });
 //test route
 
