@@ -39,10 +39,16 @@ class HomeController extends Controller
     public function Categories()
     {
         try {
-            $Categories = Categories::all(); // Paginate categories (6 per page)
+            $Categories = Categories::all(); // Get all categories
             $ModelTumbler = ModelTumbler::all();
-            $tumblers = Tumbler::with(['category', 'model'])->paginate(4); // Paginate tumblers (8 per page)
-            
+            // Eager load reviews to avoid N+1 queries
+            $tumblers = Tumbler::with(['reviews', 'category', 'model'])->paginate(4);
+
+            foreach ($tumblers as $tumbler) {
+                $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
+                $tumbler->rating_count = $tumbler->reviews->count();
+            }
+
             return view('Pages.Home_Category', compact('Categories', 'ModelTumbler', 'tumblers'));
         } catch (\Exception $e) {
             Log::error('Error fetching data: ' . $e->getMessage());
@@ -73,7 +79,11 @@ class HomeController extends Controller
                 $q->where('name', 'LIKE', "%{$query}%");
             })
             ->paginate(4); // Paginate the results
-
+        // Eager load reviews to avoid N+1 queries
+        foreach ($tumblers as $tumbler) {
+            $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
+            $tumbler->rating_count = $tumbler->reviews->count();
+        }
         $Categories = Categories::paginate(6);
 
         return view('Pages.Home_Category', compact('tumblers', 'Categories', 'query'));
@@ -173,6 +183,16 @@ class HomeController extends Controller
         $tumblers = Tumbler::where('category_id', $categoryId)->paginate(4);
         $Categories = Categories::all();
         $ModelTumbler = ModelTumbler::all();
+        // Eager load reviews to avoid N+1 queries
+        foreach ($tumblers as $tumbler) {
+            $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
+            $tumbler->rating_count = $tumbler->reviews->count();
+        }
+        // Return the view with the tumblers, categories, and model tumbler data
+        if ($tumblers->isEmpty()) {
+            return redirect()->back()->with('error', 'No tumblers found for this category.');
+        }
+        // Return the view with the filtered tumblers
 
         return view('Pages.category', compact('tumblers', 'Categories', 'ModelTumbler'));
     }
@@ -181,7 +201,19 @@ class HomeController extends Controller
         $tumblers = Tumbler::where('model_id', $modelId)->paginate(4);
         $Categories = Categories::all();
         $ModelTumbler = ModelTumbler::all();
-
         return view('Pages.Home_Category', compact('tumblers', 'Categories', 'ModelTumbler'));
+    }
+    public function homeCategory()
+    {
+        $Categories = Categories::all();
+        // Eager load reviews to avoid N+1 queries
+        $tumblers = Tumbler::with('reviews', 'category', 'model')->paginate(8);
+
+        foreach ($tumblers as $tumbler) {
+            $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
+            $tumbler->rating_count = $tumbler->reviews->count();
+        }
+
+        return view('Pages.Home_Category', compact('Categories', 'tumblers'));
     }
 }

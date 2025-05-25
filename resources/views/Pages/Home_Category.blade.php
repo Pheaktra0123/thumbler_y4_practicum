@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="TumblerHaven - Your one-stop solution for tumbler grinding services. Explore our categories and find the perfect tumbler for you.">2      
+    <meta name="description" content="TumblerHaven - Your one-stop solution for tumbler grinding services. Explore our categories and find the perfect tumbler for you.">2
 </head>
 
 <body">
@@ -80,11 +80,8 @@
                                         </svg>
                                     </a>
                                     <span class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
-                                        <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                            <circle cx="12" cy="12" r="3"></circle>
-                                        </svg>
-                                        1.2K
+                                       
+                                     
                                     </span>
                                     <span class="text-gray-400 inline-flex items-center leading-none text-sm">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -112,51 +109,83 @@
         </div>
         <section id="Projects" class="flex justify-center items-center flex-wrap gap-10 px-10">
             @forelse ($tumblers as $tumbler)
-                <div class="w-72 bg-white object-center object-cover shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-                    <a href="{{ route('tumbler.details', $tumbler->id) }}" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0 object-center object-cover" data-taos-offset="100">
-                        <img src="{{ !empty($tumbler->thumbnails) ? Storage::url(json_decode($tumbler->thumbnails)[0]) : asset('cuz_1.png') }}" alt="{{ $tumbler->tumbler_name }}" class="h-96 w-72 object-fit object-center rounded-t-xl" />
-                        <div class="px-4 py-3 w-72">
-                            <span class="text-gray-400 mr-3 uppercase text-xs">{{ $tumbler->category->name ?? 'Unknown Category' }}</span>
-                            <div>
-                                <p class="text-s mt-2 font-bold text-black truncate block capitalize">{{ $tumbler->tumbler_name }}</p>
-                                <p class="flex items-center text-s font-semibold text-black cursor-auto my-3">
-                                    {{ $tumbler->model->name ?? 'Unknown Model' }} |
-                                    @php
-                                        $sizes = json_decode($tumbler->sizes, true);
-                                        $firstSize = 'N/A';
-                                        if (is_array($sizes)) {
-                                            // Remove empty values and reindex
-                                            $sizes = array_values(array_filter($sizes));
-                                            if (isset($sizes[0]) && !empty($sizes[0])) {
-                                                $firstSize = trim(str_replace(['"', '[', ']'], '', $sizes[0]));
-                                            }
-                                        }
-                                        echo $firstSize;
-                                    @endphp
-                                </p>
-                            </div>
-                            <div class="flex items-center">
-                                <p class="text-lg font-semibold text-black cursor-auto my-3">${{ number_format($tumbler->price, 2) }}</p>
-                                @if($tumbler->original_price)
-                                    <del>
-                                        <p class="text-sm text-gray-600 cursor-auto ml-2">${{ number_format($tumbler->original_price, 2) }}</p>
-                                    </del>
-                                @endif
-                                <div class="ml-auto">
-                                    @if($tumbler->stock > 0)
-                                        <p class="text-sm text-gray-600 ml-2 border-b border-black cursor-pointer">Add to Cart</p>
-                                    @else
-                                        <p class="text-sm text-red-600 ml-2">Out of Stock</p>
+            <div class="w-72 bg-white object-center object-cover shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                <a href="{{ route('tumbler.details', $tumbler->id) }}" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0 object-center object-cover" data-taos-offset="100">
+                    <img src="{{ !empty($tumbler->thumbnails) ? Storage::url(json_decode($tumbler->thumbnails)[0]) : asset('cuz_1.png') }}" alt="{{ $tumbler->tumbler_name }}" class="h-96 w-72 object-fit object-center rounded-t-xl" />
+                    <div class="px-4 py-3 w-72">
+                        <span class="text-gray-400 mr-3 uppercase text-xs">{{ $tumbler->category->name ?? 'Unknown Category' }}</span>
+                        <div>
+                            <p class="text-s mt-2 font-bold text-black truncate block capitalize">{{ $tumbler->tumbler_name }}</p>
+                            <p class="flex items-center text-s font-semibold text-black cursor-auto my-3">
+                                {{ $tumbler->model->name ?? 'Unknown Model' }} |
+                                @php
+                                $sizes = json_decode($tumbler->sizes, true);
+                                $firstSize = 'N/A';
+                                if (is_array($sizes)) {
+                                // Remove empty values and reindex
+                                $sizes = array_values(array_filter($sizes));
+                                if (isset($sizes[0]) && !empty($sizes[0])) {
+                                $firstSize = trim(str_replace(['"', '[', ']'], '', $sizes[0]));
+                                }
+                                }
+                                echo $firstSize;
+                                @endphp
+                            </p>
+                        </div>
+                        <div class="flex items-center mt-2">
+                            @php
+                            $rating = $tumbler->rating ?? 0;
+                            $ratingCount = $tumbler->rating_count ?? 0;
+                            $fullStars = floor($rating);
+                            $halfStar = ($rating - $fullStars) >= 0.5;
+                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                            @endphp
+                            <div class="flex items-center space-x-1">
+                                @for ($i = 0; $i < $fullStars; $i++)
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <polygon points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " /></svg>
+                                    @endfor
+                                    @if ($halfStar)
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <defs>
+                                            <linearGradient id="half-grad">
+                                                <stop offset="50%" stop-color="currentColor" />
+                                                <stop offset="50%" stop-color="#e5e7eb" />
+                                            </linearGradient>
+                                        </defs>
+                                        <polygon fill="url(#half-grad)" points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " />
+                                    </svg>
                                     @endif
-                                </div>
+                                    @for ($i = 0; $i < $emptyStars; $i++)
+                                        <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                        <polygon points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " /></svg>
+                                        @endfor
+                            </div>
+                            <span class="text-gray-800 ml-2 font-semibold">{{ number_format($rating, 1) }} <span class="text-gray-500 font-normal">out of 5</span></span>
+
+                        </div>
+                        <div class="flex items-center">
+                            <p class="text-lg font-semibold text-black cursor-auto my-3">${{ number_format($tumbler->price, 2) }}</p>
+                            @if($tumbler->original_price)
+                            <del>
+                                <p class="text-sm text-gray-600 cursor-auto ml-2">${{ number_format($tumbler->original_price, 2) }}</p>
+                            </del>
+                            @endif
+                            <div class="ml-auto">
+                                @if($tumbler->stock > 0)
+                                <p class="text-sm text-gray-600 ml-2 border-b border-black cursor-pointer">Add to Cart</p>
+                                @else
+                                <p class="text-sm text-red-600 ml-2">Out of Stock</p>
+                                @endif
                             </div>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
+            </div>
             @empty
-                <div class="col-span-full text-center text-gray-600 mt-10 mb-10">
-                    <p>No tumblers available</p>
-                </div>
+            <div class="col-span-full text-center text-gray-600 mt-10 mb-10">
+                <p>No tumblers available</p>
+            </div>
             @endforelse
         </section>
 

@@ -75,6 +75,38 @@
                                     @endphp
                                 </p>
                             </div>
+                             <div class="flex items-center mt-2">
+                            @php
+                            $rating = $tumbler->rating ?? 0;
+                            $ratingCount = $tumbler->rating_count ?? 0;
+                            $fullStars = floor($rating);
+                            $halfStar = ($rating - $fullStars) >= 0.5;
+                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                            @endphp
+                            <div class="flex items-center space-x-1">
+                                @for ($i = 0; $i < $fullStars; $i++)
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <polygon points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " /></svg>
+                                    @endfor
+                                    @if ($halfStar)
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <defs>
+                                            <linearGradient id="half-grad">
+                                                <stop offset="50%" stop-color="currentColor" />
+                                                <stop offset="50%" stop-color="#e5e7eb" />
+                                            </linearGradient>
+                                        </defs>
+                                        <polygon fill="url(#half-grad)" points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " />
+                                    </svg>
+                                    @endif
+                                    @for ($i = 0; $i < $emptyStars; $i++)
+                                        <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                        <polygon points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " /></svg>
+                                        @endfor
+                            </div>
+                            <span class="text-gray-800 ml-2 font-semibold">{{ number_format($rating, 1) }} <span class="text-gray-500 font-normal">out of 5</span></span>
+
+                        </div>
                             <div class="flex items-center">
                                 <p class="text-lg font-semibold text-black cursor-auto my-3">${{ number_format($tumbler->price, 2) }}</p>
                                 @if($tumbler->original_price)
