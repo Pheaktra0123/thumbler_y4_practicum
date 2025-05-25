@@ -199,15 +199,22 @@ class HomeController extends Controller
     }
     public function filterByModel($modelId)
     {
-        $tumblers = Tumbler::where('model_id', $modelId)->paginate(4);
-        $Categories = Categories::all();
-        $ModelTumbler = ModelTumbler::all();
-        // Eager load reviews to avoid N+1 queries
+        $query = request()->input('query');
+        $tumblers = Tumbler::where('model_id', $modelId)
+            ->when($query, function($q) use ($query) {
+                $q->where('tumbler_name', 'LIKE', "%{$query}%");
+            })
+            ->with(['reviews', 'category', 'model'])
+            ->paginate(8);
+
+        // ... set rating/rating_count if needed ...
+
         foreach ($tumblers as $tumbler) {
             $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
             $tumbler->rating_count = $tumbler->reviews->count();
         }
-        return view('Pages.model', compact('tumblers', 'Categories', 'ModelTumbler'));
+        $model = ModelTumbler::findOrFail($modelId);
+        return view('Pages.model', compact('tumblers', 'model'));
     }
     public function homeCategory()
     {
@@ -221,5 +228,15 @@ class HomeController extends Controller
         }
 
         return view('Pages.Home_Category', compact('Categories', 'tumblers'));
+    }
+    public function searchModel(Request $request)
+    {
+        $query = $request->input('query');
+        if ($query) {
+            $model = ModelTumbler::where('name', 'LIKE', "%{$query}%")->paginate(4);
+        } else {
+            $model = ModelTumbler::paginate(4);
+        }
+        return view('Pages.Home_Model_Tumbler', compact('model', 'query'));
     }
 }

@@ -53,6 +53,8 @@ Route::get('/categories', [App\Http\Controllers\HomeController::class, 'Categori
 Route::get('/category/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByCategory'])->name('category.tumblers');
 //route for filter model
 Route::get('/model/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByModel'])->name('model.tumblers');
+//search model
+Route::get('/search/model', [\App\Http\Controllers\HomeController::class, 'searchModel'])->name('search.model');
 //route for normal user
 Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/User/Dashboard', [\App\Http\Controllers\HomeController::class, 'dashboard'])->name('User/Dashboard');

@@ -13,8 +13,8 @@
 <body">
     <main>
         <div class="relative w-full h-[600px] object-cover" id="home">
-            <div class="absolute inset-0  ">
-                <img src="tumbler_banner.jpg" alt="Background Image" class="object-cover object-center w-full h-full" />
+            <div class="absolute inset-0">
+                <img src="{{ asset('tumbler_banner.jpg') }}" alt="Background Image" class="object-cover object-center w-full h-full" />
 
             </div>
             <div class="absolute inset-9 flex flex-col md:flex-row items-center justify-center">

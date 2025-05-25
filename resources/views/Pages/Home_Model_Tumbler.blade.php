@@ -14,7 +14,7 @@
     <main>
         <div class="relative w-full h-[400px] object-cover" id="home">
             <div class="absolute inset-0 ">
-                <video class="object-cover object-center w-full h-full absolute object-cover" src="animated.mp4"
+                <video class="object-cover object-center w-full h-full absolute object-cover" src="{{ asset('Animated.mp4') }}"
                     type="video/mp4" autoplay muted loop>
                 </video>
 
@@ -27,35 +27,27 @@
                     <label
                         class="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300"
                         for="search-bar">
-                        <input id="search-bar" placeholder="Search Product Name Here ... "
+                        <form id="model-search-form"
+                            action="{{ route('search.model') }}"
+                            name="search"
+                            method="GET"
+                            onsubmit="event.preventDefault(); const searchBar = document.getElementById('search-bar'); const searchBtn = document.getElementById('search-btn'); const searchLoading = document.getElementById('search-loading'); const searchBtnText = document.getElementById('search-btn-text'); searchBtn.disabled = true; searchLoading.classList.remove('hidden'); searchBtnText.classList.add('hidden'); this.submit();"
+                            class="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300">
+                        <input id="search-bar" name="query" 
+                        placeholder="Search Product Name Here ... "
                             class="px-6 py-2 w-full rounded-md flex-1 outline-none bg-white">
-                        <button
+
+                        <button type="submit" id="search-btn"
                             class="w-full md:w-auto px-6 py-3 bg-black border-black text-white fill-white active:scale-95 duration-100 border will-change-transform overflow-hidden relative rounded-xl transition-all disabled:opacity-70">
-
-                            <div class="relative">
-
-                                <!-- Loading animation change opacity to display -->
-                                <div
-                                    class="flex items-center justify-center h-3 w-3 absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 transition-all">
-                                    <svg class="opacity-0 animate-spin w-full h-full" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                            stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor"
-                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                        </path>
-                                    </svg>
-                                </div>
-
-                                <div class="flex items-center transition-all opacity-1 valid:"><span
-                                        class="text-sm font-semibold whitespace-nowrap truncate mx-auto">
-                                        Search
-                                    </span>
-                                </div>
-
-                            </div>
-
+                            <span id="search-btn-text">Search</span>
+                            <svg id="search-loading" class="hidden w-5 h-5 ml-2 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
                         </button>
+                        </form>
                     </label>
                 </div>
 
@@ -71,23 +63,23 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 sm:justify-item-center sm:item-content-center lg:grid-cols-4  justify-items-center ">
 
                     @if(!isset($model) || count($model) === 0)
-                    <div class="col-span-full text-center">
-                        <p class="text-gray-500 text-lg">No models available at the moment.</p>
-                    </div>
+                        <div class="col-span-full text-center">
+                            <p class="text-gray-500 text-lg">No models available at the moment.</p>
+                        </div>
                     @else
-                    @foreach ($model as $item)
-                    <a href="{{route('model.tumblers', ['id' => $item->id])}}">
-                        <article
-                            class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-8 pt-40  mx-auto mt-24 w-[350px] h-[350px] bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                            <img src="{{Storage::url($item->Thumbnail)}}" alt="{{$item->name}}" class="absolute inset-0 h-full w-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
-                            <h3 class="z-10 mt-3 text-3xl font-bold text-white">{{$item->name}}</h3>
-                            <div class="z-10 gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
-                                {{ $item->tumblers ? $item->tumblers->count() : 0 }} Tumblers
-                            </div>
-                        </article>
-                    </a>
-                    @endforeach
+                        @foreach ($model as $item)
+                            <a href="{{route('model.tumblers', ['id' => $item->id])}}">
+                                <article
+                                    class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-8 pt-40  mx-auto mt-24 w-[350px] h-[350px] bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                    <img src="{{Storage::url($item->Thumbnail)}}" alt="{{$item->name}}" class="absolute inset-0 h-full w-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
+                                    <h3 class="z-10 mt-3 text-3xl font-bold text-white">{{$item->name}}</h3>
+                                    <div class="z-10 gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
+                                        {{ $item->tumblers ? $item->tumblers->count() : 0 }} Tumblers
+                                    </div>
+                                </article>
+                            </a>
+                        @endforeach
                     @endif
                 </div>
             </div>
@@ -96,4 +88,20 @@
 </body>
 
 </html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('model-search-form');
+    const btn = document.getElementById('search-btn');
+    const btnText = document.getElementById('search-btn-text');
+    const loadingIcon = document.getElementById('search-loading');
+
+    if (form) {
+        form.addEventListener('submit', function() {
+            btn.disabled = true;
+            btnText.classList.add('opacity-50');
+            loadingIcon.classList.remove('hidden');
+        });
+    }
+});
+</script>
 @endsection
