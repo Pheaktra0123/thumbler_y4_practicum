@@ -7,6 +7,7 @@ use App\Models\ModelTumbler;
 use App\Models\Tumbler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class TumblerController extends Controller
 {
@@ -87,6 +88,8 @@ class TumblerController extends Controller
         $tumbler->colors = json_encode($colors);
         $tumbler->sizes = json_encode($sizes);
         $tumbler->thumbnails = json_encode($thumbnailPaths);
+        $tumbler->rating = 3.9; // fallback if not set
+        $tumbler->rating_count = 27;
         $tumbler->save();
 
         return redirect()->back()->with('success', 'Tumbler created successfully!');
@@ -96,18 +99,14 @@ class TumblerController extends Controller
     {
         $tumbler = Tumbler::findOrFail($id);
 
-        // Decode colors properly
-        $decodedColors = json_decode($tumbler->colors, true);
-        if (is_array($decodedColors) && count($decodedColors) > 0) {
-            $tumbler->colors = json_decode($decodedColors[0], true); // Decode the inner JSON string
-        } else {
-            $tumbler->colors = [];
-        }
+        // Calculate average rating and count from reviews
+        $tumbler->rating = round($tumbler->reviews()->avg('rating'), 1) ?? 0;
+        $tumbler->rating_count = $tumbler->reviews()->count();
 
-        // Decode thumbnails
-        $tumbler->thumbnails = json_decode($tumbler->thumbnails, true) ?? [];
+        $tumbler->colors = is_array($tumbler->colors) ? $tumbler->colors : (json_decode($tumbler->colors, true) ?? []);
+        $tumbler->thumbnails = is_array($tumbler->thumbnails) ? $tumbler->thumbnails : (json_decode($tumbler->thumbnails, true) ?? []);
 
-        return view("Pages/details_tumbler", compact('tumbler'));
+        return view('Pages.details_tumbler', compact('tumbler'));
     }
     // update tumbler product
     public function update(Request $request, $id)
@@ -167,6 +166,8 @@ class TumblerController extends Controller
         $tumbler->stock = $request->input('stock');
         $tumbler->description = $request->input('description', '');
         $tumbler->is_available = $request->input('is_available', 1);
+        $tumbler->rating = $tumbler->rating ?? 3.9; // fallback if not set
+        $tumbler->rating_count = $tumbler->rating_count ?? 27;
         $tumbler->save();
 
         return redirect()->back()->with('success', 'Tumbler updated successfully!');
@@ -178,5 +179,33 @@ class TumblerController extends Controller
         $tumbler = Tumbler::findOrFail($id);
         $tumbler->delete();
         return response()->json(['success' => true]);
+    }
+
+    public function rate(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'rating' => 'required|integer|min:1|max:5',
+                'comment' => 'nullable|string|max:1000',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax()) {
+                return response()->json(['errors' => $e->errors()], 422);
+            }
+            throw $e;
+        }
+
+        $tumbler = \App\Models\Tumbler::findOrFail($id);
+
+        $tumbler->reviews()->updateOrCreate(
+            ['user_id' => auth()->id()],
+            ['rating' => $request->rating, 'comment' => $request->comment]
+        );
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->back()->with('success', 'Thank you for your rating!');
     }
 }

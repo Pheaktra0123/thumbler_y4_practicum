@@ -65,6 +65,14 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::post('/add-to-cart/{id}', [HomeController::class, 'addToCart'])->name('add.to.cart');
     Route::post('/remove-from-cart/{key}', [HomeController::class, 'removeFromCart'])->name('remove.from.cart');
     Route::post('/cart/update-quantity/{key}', [\App\Http\Controllers\HomeController::class, 'updateCartQuantity'])->name('update.cart.quantity');
+
+    //rating star and review
+    Route::post('/tumbler/{id}/rate', [App\Http\Controllers\TumblerController::class, 'rate'])->name('tumbler.rate');
+    Route::post('/tumbler/{id}/review', [TumblerController::class, 'addReview'])->name('tumbler.addReview');
+    Route::get('/user/reviews', [TumblerController::class, 'userReviews'])->name('user.reviews');
+    Route::get('/user/reviews/{id}/edit', [TumblerController::class, 'editReview'])->name('user.reviews.edit');
+    Route::put('/user/reviews/{id}/update', [TumblerController::class, 'updateReview'])->name('user.reviews.update');
+    Route::delete('/user/reviews/{id}/delete', [TumblerController::class, 'deleteReview'])->name('user.reviews.delete');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -136,3 +144,4 @@ Route::get('/debug-tumblers', function () {
 });
 
 Route::get('/search', [HomeController::class, 'search'])->name('search.categories');
+

@@ -114,7 +114,7 @@
             @forelse ($tumblers as $tumbler)
                 <div class="w-72 bg-white object-center object-cover shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                     <a href="{{ route('tumbler.details', $tumbler->id) }}" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0 object-center object-cover" data-taos-offset="100">
-                        <img src="{{ !empty($tumbler->thumbnails) ? Storage::url(json_decode($tumbler->thumbnails)[0]) : asset('cuz_1.png') }}" alt="{{ $tumbler->tumbler_name }}" class="h-96 w-72 object-cover object-center rounded-t-xl" />
+                        <img src="{{ !empty($tumbler->thumbnails) ? Storage::url(json_decode($tumbler->thumbnails)[0]) : asset('cuz_1.png') }}" alt="{{ $tumbler->tumbler_name }}" class="h-96 w-72 object-fit object-center rounded-t-xl" />
                         <div class="px-4 py-3 w-72">
                             <span class="text-gray-400 mr-3 uppercase text-xs">{{ $tumbler->category->name ?? 'Unknown Category' }}</span>
                             <div>

@@ -558,7 +558,15 @@
 </body>
 
 </html>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
 <script>
+     ClassicEditor
+    .create(document.querySelector('#description'), {
+        toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote']
+    })
+    .catch(error => {
+      console.error(error);
+    });
     // Enhanced file upload handling with proper browser compatibility
     document.addEventListener('DOMContentLoaded', function() {
         const dropzone = document.getElementById('dropzone');

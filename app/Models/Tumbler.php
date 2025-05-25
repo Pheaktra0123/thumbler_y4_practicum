@@ -37,4 +37,8 @@ class Tumbler extends Model
     {
         return $this->belongsTo(ModelTumbler::class);
     }
+    public function reviews()
+    {
+        return $this->hasMany(\App\Models\Review::class);
+    }
 }
