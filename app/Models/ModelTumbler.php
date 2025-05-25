@@ -19,9 +19,9 @@ class ModelTumbler extends Model
         return $this->belongsTo(Categories::class);
     }
 
-    public function tumbler()
+    public function tumblers()
     {
-        return $this->hasMany(Tumbler::class);
+        return $this->hasMany(\App\Models\Tumbler::class, 'model_id');
     }
     public function reviews()
     {

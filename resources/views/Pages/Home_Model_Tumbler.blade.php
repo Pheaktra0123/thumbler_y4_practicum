@@ -63,41 +63,34 @@
         </div>
 
         <!-- our model section -->
-        <section class="mt-10 py-10" id="services">
-            <div class="container mx-auto px-4">
+        <section class="mt-10 py-8 " id="services">
+            <div class="container  px-4">
                 <h2 class="relative text-4xl font-bold text-gray-800 mb-8 text-center before:absolute before:inset-x-0 before:top-1/2 before:h-0.5 before:bg-gray-300">
                     <span class="relative z-10 bg-gray-100 px-4">Our Top Model</span>
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 sm:justify-item-center sm:item-content-center lg:grid-cols-4  justify-items-center ">
+
                     @if(!isset($model) || count($model) === 0)
-                        <div class="col-span-full text-center">
-                            <p class="text-gray-500 text-lg">No models available at the moment.</p>
-                        </div>
+                    <div class="col-span-full text-center">
+                        <p class="text-gray-500 text-lg">No models available at the moment.</p>
+                    </div>
                     @else
-                        @foreach ($model as $item)
-                            <div class="mt-10 bg-white rounded-lg shadow-md overflow-hidden object-cover object-center ">
-                                @if($item->Thumbnail)
-                                    <img src="{{Storage::url($item->Thumbnail)}}"
-                                        alt="{{ $item->name ?? 'Tumbler Model' }}" 
-                                        class="w-full h-64 object-cover object-center">
-                                @else
-                                    <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
-                                        <span class="text-gray-400">No image available</span>
-                                    </div>
-                                @endif
-                                <div class="p-6 text-center">
-                                    <h3 class="text-xl font-bold text-gray-800 mb-2">{{$item->name ?? 'Unnamed Model'}}</h3>
-                                    <a href="/stanley">
-                                        <button class="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 focus:outline-none focus:bg-gray-800">
-                                            View All Items
-                                        </button>
-                                    </a>
-                                </div>
+                    @foreach ($model as $item)
+                    <a href="{{route('model.tumblers', ['id' => $item->id])}}">
+                        <article
+                            class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-8 pt-40  mx-auto mt-24 w-[350px] h-[350px] bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                            <img src="{{Storage::url($item->Thumbnail)}}" alt="{{$item->name}}" class="absolute inset-0 h-full w-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
+                            <h3 class="z-10 mt-3 text-3xl font-bold text-white">{{$item->name}}</h3>
+                            <div class="z-10 gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
+                                {{ $item->tumblers ? $item->tumblers->count() : 0 }} Tumblers
                             </div>
-                        @endforeach
+                        </article>
+                    </a>
+                    @endforeach
                     @endif
                 </div>
-            </div>  
+            </div>
         </section>
     </main>
 </body>

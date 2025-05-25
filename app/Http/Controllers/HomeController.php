@@ -65,6 +65,7 @@ class HomeController extends Controller
         return view('Pages.Home_Model_Tumbler',compact('model'));
     }
 
+    
     public function search(Request $request)
     {
         $query = $request->input('query');
@@ -201,7 +202,12 @@ class HomeController extends Controller
         $tumblers = Tumbler::where('model_id', $modelId)->paginate(4);
         $Categories = Categories::all();
         $ModelTumbler = ModelTumbler::all();
-        return view('Pages.Home_Category', compact('tumblers', 'Categories', 'ModelTumbler'));
+        // Eager load reviews to avoid N+1 queries
+        foreach ($tumblers as $tumbler) {
+            $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
+            $tumbler->rating_count = $tumbler->reviews->count();
+        }
+        return view('Pages.model', compact('tumblers', 'Categories', 'ModelTumbler'));
     }
     public function homeCategory()
     {
