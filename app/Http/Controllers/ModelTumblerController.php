@@ -24,8 +24,13 @@ class ModelTumblerController extends Controller
         }
 
         $Models = $query->paginate(4); // Paginate the results (5 per page)
+        $tumblers = ModelTumbler::all(); // Get all tumblers
         $categories = Categories::all(); // Get all categories
-        return view('CRUD/Model_Crud/View_model', compact('Models', 'categories'));
+        // Eager load the category relationship for each model
+        foreach ($Models as $model) {
+            $model->category_name = $model->category ? $model->category->name : 'Uncategorized';
+        }
+        return view('CRUD/Model_Crud/View_model', compact('Models', 'categories', 'tumblers'));
     }
     public function store(Request $request)
     {

@@ -77,11 +77,11 @@
                             </svg>
 
                             <span
-                                class="w-4 h-4 md:w-5 md:h-5 bg-red-500 text-white text-xs font-semibold rounded-full text-center content-items-center place-content-center absolute -top-1 md:-top-2 right-0 md:right-8">
-                                0
+                                class="cart-badge w-4 h-4 md:w-5 md:h-5 bg-red-500 text-white text-xs font-semibold rounded-full text-center content-items-center place-content-center absolute -top-1 md:-top-2 right-0 md:right-8">
+                                {{ $cartCount ?? 0 }}
                             </span>
                             <a
-                                href="#"
+                                href="{{route('user.viewCart')}}"
                                 class="hidden md:block ml-2 text-md font-normal text-gray-900 hover:text-gray-600 transition-colors duration-300">
                                 Cart
                             </a>
@@ -174,22 +174,40 @@
 
     <main>
         <section class="section-card-dialog">
-            <div id="cartDialog" class=" p-4 fixed z-50 hidden flex right-0 top-36 transform -translate-y-1/2">
-                <div class="bg-white w-80 h-70 rounded-lg shadow-lg p-4 relative">
-
-                    <!-- Close Button -->
-                    <button id="closeCartDialog" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                    <!-- Dialog Content -->
+            <div id="cartDialog" class="p-4 fixed z-50 hidden flex right-0 top-12 transform ">
+                <div class="bg-white w-80 max-h-[400px] rounded-lg shadow-lg p-4 relative overflow-y-auto">
                     <h3 class="text-xl font-bold mb-4">Your Cart</h3>
-                    <p class="text-gray-600 text-center justify-center">Your cart is currently empty.</p>
-                    <!-- <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Continue
-            Shopping</button> -->
+                    @if(count($cartItems) > 0)
+                        <ul class="space-y-4">
+                            @foreach($cartItems as $item)
+                                <li class="flex items-center gap-3 border-b pb-2">
+                                    <img src="{{ $item['image'] ? asset('storage/' . $item['image']) : asset('images/default-placeholder.png') }}"
+                                         alt="{{ $item['name'] }}"
+                                         class="w-12 h-12 object-cover rounded border" />
+                                    <div class="flex-1">
+                                        <div class="font-semibold text-gray-800 text-sm">{{ $item['name'] }}</div>
+                                        <div class="text-xs text-gray-500">Qty: {{ $item['quantity'] }}</div>
+                                        <div class="text-xs text-gray-500">Price: ${{ number_format($item['price'], 2) }}</div>
+                                        @if(!empty($item['color']))
+                                            <div class="inline-block w-4 h-4 rounded-full border mt-1" style="background:{{ $item['color'] }}"></div>
+                                        @endif
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <div class="mt-4 flex justify-between items-center">
+                            <span class="font-bold text-gray-700 text-sm">Total:</span>
+                            <span class="font-bold text-green-600 text-lg">
+                                ${{ number_format(array_sum(array_map(fn($i) => $i['price'] * $i['quantity'], $cartItems)), 2) }}
+                            </span>
+                        </div>
+                        <a href="{{ route('user.viewCart') }}"
+                           class="block mt-4 w-full text-center bg-gray-900 text-white py-2 rounded hover:bg-gray-800 transition">
+                            View Full Cart
+                        </a>
+                    @else
+                        <p class="text-gray-600 text-center justify-center">Your cart is currently empty.</p>
+                    @endif
                 </div>
             </div>
         </section>
@@ -258,27 +276,36 @@
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Get references to the elements
         const cartIcon = document.getElementById("cartIcon");
         const cartDialog = document.getElementById("cartDialog");
         const closeCartDialog = document.getElementById("closeCartDialog");
+        let hoverTimeout;
 
-        // Add event listener to the cart icon to open the cart dialog
-        cartIcon.addEventListener("click", function(e) {
-            e.preventDefault(); // Prevent the default anchor behavior (/# redirection)
+        // Remove click event for cartIcon (do not open on click)
+        // cartIcon.addEventListener("click", ...); // <-- Remove or comment out
+
+        // Show cart dialog on hover
+        cartIcon.addEventListener("mouseenter", function() {
+            clearTimeout(hoverTimeout);
             cartDialog.classList.remove("hidden");
         });
 
-        // Add event listener to the close button to hide the cart dialog
-        closeCartDialog.addEventListener("click", function() {
+        // Hide cart dialog when mouse leaves both icon and dialog
+        cartIcon.addEventListener("mouseleave", function() {
+            hoverTimeout = setTimeout(() => {
+                cartDialog.classList.add("hidden");
+            }, 200);
+        });
+        cartDialog.addEventListener("mouseenter", function() {
+            clearTimeout(hoverTimeout);
+        });
+        cartDialog.addEventListener("mouseleave", function() {
             cartDialog.classList.add("hidden");
         });
 
-        // Optional: Close the cart dialog when clicking outside of it
-        cartDialog.addEventListener("click", function(e) {
-            if (e.target === cartDialog) {
-                cartDialog.classList.add("hidden");
-            }
+        // Close button inside dialog
+        closeCartDialog.addEventListener("click", function() {
+            cartDialog.classList.add("hidden");
         });
     });
 
@@ -288,8 +315,8 @@
             text: "You will be logged out!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#f53636', // Red color for the confirm button
-            cancelButtonColor: '#d5d5d5', // Gray color for the cancel button
+            confirmButtonColor: '#f53636',
+            cancelButtonColor: '#d5d5d5',
             confirmButtonText: 'Yes, log out!',
             cancelButtonText: 'Cancel'
         }).then((result) => {

@@ -151,7 +151,7 @@
                         </li>
                         <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold mx-1 rounded-md">ecommerce</li>
                         <li name="active" data-id="orders" class="px-4 hover:bg-gray-700 mx-1 rounded-md">
-                            <a href="#" class="py-3 flex items-center">
+                            <a href="{{ route('Admin.Order')}}" class="py-3 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" class="w-4 mr-3">
                                     <path stroke-linecap="round" stroke-linejoin="round"

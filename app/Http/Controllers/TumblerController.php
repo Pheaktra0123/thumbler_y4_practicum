@@ -7,6 +7,7 @@ use App\Models\ModelTumbler;
 use App\Models\Tumbler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class TumblerController extends Controller
 {
@@ -21,10 +22,6 @@ class TumblerController extends Controller
     // create new tumbler product
     public function store(Request $request)
     {
-        // Debugging: Dump the request data
-        //dd($request->all());
-
-        // Validate the request
         $request->validate([
             'tumbler_name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
@@ -34,43 +31,52 @@ class TumblerController extends Controller
             'description' => 'required|string',
             'is_available' => 'nullable|boolean',
             'colors' => 'nullable',
-            'sizes' => 'nullable|array',
+            'sizes' => 'nullable',
             'thumbnails' => 'nullable|array',
-            'thumbnails.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240', // 10MB max per file
+            'thumbnails.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         // Handle multiple file uploads
         $thumbnailPaths = [];
         if ($request->hasFile('thumbnails')) {
-            // Debug line you can uncomment if needed
-            // Log::info('Found ' . count($request->file('thumbnails')) . ' files in request');
-            
             foreach ($request->file('thumbnails') as $thumbnail) {
                 $thumbnailPath = $thumbnail->store('thumbnails', 'public');
                 $thumbnailPaths[] = $thumbnailPath;
             }
         }
 
-        // Process colors - ensure they're stored as a simple JSON array
+        // Process colors
         $colors = [];
         if ($request->has('colors')) {
             $colorsInput = $request->input('colors');
             if (is_array($colorsInput)) {
-                // If it's already an array, use it directly
                 $colors = $colorsInput;
             } elseif (is_string($colorsInput)) {
-                // If it's a JSON string, decode it
                 $decodedColors = json_decode($colorsInput, true);
                 if (is_array($decodedColors)) {
                     $colors = $decodedColors;
                 } else {
-                    // If it's a comma-separated string, split it
                     $colors = array_map('trim', explode(',', $colorsInput));
                 }
             }
         }
 
-        // Create a new product
+        // Process sizes
+        $sizes = [];
+        if ($request->has('sizes')) {
+            $sizesInput = $request->input('sizes');
+            if (is_array($sizesInput)) {
+                $sizes = $sizesInput;
+            } elseif (is_string($sizesInput)) {
+                $decodedSizes = json_decode($sizesInput, true);
+                if (is_array($decodedSizes)) {
+                    $sizes = $decodedSizes;
+                } else {
+                    $sizes = array_map('trim', explode(',', $sizesInput));
+                }
+            }
+        }
+
         $tumbler = new Tumbler();
         $tumbler->tumbler_name = $request->input('tumbler_name');
         $tumbler->category_id = $request->input('category_id');
@@ -79,9 +85,11 @@ class TumblerController extends Controller
         $tumbler->stock = $request->input('stock');
         $tumbler->description = $request->input('description');
         $tumbler->is_available = $request->input('is_available', true);
-        $tumbler->colors = json_encode($colors); // Store colors as a simple JSON array
-        $tumbler->sizes = json_encode($request->input('sizes', []));
+        $tumbler->colors = json_encode($colors);
+        $tumbler->sizes = json_encode($sizes);
         $tumbler->thumbnails = json_encode($thumbnailPaths);
+        $tumbler->rating = 3.9; // fallback if not set
+        $tumbler->rating_count = 27;
         $tumbler->save();
 
         return redirect()->back()->with('success', 'Tumbler created successfully!');
@@ -91,18 +99,14 @@ class TumblerController extends Controller
     {
         $tumbler = Tumbler::findOrFail($id);
 
-        // Decode colors properly
-        $decodedColors = json_decode($tumbler->colors, true);
-        if (is_array($decodedColors) && count($decodedColors) > 0) {
-            $tumbler->colors = json_decode($decodedColors[0], true); // Decode the inner JSON string
-        } else {
-            $tumbler->colors = [];
-        }
+        // Calculate average rating and count from reviews
+        $tumbler->rating = round($tumbler->reviews()->avg('rating'), 1) ?? 0;
+        $tumbler->rating_count = $tumbler->reviews()->count();
 
-        // Decode thumbnails
-        $tumbler->thumbnails = json_decode($tumbler->thumbnails, true) ?? [];
+        $tumbler->colors = is_array($tumbler->colors) ? $tumbler->colors : (json_decode($tumbler->colors, true) ?? []);
+        $tumbler->thumbnails = is_array($tumbler->thumbnails) ? $tumbler->thumbnails : (json_decode($tumbler->thumbnails, true) ?? []);
 
-        return view("Pages/details_tumbler", compact('tumbler'));
+        return view('Pages.details_tumbler', compact('tumbler'));
     }
     // update tumbler product
     public function update(Request $request, $id)
@@ -162,6 +166,8 @@ class TumblerController extends Controller
         $tumbler->stock = $request->input('stock');
         $tumbler->description = $request->input('description', '');
         $tumbler->is_available = $request->input('is_available', 1);
+        $tumbler->rating = $tumbler->rating ?? 3.9; // fallback if not set
+        $tumbler->rating_count = $tumbler->rating_count ?? 27;
         $tumbler->save();
 
         return redirect()->back()->with('success', 'Tumbler updated successfully!');
@@ -173,5 +179,33 @@ class TumblerController extends Controller
         $tumbler = Tumbler::findOrFail($id);
         $tumbler->delete();
         return response()->json(['success' => true]);
+    }
+
+    public function rate(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'rating' => 'required|integer|min:1|max:5',
+                'comment' => 'nullable|string|max:1000',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax()) {
+                return response()->json(['errors' => $e->errors()], 422);
+            }
+            throw $e;
+        }
+
+        $tumbler = \App\Models\Tumbler::findOrFail($id);
+
+        $tumbler->reviews()->updateOrCreate(
+            ['user_id' => auth()->id()],
+            ['rating' => $request->rating, 'comment' => $request->comment]
+        );
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->back()->with('success', 'Thank you for your rating!');
     }
 }

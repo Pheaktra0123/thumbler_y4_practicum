@@ -1,21 +1,20 @@
 @extends('Component.header')@extends('TailwindCssLink.style')
 @section('title','Category Tumbler')
 @section('contents')
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="TumblerHaven - Your one-stop solution for tumbler grinding services. Explore our categories and find the perfect tumbler for you.">2
+    <meta name="description" content="TumblerHaven - Your one-stop solution for tumbler grinding services. Explore our categories and find the perfect tumbler for you.">2      
 </head>
 
 <body">
     <main>
         <div class="relative w-full h-[600px] object-cover" id="home">
-            <div class="absolute inset-0  ">
-                <img src="tumbler_banner.jpg" alt="Background Image" class="object-cover object-center w-full h-full" />
+            <div class="absolute inset-0">
+                <img src="{{ asset('tumbler_banner.jpg') }}" alt="Background Image" class="object-cover object-center w-full h-full" />
 
             </div>
             <div class="absolute inset-9 flex flex-col md:flex-row items-center justify-center">
@@ -44,61 +43,7 @@
 
             </div>
         </div>
-
-        <!-- our category section -->
-        <section class="mt-10" id="services">
-            <div class="container w-full mx-auto px-4">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center font-serif">Our Categories</h2>
-                <div class="w-11/12 mx-auto flex flex-wrap gap-10 justify-center items-center">
-                    @if(!isset($Categories) || count($Categories) === 0)
-                    <div class="col-span-full">
-                        <p class="text-center text-gray-600">No categories found</p>
-                        <!-- Add this for debugging -->
-                        @if(config('app.debug'))
-                        <p class="text-center text-sm text-gray-500 mt-2">
-                            Debug: Categories variable is {{ isset($Categories) ? 'set' : 'not set' }}
-                            {{ isset($Categories) ? '(Count: ' . count($Categories) . ')' : '' }}
-                        </p>
-                        @endif
-                    </div>
-                    @else
-                    @foreach ($Categories as $category)
-                    <div class=" max-w-md">
-                        <div class="h-full shadow-sm border-gray-200 border-opacity-60 rounded-lg overflow-hidden hover:shadow-xl duration-300 hover:scale-105  ">
-                            <img class="h-64 w-full object-cover object-center " src="{{ $category->Thumbnail ? Storage::url($category->Thumbnail) : asset('default-image.jpg') }}"
-                                alt="{{ $category->name ?? 'Category Image' }}">
-                            <div class="p-6">
-                                <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORY</h2>
-                                <h1 class="title-font text-lg font-medium text-gray-900 mb-3 font-mono">{{ $category->name ?? 'Unknown Category' }}</h1>
-                                <div class="flex items-center flex-wrap">
-                                    <a href="{{ route('category.tumblers', $category->id) }}" class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0 font-sans">
-                                        See all items
-                                        <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M5 12h14"></path>
-                                            <path d="M12 5l7 7-7 7"></path>
-                                        </svg>
-                                    </a>
-                                    <span class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">  
-                                    </span>
-                                    <span class="text-gray-400 inline-flex items-center leading-none text-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                        </svg>
-
-                                        {{$category->created_at->diffForHumans()}}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                    @endif
-                </div>
-            </div>
-        </section>
-
-        <!-- All items section -->
+  <!-- All items section -->
         <h1 class="font-bold text-4xl text-center mt-10 font-serif ">Choose your own Tumbler!!</h1>
         <p class="text-center text-gray-600 font-serif opacity-50 mt-5">One stop solution for flour grinding services</p>
         <div class="flex justify-between items-center px-10 mb-24 ">
@@ -107,30 +52,30 @@
         </div>
         <section id="Projects" class="flex justify-center items-center flex-wrap gap-10 px-10">
             @forelse ($tumblers as $tumbler)
-            <div class="w-72 bg-white object-center object-cover shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-                <a href="{{ route('tumbler.details', $tumbler->id) }}" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0 object-center object-cover" data-taos-offset="100">
-                    <img src="{{ !empty($tumbler->thumbnails) ? Storage::url(json_decode($tumbler->thumbnails)[0]) : asset('cuz_1.png') }}" alt="{{ $tumbler->tumbler_name }}" class="h-96 w-72 object-fit object-center rounded-t-xl" />
-                    <div class="px-4 py-3 w-72">
-                        <span class="text-gray-400 mr-3 uppercase text-xs">{{ $tumbler->category->name ?? 'Unknown Category' }}</span>
-                        <div>
-                            <p class="text-s mt-2 font-bold text-black truncate block capitalize">{{ $tumbler->tumbler_name }}</p>
-                            <p class="flex items-center text-s font-semibold text-black cursor-auto my-3">
-                                {{ $tumbler->model->name ?? 'Unknown Model' }} |
-                                @php
-                                $sizes = json_decode($tumbler->sizes, true);
-                                $firstSize = 'N/A';
-                                if (is_array($sizes)) {
-                                // Remove empty values and reindex
-                                $sizes = array_values(array_filter($sizes));
-                                if (isset($sizes[0]) && !empty($sizes[0])) {
-                                $firstSize = trim(str_replace(['"', '[', ']'], '', $sizes[0]));
-                                }
-                                }
-                                echo $firstSize;
-                                @endphp
-                            </p>
-                        </div>
-                        <div class="flex items-center mt-2">
+                <div class="w-72 bg-white object-center object-cover shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                    <a href="{{ route('tumbler.details', $tumbler->id) }}" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0 object-center object-cover" data-taos-offset="100">
+                        <img src="{{ !empty($tumbler->thumbnails) ? Storage::url(json_decode($tumbler->thumbnails)[0]) : asset('cuz_1.png') }}" alt="{{ $tumbler->tumbler_name }}" class="h-96 w-72 object-cover object-center rounded-t-xl" />
+                        <div class="px-4 py-3 w-72">
+                            <span class="text-gray-400 mr-3 uppercase text-xs">{{ $tumbler->category->name ?? 'Unknown Category' }}</span>
+                            <div>
+                                <p class="text-s mt-2 font-bold text-black truncate block capitalize">{{ $tumbler->tumbler_name }}</p>
+                                <p class="flex items-center text-s font-semibold text-black cursor-auto my-3">
+                                    {{ $tumbler->model->name ?? 'Unknown Model' }} |
+                                    @php
+                                        $sizes = json_decode($tumbler->sizes, true);
+                                        $firstSize = 'N/A';
+                                        if (is_array($sizes)) {
+                                            // Remove empty values and reindex
+                                            $sizes = array_values(array_filter($sizes));
+                                            if (isset($sizes[0]) && !empty($sizes[0])) {
+                                                $firstSize = trim(str_replace(['"', '[', ']'], '', $sizes[0]));
+                                            }
+                                        }
+                                        echo $firstSize;
+                                    @endphp
+                                </p>
+                            </div>
+                             <div class="flex items-center mt-2">
                             @php
                             $rating = $tumbler->rating ?? 0;
                             $ratingCount = $tumbler->rating_count ?? 0;
@@ -162,28 +107,28 @@
                             <span class="text-gray-800 ml-2 font-semibold">{{ number_format($rating, 1) }} <span class="text-gray-500 font-normal">out of 5</span></span>
 
                         </div>
-                        <div class="flex items-center">
-                            <p class="text-lg font-semibold text-black cursor-auto my-3">${{ number_format($tumbler->price, 2) }}</p>
-                            @if($tumbler->original_price)
-                            <del>
-                                <p class="text-sm text-gray-600 cursor-auto ml-2">${{ number_format($tumbler->original_price, 2) }}</p>
-                            </del>
-                            @endif
-                            <div class="ml-auto">
-                                @if($tumbler->stock > 0)
-                                <p class="text-sm text-gray-600 ml-2 border-b border-black cursor-pointer">Add to Cart</p>
-                                @else
-                                <p class="text-sm text-red-600 ml-2">Out of Stock</p>
+                            <div class="flex items-center">
+                                <p class="text-lg font-semibold text-black cursor-auto my-3">${{ number_format($tumbler->price, 2) }}</p>
+                                @if($tumbler->original_price)
+                                    <del>
+                                        <p class="text-sm text-gray-600 cursor-auto ml-2">${{ number_format($tumbler->original_price, 2) }}</p>
+                                    </del>
                                 @endif
+                                <div class="ml-auto">
+                                    @if($tumbler->stock > 0)
+                                        <p class="text-sm text-gray-600 ml-2 border-b border-black cursor-pointer">Add to Cart</p>
+                                    @else
+                                        <p class="text-sm text-red-600 ml-2">Out of Stock</p>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
             @empty
-            <div class="col-span-full text-center text-gray-600 mt-10 mb-10">
-                <p>No tumblers available</p>
-            </div>
+                <div class="col-span-full text-center text-gray-600 mt-10 mb-10">
+                    <p>No tumblers available</p>
+                </div>
             @endforelse
         </section>
 

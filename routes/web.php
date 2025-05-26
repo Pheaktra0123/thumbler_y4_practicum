@@ -50,6 +50,11 @@ Route::get('/Trending_home', function () {
     return view('/Pages/Home_Trending_Tumbler');
 });
 Route::get('/categories', [App\Http\Controllers\HomeController::class, 'Categories'])->name('search.categories');
+Route::get('/category/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByCategory'])->name('category.tumblers');
+//route for filter model
+Route::get('/model/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByModel'])->name('model.tumblers');
+//search model
+Route::get('/search/model', [\App\Http\Controllers\HomeController::class, 'searchModel'])->name('search.model');
 //route for normal user
 Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/User/Dashboard', [\App\Http\Controllers\HomeController::class, 'dashboard'])->name('User/Dashboard');
@@ -59,6 +64,19 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('User/Model', [HomeController::class, 'model'])->name('user.model');
     Route::get('User/Tumbler', [HomeController::class, 'tumbler'])->name('user.tumbler');
     Route::get('User/Tumbler/details/{id}', [TumblerController::class, 'details'])->name('user.tumbler.details');
+
+    Route::get('user/viewCart',[HomeController::class, 'cart'])->name('user.viewCart');
+    Route::post('/add-to-cart/{id}', [HomeController::class, 'addToCart'])->name('add.to.cart');
+    Route::post('/remove-from-cart/{key}', [HomeController::class, 'removeFromCart'])->name('remove.from.cart');
+    Route::post('/cart/update-quantity/{key}', [\App\Http\Controllers\HomeController::class, 'updateCartQuantity'])->name('update.cart.quantity');
+
+    //rating star and review
+    Route::post('/tumbler/{id}/rate', [App\Http\Controllers\TumblerController::class, 'rate'])->name('tumbler.rate');
+    Route::post('/tumbler/{id}/review', [TumblerController::class, 'addReview'])->name('tumbler.addReview');
+    Route::get('/user/reviews', [TumblerController::class, 'userReviews'])->name('user.reviews');
+    Route::get('/user/reviews/{id}/edit', [TumblerController::class, 'editReview'])->name('user.reviews.edit');
+    Route::put('/user/reviews/{id}/update', [TumblerController::class, 'updateReview'])->name('user.reviews.update');
+    Route::delete('/user/reviews/{id}/delete', [TumblerController::class, 'deleteReview'])->name('user.reviews.delete');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -94,6 +112,9 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::post('/Admin/store/tumbler', [TumblerController::class, 'store'])->name('tumbler.store');
     Route::put('/Admin/update/tumbler/{id}', [TumblerController::class, 'update'])->name('update.tumbler');
     Route::delete('/Admin/delete/tumbler/{id}', [TumblerController::class, 'destroy'])->name('Admin.delete.tumbler');
+
+    //Route for Order
+    Route::get('/Admin/Order', [\App\Http\Controllers\AdminController::class, 'viewOrder'])->name('Admin.Order');
 });
 //test route
 
@@ -130,3 +151,4 @@ Route::get('/debug-tumblers', function () {
 });
 
 Route::get('/search', [HomeController::class, 'search'])->name('search.categories');
+
