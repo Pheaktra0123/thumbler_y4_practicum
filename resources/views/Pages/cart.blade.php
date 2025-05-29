@@ -148,16 +148,21 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('proceed-checkout').addEventListener('click', function(e) {
         e.preventDefault();
         Swal.fire({
-            title: '<span class="block text-2xl font-bold text-[#00b206] mb-2">Checkout</span>',
-            width: 600, // Set fixed width
+            title: '<h1 class="block text-3xl font-bold text-[#00b206] mb-2">Checkout</h1>',
+            width: 800, // Set fixed width
             html: `
                 <div class="text-left space-y-4">
+                <div>
+                                             <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Person Username</label>  
+                    <input
+                        id="swal-username"
+                        class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow "
+                        type="text"
+                        value="{{ auth()->user() ? auth()->user()->username : '' }}"
+                        >
+                </div>
                     <div>
-                        <label for="swal-name" class="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
-                        <input id="swal-name" class="swal2-input " value="{{ auth()->user() ? auth()->user()->name : '' }}" placeholder="Enter your full name" disabled>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Address</label>
+                         <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Address</label>  
                         <div class="flex items-center space-x-4 mb-2">
                             <label class="flex items-center space-x-1">
                                 <input type="radio" name="address-type" id="address-input-radio" checked>
@@ -168,20 +173,59 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <span class="text-sm">Select from Map</span>
                             </label>
                         </div>
-                        <input id="swal-address" class="swal2-input " placeholder="Enter your address">
+                <div id="address-input-div">
+                    <input
+                        id="swal-address"
+                        class="mb-10 w-full px-4 py-4 border border-slate-200 rounded-lg  focus:outline-none focus:border-slate-500 hover:shadow "
+                        type="text"
+                        placeholder="Enter your address"
+                        >
+                </div>
+                </div>
                         <button id="select-map-btn" type="button" class="swal2-confirm swal2-styled mt-2" style="display:none;background:#00b206;">Select Address from Map</button>
                     </div>
                     <div>
-                        <label for="swal-payment" class="block text-sm font-semibold text-gray-700 mb-1">Payment Type</label>
-                        <select id="swal-payment" class="swal2-input w-full">
-                            <option value="" disabled selected>Select Payment Type</option>
-                            <option value="cash">Pay by Cash</option>
-                            <option value="bank">Pay by Bank Transfer</option>
-                        </select>
+                       <div class="flex  items-center">
+  <div class="">
+    <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Payment Method</label>  
+    <div class="flex flex-wrap gap-3">
+      <label class="cursor-pointer border border-gray-300 rounded-md hover:shadow-lg transition-shadow">
+        <input type="radio" class="peer sr-only" name="payment" value="cash" checked />
+        <div class="w-72 max-w-xl rounded-md bg-white  p-5 text-gray-600  ring-2 ring-transparent transition-all hover:shadow peer-checked:text-sky-600 peer-checked:ring-blue-400 peer-checked:ring-offset-2">
+            <div class="flex items-center justify-between">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+</svg>
+
+              <div class="text-sm font-bold">Pay by Cash</div>
+            </div>
+        </div>
+      </label>
+
+      <label class="cursor-pointer border border-gray-300 rounded-md hover:shadow-lg transition-shadow">
+        <input type="radio" class="peer sr-only" name="payment" value="online" id="pay-online-radio" />
+        <div class="w-72 max-w-xl rounded-md bg-white  p-5 text-gray-600  ring-2 ring-transparent transition-all hover:shadow peer-checked:text-sky-600 peer-checked:ring-blue-400 peer-checked:ring-offset-2">
+            <div class="flex items-center justify-between">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+</svg>
+              <div class="text-sm font-bold">Online Pay</div>
+            </div>
+        </div>
+      </label>
+    </div>
+    </div>
+  </div>
+</div>
                     </div>
                     <div id="bank-upload-div" style="display:none;">
+                      <div class="mt-4 flex items-center justify-center gap-5">
+                       <image src="{{ asset('qr (1).jpg') }}" alt="Bank Slip" class="w-56 56 mb-4 mt-4 rounded-lg shadow-md">
+                    <image src="{{ asset('qr (1).jpg') }}" alt="Bank Slip" class="w-56 56 mb-4 mt-4 rounded-lg shadow-md">
+                      </div>
                         <label for="swal-bank-slip" class="block text-sm font-semibold text-gray-700 mb-1">Upload Transaction Slip</label>
-                        <input type="file" id="swal-bank-slip" class="swal2-file w-full" accept="image/*">
+                        <input type="file" id="swal-bank-slip" class=" w-full border-2 rounded-lg" accept="image/*">
+                        <img id="bank-slip-preview" src="" alt="Preview" class="mt-2 rounded shadow w-56" style="display:none;">
                     </div>
                 </div>
             `,
@@ -204,15 +248,40 @@ document.addEventListener("DOMContentLoaded", function() {
                     mapBtn.style.display = '';
                 });
 
-                // Payment type toggle
-                document.getElementById('swal-payment').addEventListener('change', function() {
-                    if (this.value === 'bank') {
-                        document.getElementById('bank-upload-div').style.display = '';
-                    } else {
-                        document.getElementById('bank-upload-div').style.display = 'none';
-                    }
+                // Payment method toggle
+                document.querySelectorAll('input[name="payment"]').forEach(function(radio) {
+                    radio.addEventListener('change', function() {
+                        if (this.value === 'online') {
+                            document.getElementById('bank-upload-div').style.display = '';
+                        } else {
+                            document.getElementById('bank-upload-div').style.display = 'none';
+                        }
+                    });
                 });
-            },
+                // Hide upload by default
+                document.getElementById('bank-upload-div').style.display = 'none';
+
+                // --- ADD THIS BLOCK INSIDE didOpen ---
+    const bankSlipInput = document.getElementById('swal-bank-slip');
+    const previewImg = document.getElementById('bank-slip-preview');
+    if (bankSlipInput && previewImg) {
+        bankSlipInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewImg.src = '';
+                previewImg.style.display = 'none';
+            }
+        });
+    }
+    // --- END BLOCK ---
+},
             focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: 'Submit Order',
@@ -223,9 +292,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 const address = addressType === 'input'
                     ? document.getElementById('swal-address').value.trim()
                     : 'Selected from map';
-                const payment = document.getElementById('swal-payment').value;
+                const payment = document.querySelector('input[name="payment"]:checked')?.value;
                 let bankSlip = null;
-                if (payment === 'bank') {
+                if (payment === 'online') {
                     bankSlip = document.getElementById('swal-bank-slip').files[0];
                     if (!bankSlip) {
                         Swal.showValidationMessage('Please upload your transaction slip.');
@@ -246,6 +315,23 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     });
+
+    const bankSlipInput = document.getElementById('swal-bank-slip');
+const previewImg = document.getElementById('bank-slip-preview');
+bankSlipInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            previewImg.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        previewImg.src = '';
+        previewImg.style.display = 'none';
+    }
+});
 });
 </script>
 @endsection
