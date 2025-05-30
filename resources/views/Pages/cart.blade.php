@@ -2,7 +2,8 @@
 @include('TailwindCssLink.style')
 
 @section('title', 'Customize Tumbler')
-
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 @section('contents')
 
 <section class="w-11/12 mx-auto bg-white py-9 px-8 mt-24 mb-12 rounded-lg">
@@ -124,6 +125,9 @@
 </section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    window.userAddress = @json(auth()->user()->address);
+</script>
+<script>
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.remove-cart-btn').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
@@ -149,43 +153,59 @@ document.addEventListener("DOMContentLoaded", function() {
         e.preventDefault();
         Swal.fire({
             title: '<h1 class="block text-3xl font-bold text-[#00b206] mb-2">Checkout</h1>',
-            width: 800, // Set fixed width
+            width: 800,
             html: `
-                <div class="text-left space-y-4">
-                <div>
-                                             <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Person Username</label>  
-                    <input
-                        id="swal-username"
-                        class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow "
-                        type="text"
-                        value="{{ auth()->user() ? auth()->user()->username : '' }}"
-                        >
+        <div class="text-left space-y-4">
+            <div class="flex w-full item-center justify-between gap-4">
+            <div class="w-1/2">
+                <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Username</label>  
+                <input id="swal-username" class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow" type="text" value="{{ auth()->user() ? auth()->user()->username : '' }}">
+            </div>
+             <div class="w-1/2">
+                <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Phone Number</label>  
+                @if(auth()->user() && auth()->user()->phone)
+                <input id="swal-phone" class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow" type="text" value="{{ auth()->user()->phone }}">
+                @else
+                <input id="swal-phone" class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline:none focus:border-slate-500 hover:shadow" type="text" placeholder="Enter your phone number">
+                @endif
+            </div>
+            </div>
+            <div>
+                <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Address</label>
+                <div class="flex items-center space-x-4 mb-2">
+                    <label class="flex items-center space-x-1">
+                        <input type="radio" name="address-type" id="address-input-radio" checked>
+                        <span class="text-sm">Input Address</span>
+                    </label>
+                    <label class="flex items-center space-x-1">
+                        <input type="radio" name="address-type" id="address-map-radio">
+                        <span class="text-sm">Select from Map</span>
+                    </label>
                 </div>
-                    <div>
-                         <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Address</label>  
-                        <div class="flex items-center space-x-4 mb-2">
-                            <label class="flex items-center space-x-1">
-                                <input type="radio" name="address-type" id="address-input-radio" checked>
-                                <span class="text-sm">Input Address</span>
-                            </label>
-                            <label class="flex items-center space-x-1">
-                                <input type="radio" name="address-type" id="address-map-radio">
-                                <span class="text-sm">Select from Map</span>
-                            </label>
-                        </div>
                 <div id="address-input-div">
-                    <input
-                        id="swal-address"
-                        class="mb-10 w-full px-4 py-4 border border-slate-200 rounded-lg  focus:outline-none focus:border-slate-500 hover:shadow "
-                        type="text"
-                        placeholder="Enter your address"
-                        >
+    <div id="address-list" class="space-y-2">
+        <div class="address-item flex items-center gap-2">
+            @if(auth()->user() && auth()->user()->address)
+                <input name="addresses[]" class="w-full px-4 py-2 border border-slate-200 rounded-lg" type="text" placeholder="Enter your address" value="{{ auth()->user()->address }}">
+            @else
+                <input name="addresses[]" class="w-full px-4 py-2 border border-slate-200 rounded-lg" type="text" placeholder="Enter your address">
+                <button type="button" id="add-address-btn" class="mt-2 p-2 bg-blue-500 text-white rounded-full flex items-center justify-center" title="Add Address">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </button>
+            @endif
+        </div>
+    </div>
+</div>
+                    <div id="map-container" style="display:none;">
+                    <div id="map" style="height: 300px; width: 100%; margin-bottom: 10px;"></div>
+                    <input type="text" id="selected-coords" class="w-full px-4 py-2 border border-slate-200 rounded-lg" placeholder="Selected coordinates" readonly>
+                    <input id="selected-location-name" class="mt-2 text-sm text-blue-700 w-full px-4 py-2 border border-slate-200 rounded-lg"  placeholder="location selected" readonly/>
                 </div>
-                </div>
-                        <button id="select-map-btn" type="button" class="swal2-confirm swal2-styled mt-2" style="display:none;background:#00b206;">Select Address from Map</button>
-                    </div>
-                    <div>
-                       <div class="flex  items-center">
+            </div>
+            <div>
+               <div class="flex  items-center">
   <div class="">
     <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Payment Method</label>  
     <div class="flex flex-wrap gap-3">
@@ -224,8 +244,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     <image src="{{ asset('qr (1).jpg') }}" alt="Bank Slip" class="w-56 56 mb-4 mt-4 rounded-lg shadow-md">
                       </div>
                         <label for="swal-bank-slip" class="block text-sm font-semibold text-gray-700 mb-1">Upload Transaction Slip</label>
-                        <input type="file" id="swal-bank-slip" class=" w-full border-2 rounded-lg" accept="image/*">
-                        <img id="bank-slip-preview" src="" alt="Preview" class="mt-2 rounded shadow w-56" style="display:none;">
+                        <input type="file" id="swal-bank-slip" class="w-full border-2 rounded-lg" accept="image/*">
+<span id="bank-slip-tick" style="display:none;" class="inline-block align-middle ml-2 text-green-600 text-2xl">✔️</span>
+<img id="bank-slip-preview" src="" alt="Preview" class="mt-2 rounded shadow w-56" style="display:none;">
                     </div>
                 </div>
             `,
@@ -236,17 +257,88 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             didOpen: () => {
                 Swal.getPopup().style.overflowY = 'auto';
+
+                // Multi-address logic
+                const addressInputDiv = document.getElementById('address-input-div');
+                const mapContainer = document.getElementById('map-container');
+                const addressList = document.getElementById('address-list');
+                const addAddressBtn = document.getElementById('add-address-btn');
+                if (addAddressBtn) {
+                    addAddressBtn.addEventListener('click', function() {
+                        const input = document.createElement('input');
+                        input.name = "addresses[]";
+                        input.type = "text";
+                        input.placeholder = "Enter your address";
+                        input.className = "mb-2 w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-slate-500 hover:shadow";
+                        addressList.appendChild(input);
+                    });
+                }
+
                 // Address input/map toggle
-                const addressInput = document.getElementById('swal-address');
-                const mapBtn = document.getElementById('select-map-btn');
                 document.getElementById('address-input-radio').addEventListener('change', function() {
-                    addressInput.style.display = '';
-                    mapBtn.style.display = 'none';
+                    addressInputDiv.style.display = '';
+                    mapContainer.style.display = 'none';
                 });
                 document.getElementById('address-map-radio').addEventListener('change', function() {
-                    addressInput.style.display = 'none';
-                    mapBtn.style.display = '';
+                    addressInputDiv.style.display = 'none';
+                    mapContainer.style.display = '';
+                    // Initialize map only once per modal open
+                    if (!window._mapInitialized) {
+                        window._mapInitialized = true;
+                        // Cambodia bounding box: [SouthWest latlng, NorthEast latlng]
+                        const cambodiaBounds = [
+                            [9.912, 102.333],   // Southwest corner (lat, lng)
+                            [14.704, 107.627]   // Northeast corner (lat, lng)
+                        ];
+                        const map = L.map('map', {
+                            maxBounds: cambodiaBounds,
+                            maxBoundsViscosity: 1.0,
+                            minZoom: 6,
+                            maxZoom: 18
+                        }).setView([12.5657, 104.9910], 7); // Center on Cambodia
+
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            attribution: '© OpenStreetMap contributors'
+                        }).addTo(map);
+
+                        let marker;
+                        map.on('click', function(e) {
+                            if (marker) map.removeLayer(marker);
+                            marker = L.marker(e.latlng).addTo(map);
+
+                            document.getElementById('selected-coords').value = `${e.latlng.lat}, ${e.latlng.lng}`;
+
+                            // Reverse geocoding (as before)
+                            fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${e.latlng.lat}&lon=${e.latlng.lng}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    let displayName = data.display_name || 'Unknown location';
+                                    let nameDiv = document.getElementById('selected-location-name');
+                                    if (!nameDiv) {
+                                        nameDiv = document.createElement('div');
+                                        nameDiv.id = 'selected-location-name';
+                                        nameDiv.className = 'mt-2 text-sm text-blue-700';
+                                        document.getElementById('map-container').appendChild(nameDiv);
+                                    }
+                                    nameDiv.textContent = `Selected location: ${displayName}`;
+                                })
+                                .catch(() => {
+                                    let nameDiv = document.getElementById('selected-location-name');
+                                    if (!nameDiv) {
+                                        nameDiv = document.createElement('div');
+                                        nameDiv.id = 'selected-location-name';
+                                        nameDiv.className = 'mt-2 text-sm text-blue-700';
+                                        document.getElementById('map-container').appendChild(nameDiv);
+                                    }
+                                    nameDiv.textContent = 'Selected location: (unable to fetch name)';
+                                });
+                        });
+                    }
                 });
+
+                // Default state
+                addressInputDiv.style.display = '';
+                mapContainer.style.display = 'none';
 
                 // Payment method toggle
                 document.querySelectorAll('input[name="payment"]').forEach(function(radio) {
@@ -264,7 +356,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 // --- ADD THIS BLOCK INSIDE didOpen ---
     const bankSlipInput = document.getElementById('swal-bank-slip');
     const previewImg = document.getElementById('bank-slip-preview');
-    if (bankSlipInput && previewImg) {
+    const tickIcon = document.getElementById('bank-slip-tick');
+    if (bankSlipInput && previewImg && tickIcon) {
         bankSlipInput.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
@@ -272,11 +365,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 reader.onload = function(e) {
                     previewImg.src = e.target.result;
                     previewImg.style.display = 'block';
+                    tickIcon.style.display = 'inline-block'; // Show green tick
                 };
                 reader.readAsDataURL(file);
             } else {
                 previewImg.src = '';
                 previewImg.style.display = 'none';
+                tickIcon.style.display = 'none'; // Hide green tick
             }
         });
     }
@@ -305,6 +400,23 @@ document.addEventListener("DOMContentLoaded", function() {
                     Swal.showValidationMessage('Please fill all fields');
                     return false;
                 }
+                let addresses = [];
+let coords = '';
+if (document.getElementById('address-input-radio').checked) {
+    document.querySelectorAll('input[name="addresses[]"]').forEach(input => {
+        if (input.value.trim()) addresses.push(input.value.trim());
+    });
+    if (addresses.length === 0) {
+        Swal.showValidationMessage('Please enter at least one address.');
+        return false;
+    }
+} else {
+    coords = document.getElementById('selected-coords').value.trim();
+    if (!coords) {
+        Swal.showValidationMessage('Please select a location on the map.');
+        return false;
+    }
+}
                 // You can send the data to your backend here
                 Swal.fire({
                     icon: 'success',
@@ -318,6 +430,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const bankSlipInput = document.getElementById('swal-bank-slip');
 const previewImg = document.getElementById('bank-slip-preview');
+const tickIcon = document.getElementById('bank-slip-tick');
 bankSlipInput.addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
@@ -325,11 +438,119 @@ bankSlipInput.addEventListener('change', function() {
         reader.onload = function(e) {
             previewImg.src = e.target.result;
             previewImg.style.display = 'block';
+            tickIcon.style.display = 'inline-block'; // Show green tick
         };
         reader.readAsDataURL(file);
     } else {
         previewImg.src = '';
         previewImg.style.display = 'none';
+        tickIcon.style.display = 'none'; // Hide green tick
+    }
+});
+
+const addressList = document.getElementById('address-list');
+const addAddressBtn = document.getElementById('add-address-btn');
+
+// Function to add a new address input with remove icon
+function addAddressInput(value = '') {
+    const wrapper = document.createElement('div');
+    wrapper.className = "address-item flex items-center gap-2";
+    const input = document.createElement('input');
+    input.name = "addresses[]";
+    input.type = "text";
+    input.placeholder = "Enter your address";
+    input.className = "w-full px-4 py-2 border border-slate-200 rounded-lg";
+    input.value = value;
+
+    // Remove button
+    const removeBtn = document.createElement('button');
+    removeBtn.type = "button";
+    removeBtn.className = "p-2 text-red-500 hover:bg-red-100 rounded-full";
+    removeBtn.title = "Remove";
+    removeBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    `;
+    removeBtn.onclick = function() {
+        wrapper.remove();
+        // Prevent all addresses from being removed
+        if (addressList.children.length === 0) addAddressInput();
+    };
+
+    wrapper.appendChild(input);
+    wrapper.appendChild(removeBtn);
+    addressList.appendChild(wrapper);
+}
+
+// Start with one address input
+addAddressInput();
+
+addAddressBtn.addEventListener('click', function() {
+    addAddressInput();
+});
+
+const mapContainer = document.getElementById('map-container');
+const addressInputDiv = document.getElementById('address-input-div');
+document.getElementById('address-input-radio').addEventListener('change', function() {
+    addressInputDiv.style.display = '';
+    mapContainer.style.display = 'none';
+});
+document.getElementById('address-map-radio').addEventListener('change', function() {
+    addressInputDiv.style.display = 'none';
+    mapContainer.style.display = '';
+    // Initialize map only once
+    if (!window._mapInitialized) {
+        window._mapInitialized = true;
+        // Cambodia bounding box: [SouthWest latlng, NorthEast latlng]
+        const cambodiaBounds = [
+            [9.912, 102.333],   // Southwest corner (lat, lng)
+            [14.704, 107.627]   // Northeast corner (lat, lng)
+        ];
+        const map = L.map('map', {
+            maxBounds: cambodiaBounds,
+            maxBoundsViscosity: 1.0,
+            minZoom: 6,
+            maxZoom: 18
+        }).setView([12.5657, 104.9910], 7); // Center on Cambodia
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        let marker;
+        map.on('click', function(e) {
+            if (marker) map.removeLayer(marker);
+            marker = L.marker(e.latlng).addTo(map);
+
+            // Show the selected coordinates in the input
+            document.getElementById('selected-coords').value = `${e.latlng.lat}, ${e.latlng.lng}`;
+
+            // --- Reverse Geocoding to get location name ---
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${e.latlng.lat}&lon=${e.latlng.lng}`)
+                .then(response => response.json())
+                .then(data => {
+                    let displayName = data.display_name || 'Unknown location';
+                    // Show the location name below the input
+                    let nameDiv = document.getElementById('selected-location-name');
+                    if (!nameDiv) {
+                        nameDiv = document.createElement('div');
+                        nameDiv.id = 'selected-location-name';
+                        nameDiv.className = 'mt-2 text-sm text-blue-700';
+                        document.getElementById('map-container').appendChild(nameDiv);
+                    }
+                    nameDiv.textContent = `Selected location: ${displayName}`;
+                })
+                .catch(() => {
+                    let nameDiv = document.getElementById('selected-location-name');
+                    if (!nameDiv) {
+                        nameDiv = document.createElement('div');
+                        nameDiv.id = 'selected-location-name';
+                        nameDiv.className = 'mt-2 text-sm text-blue-700';
+                        document.getElementById('map-container').appendChild(nameDiv);
+                    }
+                    nameDiv.textContent = 'Selected location: (unable to fetch name)';
+                });
+            // --- End Reverse Geocoding ---
+        });
     }
 });
 });

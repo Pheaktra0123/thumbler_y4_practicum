@@ -49,7 +49,7 @@
         </div>
 
         <!-- our model section -->
-          <section id="Projects" class="flex justify-center items-center flex-wrap gap-10 px-10">
+          <section id="Projects" class="flex justify-center items-center flex-wrap gap-10 px-10 mt-10">
             @forelse ($tumblers as $tumbler)
                 <div class="w-72 bg-white object-center object-cover shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                     <a href="{{ route('tumbler.details', $tumbler->id) }}" class="delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0 object-center object-cover" data-taos-offset="100">
