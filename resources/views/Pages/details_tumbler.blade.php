@@ -199,7 +199,7 @@
                     <p class="text-sm text-gray-500 text-center">Please <a href="{{ route('login') }}" class="text-blue-600 underline">login</a> to rate this tumbler.</p>
                     @endif
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -303,6 +303,90 @@
     });
 </script>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Live star highlight
+        const starRadios = document.querySelectorAll('input[name="rating"]');
+        const starLabels = document.querySelectorAll('input[name="rating"] + svg');
+
+        function updateStars() {
+            let checkedValue = null;
+            starRadios.forEach((radio, idx) => {
+                if (radio.checked) checkedValue = radio.value;
+            });
+            starRadios.forEach((radio, idx) => {
+                if (radio.value <= checkedValue) {
+                    starLabels[idx].classList.add('text-yellow-400');
+                    starLabels[idx].classList.remove('text-gray-300');
+                } else {
+                    starLabels[idx].classList.remove('text-yellow-400');
+                    starLabels[idx].classList.add('text-gray-300');
+                }
+            });
+        }
+        starRadios.forEach(radio => {
+            radio.addEventListener('change', updateStars);
+        });
+        updateStars();
+
+        // AJAX submit with loading and popup
+        const ratingForm = document.getElementById('ratingForm');
+        const submitBtn = document.getElementById('submitRatingBtn');
+        const loadingIcon = document.getElementById('ratingLoading');
+        if (ratingForm) {
+            ratingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitBtn.disabled = true;
+                loadingIcon.classList.remove('hidden');
+                fetch(ratingForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                            'Accept': 'application/json'
+                        },
+                        body: new FormData(ratingForm)
+                    })
+                    .then(async response => {
+                        loadingIcon.classList.add('hidden');
+                        submitBtn.disabled = false;
+                        if (response.ok) {
+                            // Try to parse JSON, fallback to success if not JSON
+                            try {
+                                const data = await response.json();
+                                if (data.success) {
+                                    Swal.fire('Thank you!', 'Your rating has been submitted.', 'success').then(() => {
+                                        window.location.reload();
+                                    });
+                                    return;
+                                }
+                            } catch (e) {
+                                // Not JSON, but still ok
+                                Swal.fire('Thank you!', 'Your rating has been submitted.', 'success').then(() => {
+                                    window.location.reload();
+                                });
+                                return;
+                            }
+                        }
+                        // If not ok, try to show error
+                        let msg = 'Failed to submit rating.';
+                        if (response.status === 422) {
+                            const data = await response.json();
+                            if (data.errors) {
+                                msg = Object.values(data.errors).flat().join('\n');
+                            }
+                        }
+                        Swal.fire('Error', msg, 'error');
+                    })
+                    .catch(() => {
+                        loadingIcon.classList.add('hidden');
+                        submitBtn.disabled = false;
+                        Swal.fire('Error', 'Failed to submit rating.', 'error');
+                    });
+            });
+        }
+    });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

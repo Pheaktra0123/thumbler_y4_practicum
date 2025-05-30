@@ -17,7 +17,7 @@
         <div class="relative h-80 md:h-96" data-carousel-inner>
             <!-- Item 1 -->
             <div class="carousel-item duration-700 ease-in-out" data-carousel-item>
-                <img src="newtrendbanner1.png" class="object-cover w-full h-full" alt="Slide 1">
+                <img src="trending3.png" class="object-cover w-full h-full" alt="Slide 1">
             </div>
             <!-- Item 2 -->
             <div class="carousel-item duration-700 ease-in-out" data-carousel-item>
@@ -25,7 +25,7 @@
             </div>
             <!-- Item 3 -->
             <div class="carousel-item duration-700 ease-in-out" data-carousel-item>
-                <img src="newtrendbanner1.png" class="object-cover w-full h-full" alt="Slide 3">
+                <img src="trending3.png" class="object-cover w-full h-full" alt="Slide 3">
             </div>
         </div>
 

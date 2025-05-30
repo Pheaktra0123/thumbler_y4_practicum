@@ -44,8 +44,8 @@
                             <span class="font-semibold text-gray-700 text-lg dark:text-gray-300 mb-2">Choose Color</span>
                             <div class="flex items-center space-x-2">
                                 <button
-                                    class="color-btn w-8 h-8 rounded-full bg-gray-200 border-2 border-transparent hover:border-gray-500 focus:border-gray-700"
-                                    data-color="white"></button>
+                                    class="color-btn w-8 h-8 rounded-full bg-pink-500 border-2 border-transparent hover:border-pink-500 focus:border-gray-700"
+                                    data-color="hotpink"></button>
                                 <button
                                     class="color-btn w-8 h-8 rounded-full bg-sky-600 border-2 border-transparent hover:border-sky-600 focus:border-gray-700"
                                     data-color="skyblue"></button>
@@ -271,10 +271,10 @@
 
     // Function to change the tumbler image based on color
     function changeTumblerColor(color) {
-        if (color === "white") {
-            tumblerImage.src = "https://picresize.com/images/twhite-nobg.png?806072";
+        if (color === "hotpink") {
+            tumblerImage.src = "pinkTumbler.png";
         } else if (color === "skyblue") {
-            tumblerImage.src = "https://picresize.com/images/tskyblue-removebg-preview.png?817071";
+            tumblerImage.src = "blueTumbler.png";
         } else if (color === "blue") {
             tumblerImage.src = "https://picresize.com/images/tblue-gray-removebg-preview.png?467171";
         } else if (color === "pink") {
@@ -323,10 +323,10 @@
 
     // Function to change the tumbler image based on color
     function changeTumblerColor(color) {
-        if (color === "white") {
-            tumblerImage.src = "https://picresize.com/images/twhite-nobg.png?806072";
+        if (color === "hotpink") {
+            tumblerImage.src = "pinkTumbler.png";
         } else if (color === "skyblue") {
-            tumblerImage.src = "https://picresize.com/images/tskyblue-removebg-preview.png?817071";
+            tumblerImage.src = "blueTumbler.png";
         } else if (color === "blue") {
             tumblerImage.src = "https://picresize.com/images/tblue-gray-removebg-preview.png?467171";
         } else if (color === "pink") {
