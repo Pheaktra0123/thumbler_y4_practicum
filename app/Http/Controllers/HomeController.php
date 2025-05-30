@@ -126,7 +126,7 @@ class HomeController extends Controller
             $cartCount = array_sum(array_column(session('cart', []), 'quantity'));
             return response()->json(['cartCount' => $cartCount]);
         }
-        return redirect()->route('user.viewCart')->with('success', 'Tumbler added to cart successfully!');
+        return redirect()->route('user.viewCart')->with('success', 'Added to cart!');
     }
     public function cart()
     {
@@ -245,5 +245,98 @@ class HomeController extends Controller
             $model = ModelTumbler::paginate(4);
         }
         return view('Pages.Home_Model_Tumbler', compact('model', 'query'));
+    }
+    public function customizeTumbler($id)
+    {
+        $tumbler = \App\Models\Tumbler::findOrFail($id);
+        return view('Pages.customize_tumbler', compact('tumbler'));
+    }
+    public function saveCustomizedTumbler(Request $request, $id)
+    {
+        $request->validate([
+            'engraving' => 'nullable|string|max:6',
+            'font' => 'nullable|string',
+            'color' => 'required|string',
+            'quantity' => 'required|integer|min:1',
+            'image' => 'nullable|image|max:1024', // 1MB max
+        ]);
+
+        $tumbler = \App\Models\Tumbler::findOrFail($id);
+
+        $custom = [
+            'tumbler_id' => $id,
+            'name' => $tumbler->tumbler_name,
+            'engraving' => $request->engraving,
+            'font' => $request->font,
+            'color' => $request->color,
+            'quantity' => $request->quantity,
+            'price' => $tumbler->price,
+        ];
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('custom_tumblers', 'public');
+            $custom['image'] = $path;
+        } else {
+            $thumbs = is_array($tumbler->thumbnails) ? $tumbler->thumbnails : json_decode($tumbler->thumbnails, true);
+            $custom['image'] = $thumbs[0] ?? 'black-nobg.png';
+        }
+
+        // Save to customized session (replace if all fields match)
+        $customized = session()->get('customized', []);
+        $found = false;
+        foreach ($customized as $idx => $item) {
+            if (
+                $item['tumbler_id'] == $custom['tumbler_id'] &&
+                $item['color'] == $custom['color'] &&
+                ($item['engraving'] ?? '') == ($custom['engraving'] ?? '') &&
+                ($item['font'] ?? '') == ($custom['font'] ?? '')
+            ) {
+                $customized[$idx] = $custom;
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            $customized[] = $custom;
+        }
+        session(['customized' => $customized]);
+
+        return redirect()->route('customized.tumblers')->with('success', 'Customization saved!');
+    }
+    public function viewCustomizedTumblers()
+    {
+        $customized = session('customized', []);
+        return view('Pages.customized_tumblers', compact('customized'));
+    }
+    public function deleteCustomizedTumbler(Request $request, $id)
+    {
+        $customized = session()->get('customized', []);
+        foreach ($customized as $idx => $item) {
+            if ($item['tumbler_id'] == $id) {
+                unset($customized[$idx]);
+                break;
+            }
+        }
+        session(['customized' => array_values($customized)]);
+        return redirect()->route('customized.tumblers')->with('success', 'Customization deleted!');
+    }
+    public function customizedTumblerDetails($id)
+    {
+        $customized = session('customized', []);
+        $custom = null;
+        foreach ($customized as $item) {
+            if ($item['tumbler_id'] == $id) {
+                $custom = $item;
+                break;
+            }
+        }
+        if (!$custom) {
+            return redirect()->route('customized.tumblers')->with('error', 'Customization not found.');
+        }
+
+        $tumbler = \App\Models\Tumbler::find($id);
+
+        return view('Pages.customized_detail', compact('custom', 'tumbler'));
     }
 }

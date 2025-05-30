@@ -71,11 +71,6 @@
     </tbody>
     <tfoot>
       <tr class="border-t border-gray-400">
-        <td class="px-2 py-2" colspan="3">
-          <a href="/" class="px-8 cursor-pointer py-3.5 bg-[#f2f2f2] rounded-[43px] text-[#4c4c4c] text-sm font-semibold leading-[16px]">
-            Return to shop
-          </a>
-        </td>
         <td class="px-2 py-2" colspan="2">
           <span class="font-bold">Total: ${{ number_format($total, 2) }}</span>
         </td>
@@ -105,22 +100,6 @@
       Proceed to checkout
     </button>
   </div>
-  </div>
-  <div
-    class="mt-6 p-5 w-[800px] bg-white rounded-lg border border-[#e6e6e6] justify-start items-center gap-6 inline-flex">
-    <h3
-      class="text-[#191919] w-1/4 text-xl font-medium className leading-[30px]">
-      Coupon Code
-    </h3>
-    <div class="w-full border border-[#e6e6e6]">
-      <input
-        placeholder="Enter code"
-        type="text"
-        class="w-2/3 px-6 py-3.5 outline-none bg-white rounded-[46px] text-[#999999] text-base font-normal leading-normal" /><button
-        class="px-10 py-4 bg-[#333333] rounded-[43px] text-white text-base font-semibold leading-tight">
-        Apply Coupon
-      </button>
-    </div>
   </div>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

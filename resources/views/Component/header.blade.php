@@ -14,6 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         function toggleMenu() {
             const menu = document.getElementById("menu");
@@ -58,14 +60,14 @@
                                 <path fill-rule="evenodd" d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 0 0 .281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 1 0 3 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 0 0 2.273 1.765 11.842 11.842 0 0 0 .976.544l.062.029.018.008.006.003ZM10 11.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" clip-rule="evenodd" />
                             </svg>
 
-                            <a href="#" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Location</a>
+                            <a href="#" onclick="showLocationPopup(); return false;" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Location</a>
                         </div>
                         <div class="relative flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
                                 <path d="M15.993 1.385a1.87 1.87 0 0 1 2.623 2.622l-4.03 5.27a12.749 12.749 0 0 1-4.237 3.562 4.508 4.508 0 0 0-3.188-3.188 12.75 12.75 0 0 1 3.562-4.236l5.27-4.03ZM6 11a3 3 0 0 0-3 3 .5.5 0 0 1-.72.45.75.75 0 0 0-1.035.931A4.001 4.001 0 0 0 9 14.004V14a3.01 3.01 0 0 0-1.66-2.685A2.99 2.99 0 0 0 6 11Z" />
                             </svg>
 
-                            <a href="/customize" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Customize</a>
+                            <a href="{{ route('customized.tumblers') }}" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Customized</a>
                         </div>
                     </div>
                 </div>
@@ -323,6 +325,23 @@
             if (result.isConfirmed) {
                 window.location.href = "/logout";
             }
+        });
+    }
+
+    function showLocationPopup() {
+        Swal.fire({
+            title: 'Our Store Location',
+            html: `
+                <div class="mb-2 font-semibold text-gray-700">Tumbler Haven Store</div>
+                <div class="mb-2 text-gray-600 text-sm">Royal University of Phnom Penh</div>
+                <div style="width:100%;border-radius:8px;overflow:hidden;">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.7652965627717!2d104.88816677481728!3d11.56867598863239!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109519fe4077d69%3A0x20138e822e434660!2sRoyal%20University%20of%20Phnom%20Penh!5e0!3m2!1sen!2skh!4v1748585371174!5m2!1sen!2skh"
+                        width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            `,
+            width: 600,
+            showCloseButton: true,
+            showConfirmButton: false,
         });
     }
 </script>

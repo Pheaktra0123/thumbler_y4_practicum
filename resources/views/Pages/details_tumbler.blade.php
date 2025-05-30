@@ -149,10 +149,13 @@
                             Out of Stock
                         </button>
                         @endif
-                        <button id="customizeButton"
-                            class="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-full font-bold hover:bg-gray-300">
-                            Customize
-                        </button>
+                        <a href="{{ route('customize.tumbler', ['id' => $tumbler->id]) }}">
+                            <button id="customizeButton"
+                                class="w-full text-black py-3 px-6 border-2 rounded-full font-bold ">
+                                Customize
+                            </button>
+                        </a>
+                       
                     </div>
                 </div>
             </div>

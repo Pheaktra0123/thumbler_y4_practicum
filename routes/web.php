@@ -77,6 +77,13 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/user/reviews/{id}/edit', [TumblerController::class, 'editReview'])->name('user.reviews.edit');
     Route::put('/user/reviews/{id}/update', [TumblerController::class, 'updateReview'])->name('user.reviews.update');
     Route::delete('/user/reviews/{id}/delete', [TumblerController::class, 'deleteReview'])->name('user.reviews.delete');
+
+    //customize tumbler
+    Route::get('/customize_tumbler/{id}', [HomeController::class, 'customizeTumbler'])->name('customize.tumbler');
+    Route::post('/customize_tumbler/{id}/save', [HomeController::class, 'saveCustomizedTumbler'])->name('customize.tumbler.save');
+    Route::get('/customized_tumblers', [HomeController::class, 'viewCustomizedTumblers'])->name('customized.tumblers');
+    Route::get('/customized_tumbler/{id}/details', [HomeController::class, 'customizedTumblerDetails'])->name('customized.tumbler.details');
+    Route::post('/customized_tumbler/{id}/delete', [HomeController::class, 'deleteCustomizedTumbler'])->name('customized.tumbler.delete');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -128,10 +135,6 @@ Route::get('/customizedetails', function () {
     return view('/Pages/customizedetails');
 });
 
-Route::get('/customize_tumbler', function () {
-    return view('/Pages.customize_tumbler');
-});
-
 // Add this new route outside the middleware group
 Route::get('/Categories_home', [App\Http\Controllers\HomeController::class, 'Categories'])->name('categories.home');
 
@@ -151,4 +154,5 @@ Route::get('/debug-tumblers', function () {
 });
 
 Route::get('/search', [HomeController::class, 'search'])->name('search.categories');
+
 
