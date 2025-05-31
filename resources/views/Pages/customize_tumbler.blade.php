@@ -43,6 +43,7 @@
                             <div class="flex items-center space-x-2">
                                 @php
                                     $colors = is_array($tumbler->colors) ? $tumbler->colors : json_decode($tumbler->colors, true);
+                                    $selectedColor = request('color') ?? (is_array($colors) && count($colors) ? trim($colors[0], '"[]\\') : '');
                                 @endphp
                                 @foreach($colors as $idx => $color)
                                     @php
@@ -53,9 +54,10 @@
                                             $cleanColor = '#' . $cleanColor;
                                         }
                                         if (empty($cleanColor)) $cleanColor = '#cccccc';
+                                        $isSelected = $cleanColor == $selectedColor;
                                     @endphp
                                     <button
-                                        class="color-btn w-8 h-8 rounded-full border-2 border-transparent hover:border-gray-700 focus:border-gray-700 {{ $idx === 0 ? 'border-gray-700' : '' }}"
+                                        class="color-btn w-8 h-8 rounded-full border-2 {{ $isSelected ? 'border-gray-700' : 'border-transparent' }} hover:border-gray-700 focus:border-gray-700"
                                         style="background-color: {{ $cleanColor }}"
                                         data-color="{{ $cleanColor }}">
                                     </button>
@@ -68,7 +70,7 @@
                 <div class="mt-6 border p-4 rounded-lg">
                     <label class="text-lg font-semibold text-gray-700">Engraving <span class="text-gray-500">+ $10</span></label>
                     <div class="mt-3 flex items-center gap-4">
-                        <input type="text" id="engravingText" placeholder="6 Letters only!" maxlength="6"
+                        <input type="text" id="engravingText" placeholder="6 Letters only!" maxlength="6
                             class="border p-3 rounded-lg text-center w-44 smalllcase" name="engraving">
                         <select id="fontSelect" class="border p-3 rounded-lg w-44" name="font">
                             <option selected disabled>Select Font</option>
@@ -108,13 +110,25 @@
                     </div>
                 </div>
                 <div class="mt-6">
-                    <label class="text-lg font-semibold text-gray-700">Quantity</label>
                     <div class="mt-2 border p-4 rounded-lg gap-2 flex justify-between items-center">
-                        <select id="quantitySelect" class="border p-2 rounded-lg w-20" name="quantity">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
+                        <label class="text-lg font-semibold text-gray-700">Quantity</label>
+                        @php
+    $selectedQty = intval(request('quantity', 1));
+    if ($selectedQty < 1) $selectedQty = 1;
+@endphp
+                        <div class="flex items-center">
+                            <button type="button" id="decreaseQuantity"
+                                class="bg-gray-200 p-2 rounded-l-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                                -
+                            </button>
+                            <input type="number" id="quantityInput" name="quantity" value="{{ $selectedQty }}"
+                                class="border-t border-b w-16 text-center focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                min="1" max="100">
+                            <button type="button" id="increaseQuantity"
+                                class="bg-gray-200 p-2 rounded-r-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                                +
+                            </button>
+                        </div>
                          <form method="POST" action="{{ route('add.to.cart', $tumbler->id) }}" class="flex-1" id="addToCartForm">
                             @csrf
                             <input type="hidden" name="quantity" id="cartQuantity" value="1">
@@ -136,30 +150,28 @@
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    // Color selection logic
     const colorButtons = document.querySelectorAll('.color-btn');
-    const tumblerImage = document.getElementById('tumblerImage');
     const selectedColorInput = document.getElementById('selectedColor') || document.createElement('input');
-    // If not present, add a hidden input for color
     if (!selectedColorInput.id) {
         selectedColorInput.type = "hidden";
         selectedColorInput.name = "color";
         selectedColorInput.id = "selectedColor";
-        tumblerImage.parentNode.appendChild(selectedColorInput);
+        document.body.appendChild(selectedColorInput);
+    }
+    // Find the selected color button
+    let selectedBtn = Array.from(colorButtons).find(btn => btn.classList.contains('border-gray-700'));
+    if (selectedBtn) {
+        selectedColorInput.value = selectedBtn.getAttribute("data-color");
+    } else if (colorButtons[0]) {
+        selectedColorInput.value = colorButtons[0].getAttribute("data-color");
     }
     colorButtons.forEach(button => {
         button.addEventListener("click", function () {
             colorButtons.forEach(btn => btn.classList.remove("border-gray-700"));
             this.classList.add("border-gray-700");
             selectedColorInput.value = this.getAttribute("data-color");
-            // Optionally, change tumbler image if you have images per color
-            // tumblerImage.src = ...;
         });
     });
-    if (colorButtons[0]) {
-        selectedColorInput.value = colorButtons[0].getAttribute("data-color");
-    }
-
     // Engraving text logic
     const engravingText = document.getElementById('engravingText');
     const fontSelect = document.getElementById('fontSelect');

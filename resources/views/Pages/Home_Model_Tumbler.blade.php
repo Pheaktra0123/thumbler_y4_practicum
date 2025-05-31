@@ -24,20 +24,16 @@
                     <h1 class="text-grey-700  font-bold text-4xl md:text-5xl leading-tight mb-2">Model Tumbler Haven
                     </h1>
                     <p class="font-regular text-xl mb-8 mt-4">One stop solution for flour grinding services</p>
-                    <label
-                        class="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300"
-                        for="search-bar">
-                        <form id="model-search-form"
-                            action="{{ route('search.model') }}"
+                    <form id="model-search-form"
+                          action="{{ route('search.model') }}"
                             name="search"
                             method="GET"
                             onsubmit="event.preventDefault(); const searchBar = document.getElementById('search-bar'); const searchBtn = document.getElementById('search-btn'); const searchLoading = document.getElementById('search-loading'); const searchBtnText = document.getElementById('search-btn-text'); searchBtn.disabled = true; searchLoading.classList.remove('hidden'); searchBtnText.classList.add('hidden'); this.submit();"
-                            class="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300">
-                        <input id="search-bar" name="query" 
-                        placeholder="Search Product Name Here ... "
-                            class="px-6 py-2 w-full rounded-md flex-1 outline-none bg-white">
 
-                        <button type="submit" id="search-btn"
+                          class="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300">
+                        <input id="search-bar" name="query" placeholder="Search Product Name Here ..."
+                            class="px-6 py-2 w-full rounded-md flex-1 outline-none bg-white">
+                        <button id="search-btn" type="submit"
                             class="w-full md:w-auto px-6 py-3 bg-black border-black text-white fill-white active:scale-95 duration-100 border will-change-transform overflow-hidden relative rounded-xl transition-all disabled:opacity-70">
                             <span id="search-btn-text">Search</span>
                             <svg id="search-loading" class="hidden w-5 h-5 ml-2 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -47,8 +43,7 @@
                                 </path>
                             </svg>
                         </button>
-                        </form>
-                    </label>
+                    </form>
                 </div>
 
             </div>

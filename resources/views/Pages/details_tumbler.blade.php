@@ -149,12 +149,17 @@
                             Out of Stock
                         </button>
                         @endif
-                        <a href="{{ route('customize.tumbler', ['id' => $tumbler->id]) }}">
-                            <button id="customizeButton"
-                                class="w-full text-black py-3 px-6 border-2 rounded-full font-bold ">
-                                Customize
-                            </button>
-                        </a>
+                        @php
+                        $selectedColor = isset($tumbler->colors[0]) ? (is_string($tumbler->colors[0]) ? trim($tumbler->colors[0], '"[]\\') : '') : '';
+                        @endphp
+
+                       <a id="customizeLink"
+   href="{{ route('customize.tumbler', ['id' => $tumbler->id, 'color' => $selectedColor]) }}">
+    <button id="customizeButton"
+        class="w-full text-black py-3 px-6 border-2 rounded-full font-bold ">
+        Customize
+    </button>
+</a>
                        
                     </div>
                 </div>
