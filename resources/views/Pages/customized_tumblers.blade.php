@@ -32,16 +32,12 @@
                         <div><strong>Quantity:</strong> {{ $item['quantity'] }}</div>
                     </div>
                     <div class="flex flex-col gap-2 items-end min-w-[160px]">
-                        <a href="{{ route('customized.tumbler.details', ['id' => $item['tumbler_id']]) }}"
-                           class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center transition mb-1">
-                            View Customized Detail
-                        </a>
                         <button 
                             class="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition delete-btn"
-                            data-id="{{ $item['tumbler_id'] }}">
+                            data-id="{{ $item['id'] }}">
                             Delete
                         </button>
-                        <form id="delete-form-{{ $item['tumbler_id'] }}" action="{{ route('customized.tumbler.delete', ['id' => $item['tumbler_id']]) }}" method="POST" style="display:none;">
+                        <form id="delete-form-{{ $item['id'] }}" action="{{ route('customized.tumbler.delete', ['id' => $item['id']]) }}" method="POST" style="display:none;">
                             @csrf
                         </form>
                     </div>

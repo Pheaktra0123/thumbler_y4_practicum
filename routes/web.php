@@ -53,6 +53,8 @@ Route::get('/categories', [App\Http\Controllers\HomeController::class, 'Categori
 Route::get('/category/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByCategory'])->name('category.tumblers');
 //route for filter model
 Route::get('/model/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByModel'])->name('model.tumblers');
+//route for filter tumbler by category
+Route::get('/category/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterInCategory'])->name('category.tumblers');
 //search model
 Route::get('/search/model', [\App\Http\Controllers\HomeController::class, 'searchModel'])->name('search.model');
 //route for normal user
@@ -78,13 +80,15 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::put('/user/reviews/{id}/update', [TumblerController::class, 'updateReview'])->name('user.reviews.update');
     Route::delete('/user/reviews/{id}/delete', [TumblerController::class, 'deleteReview'])->name('user.reviews.delete');
 
+    Route::post('/cart/submit-order', [HomeController::class, 'submitOrder'])->name('cart.submitOrder');
     //customize tumbler
     Route::get('/customize_tumbler/{id}', [HomeController::class, 'customizeTumbler'])->name('customize.tumbler');
     Route::post('/customize_tumbler/{id}/save', [HomeController::class, 'saveCustomizedTumbler'])->name('customize.tumbler.save');
-    Route::get('/customized_tumblers', [HomeController::class, 'viewCustomizedTumblers'])->name('customized.tumblers');
+Route::get('/customized-tumblers', [HomeController::class, 'customizedTumblers'])->name('customized.tumblers');
     Route::get('/customized_tumbler/{id}/details', [HomeController::class, 'customizedTumblerDetails'])->name('customized.tumbler.details');
     Route::post('/customized_tumbler/{id}/delete', [HomeController::class, 'deleteCustomizedTumbler'])->name('customized.tumbler.delete');
 });
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('User/Categories', [HomeController::class, 'Categories'])->name('user.categories');
@@ -122,6 +126,11 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 
     //Route for Order
     Route::get('/Admin/Order', [\App\Http\Controllers\AdminController::class, 'viewOrder'])->name('Admin.Order');
+    Route::post('/admin/orders/{order}/confirm', [AdminController::class, 'confirmOrder'])->name('admin.orders.confirm');
+    Route::delete('/admin/orders/{order}/reject', [AdminController::class, 'rejectOrder'])->name('admin.orders.reject');
+
+    Route::get('/admin/report', [AdminController::class, 'reportView'])->name('admin.report');
+Route::get('/admin/report/export', [AdminController::class, 'exportMonthlySales'])->name('admin.report.export');
 });
 //test route
 
@@ -154,5 +163,6 @@ Route::get('/debug-tumblers', function () {
 });
 
 Route::get('/search', [HomeController::class, 'search'])->name('search.categories');
+
 
 

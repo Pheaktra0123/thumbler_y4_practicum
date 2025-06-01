@@ -35,12 +35,41 @@
           @php $subtotal = $item['price'] * $item['quantity']; $total += $subtotal; @endphp
           <tr class="text-center">
             <td class="px-2 py-2 text-left align-top">
-              <img
-                src="{{ asset('storage/' . $item['image']) }}"
-                alt="{{ $item['name'] }}"
-                class="w-[100px] mr-2 inline-block h-[100px]" />
+              @if(file_exists(public_path('storage/' . $item['image'])))
+                  <img src="{{ asset('storage/' . $item['image']) }}" 
+                       alt="{{ $item['name'] }}"
+                       class="w-[100px] mr-2 inline-block h-[100px]" />
+              @else
+                  <div class="w-[100px] h-[100px] bg-gray-200 flex items-center justify-center">
+                      Image not found
+                  </div>
+              @endif
             </td>
-            <td>{{$item['name']}}</td>
+            <td>
+              {{$item['name']}}
+              @if(!empty($item['engraving']) || !empty($item['font']))
+                  <div class="text-xs text-blue-700">
+                      @if(!empty($item['engraving']))
+                          Engraving: <b>{{ $item['engraving'] }}</b><br>
+                      @endif
+                      @if(!empty($item['font']))
+                          Font: <b>{{ $item['font'] }}</b>
+                      @endif
+                  </div>
+              @endif
+              @if(!empty($item['customized']))
+                  <span class="inline-block bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded">Customized</span>
+                  <!-- Customized detail icon -->
+                  <button type="button"
+                      class="ml-2 text-blue-600 hover:text-blue-900"
+                      title="View customization detail"
+                      onclick="showCustomizeDetail('{{ addslashes(json_encode($item)) }}')">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="inline h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                  </button>
+              @endif
+            </td>
             <td class="" ">
                         <div class=" w-[30px] h-[30px] inline-block rounded-full"
               style="background-color: {{ $item['color'] }};">
@@ -300,6 +329,10 @@ document.addEventListener("DOMContentLoaded", function() {
                                         document.getElementById('map-container').appendChild(nameDiv);
                                     }
                                     nameDiv.textContent = `Selected location: ${displayName}`;
+                                    let nameInput = document.getElementById('selected-location-name');
+if (nameInput) {
+    nameInput.value = displayName;
+}
                                 })
                                 .catch(() => {
                                     let nameDiv = document.getElementById('selected-location-name');
@@ -361,49 +394,80 @@ document.addEventListener("DOMContentLoaded", function() {
             confirmButtonText: 'Submit Order',
             cancelButtonText: 'Cancel',
             preConfirm: () => {
-                const name = document.getElementById('swal-name').value.trim();
-                const addressType = document.getElementById('address-input-radio').checked ? 'input' : 'map';
-                const address = addressType === 'input'
-                    ? document.getElementById('swal-address').value.trim()
-                    : 'Selected from map';
-                const payment = document.querySelector('input[name="payment"]:checked')?.value;
-                let bankSlip = null;
-                if (payment === 'online') {
-                    bankSlip = document.getElementById('swal-bank-slip').files[0];
-                    if (!bankSlip) {
-                        Swal.showValidationMessage('Please upload your transaction slip.');
-                        return false;
-                    }
-                }
-                if (!name || (!address && addressType === 'input') || !payment) {
-                    Swal.showValidationMessage('Please fill all fields');
-                    return false;
-                }
-                let addresses = [];
-let coords = '';
-if (document.getElementById('address-input-radio').checked) {
-    document.querySelectorAll('input[name="addresses[]"]').forEach(input => {
-        if (input.value.trim()) addresses.push(input.value.trim());
+                const username = document.getElementById('swal-username').value.trim();
+    const phone = document.getElementById('swal-phone').value.trim();
+    const addressType = document.getElementById('address-input-radio').checked ? 'input' : 'map';
+    let addresses = [];
+    let coords = '';
+    if (addressType === 'input') {
+        document.querySelectorAll('input[name="addresses[]"]').forEach(input => {
+            if (input.value.trim()) addresses.push(input.value.trim());
+        });
+        if (addresses.length === 0) {
+            Swal.showValidationMessage('Please enter at least one address.');
+            return false;
+        }
+    } else {
+        coords = document.getElementById('selected-coords').value.trim();
+        if (!coords) {
+            Swal.showValidationMessage('Please select a location on the map.');
+            return false;
+        }
+        // Optionally, get the location name from the input
+        let locationName = document.getElementById('selected-location-name').value;
+        if (locationName) addresses.push(locationName);
+    }
+    const payment = document.querySelector('input[name="payment"]:checked')?.value;
+    let bankSlip = null;
+    if (payment === 'online') {
+        bankSlip = document.getElementById('swal-bank-slip').files[0];
+        if (!bankSlip) {
+            Swal.showValidationMessage('Please upload your transaction slip.');
+            return false;
+        }
+    }
+    if (!username || !phone || !payment) {
+        Swal.showValidationMessage('Please fill all fields');
+        return false;
+    }
+
+    // Prepare form data
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('phone', phone);
+    formData.append('payment', payment);
+    addresses.forEach(addr => formData.append('addresses[]', addr));
+    formData.append('coords', coords);
+    if (bankSlip) formData.append('bank_slip', bankSlip);
+
+    // CSRF token
+    formData.append('_token', '{{ csrf_token() }}');
+
+    // Submit order via AJAX
+    return fetch('{{ route('cart.submitOrder') }}', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            Swal.showValidationMessage(data.message || 'Order failed.');
+            return false;
+        }
+        Swal.fire({
+            icon: 'success',
+            title: 'Order Placed!',
+            text: 'Thank you for your purchase.',
+            confirmButtonColor: '#00b206'
+        }).then(() => {
+            window.location.href = '/'; // or '/thank-you' or any page you want
+        });
+    })
+    .catch(() => {
+        Swal.showValidationMessage('Order failed. Please try again.');
+        return false;
     });
-    if (addresses.length === 0) {
-        Swal.showValidationMessage('Please enter at least one address.');
-        return false;
-    }
-} else {
-    coords = document.getElementById('selected-coords').value.trim();
-    if (!coords) {
-        Swal.showValidationMessage('Please select a location on the map.');
-        return false;
-    }
 }
-                // You can send the data to your backend here
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Order Placed!',
-                    text: 'Thank you for your purchase.',
-                    confirmButtonColor: '#00b206'
-                });
-            }
         });
     });
 
@@ -517,6 +581,10 @@ document.getElementById('address-map-radio').addEventListener('change', function
                         document.getElementById('map-container').appendChild(nameDiv);
                     }
                     nameDiv.textContent = `Selected location: ${displayName}`;
+                    let nameInput = document.getElementById('selected-location-name');
+if (nameInput) {
+    nameInput.value = displayName;
+}
                 })
                 .catch(() => {
                     let nameDiv = document.getElementById('selected-location-name');
@@ -533,5 +601,25 @@ document.getElementById('address-map-radio').addEventListener('change', function
     }
 });
 });
+</script>
+<script>
+function showCustomizeDetail(itemJson) {
+    const item = JSON.parse(itemJson);
+    let html = `<div class="text-left space-y-2">`;
+    html += `<div><b>Name:</b> ${item.name}</div>`;
+    if(item.engraving) html += `<div><b>Engraving:</b> ${item.engraving}</div>`;
+    if(item.font) html += `<div><b>Font:</b> ${item.font}</div>`;
+    if(item.color) html += `<div><b>Color:</b> <span style="display:inline-block;width:20px;height:20px;background:${item.color};border-radius:50%;vertical-align:middle;"></span> ${item.color}</div>`;
+    if(item.image) html += `<div><b>Image:</b><br><img src="/storage/${item.image}" style="max-width:120px;max-height:120px;border-radius:8px;"></div>`;
+    html += `<div><b>Quantity:</b> ${item.quantity}</div>`;
+    html += `<div><b>Price:</b> $${item.price}</div>`;
+    html += `</div>`;
+    Swal.fire({
+        title: 'Tumbler Customization Detail',
+        html: html,
+        confirmButtonText: 'Close',
+        width: 400
+    });
+}
 </script>
 @endsection
