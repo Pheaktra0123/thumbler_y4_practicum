@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModelTumblerController;
 use App\Http\Controllers\TumblerController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController; // <-- add this line
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -129,8 +130,10 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::post('/admin/orders/{order}/confirm', [AdminController::class, 'confirmOrder'])->name('admin.orders.confirm');
     Route::delete('/admin/orders/{order}/reject', [AdminController::class, 'rejectOrder'])->name('admin.orders.reject');
 
-    Route::get('/admin/report', [AdminController::class, 'reportView'])->name('admin.report');
-Route::get('/admin/report/export', [AdminController::class, 'exportMonthlySales'])->name('admin.report.export');
+    //Route for Report
+    Route::get('/admin/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('admin.reports');
+    Route::get('/admin/reports/monthly', [ReportController::class, 'monthly'])->name('admin.report.monthly');
+    Route::get('/admin/reports/export', [ReportController::class, 'export'])->name('admin.report.export');
 });
 //test route
 
