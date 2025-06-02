@@ -24,7 +24,7 @@ class HomeController extends Controller
 
     public function index()
     {
-       
+
         return view('Pages.home');
     }
     public function dashboard()
@@ -71,6 +71,7 @@ class HomeController extends Controller
         $model=ModelTumbler::all();
         return view('Pages.Home_Model_Tumbler',compact('model'));
     }
+
 
     //search function to search tumbler in catetory and model
     public function search(Request $request)
@@ -184,7 +185,7 @@ class HomeController extends Controller
         $tumbler = \App\Models\Tumbler::findOrFail($id);
         return view('Pages.customize_tumbler', compact('tumbler'));
     }
-    
+
     public function saveCustomizedTumbler(Request $request, $id)
     {
         $request->validate([

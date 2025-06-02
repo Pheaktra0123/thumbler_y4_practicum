@@ -51,11 +51,11 @@
 
         <!-- our model section -->
         <section class="mt-10 py-8 " id="services">
-            <div class="container  px-4">
+            <div class="container  px-4 lg:px-8 md:px-6">
                 <h2 class="relative text-4xl font-bold text-gray-800 mb-8 text-center before:absolute before:inset-x-0 before:top-1/2 before:h-0.5 before:bg-gray-300">
                     <span class="relative z-10 bg-gray-100 px-4">Our Top Model</span>
                 </h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 sm:justify-item-center sm:item-content-center lg:grid-cols-4  justify-items-center ">
+                <div class="grid grid-cols-1 mx-4 lg:mx-6 md:mx-4 sm:grid-cols-2 sm:justify-item-center sm:item-content-center lg:grid-cols-4 md:gap-8 md:justify-items-center md:grid-cols-4 justify-items-center ">
 
                     @if(!isset($model) || count($model) === 0)
                         <div class="col-span-full text-center">
