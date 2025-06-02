@@ -14,8 +14,16 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('tracking_number')->unique()->nullable();
             $table->decimal('total', 10, 2);
-            $table->string('status')->default('pending');
+            $table->text('shipping_address');
+            $table->string('payment_method');
+            $table->string('phone_number');
+            $table->string('status')->default('pending'); // pending, processing, completed, cancelled
+            $table->text('notes')->nullable();
+            $table->decimal('shipping_cost', 10, 2)->default(0);
+            $table->string('coordinates')->nullable(); // For map-based orders
+            $table->string('bank_slip_path')->nullable(); // For online payments
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Exports;
 use App\Models\Order;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 class MonthlySalesExport implements FromCollection, WithHeadings

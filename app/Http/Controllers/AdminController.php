@@ -79,11 +79,6 @@ class  AdminController extends Controller
         $users = $query->paginate(6); // Paginate the results
         return view('Admin/List_roles', compact('users'));
     }
-    public function viewOrder()
-    {
-        $orders = Order::with('user')->latest()->get();
-        return view('Admin.order', compact('orders'));
-    }
     public function confirmOrder($orderId)
     {
         $order = \App\Models\Order::findOrFail($orderId);
@@ -107,6 +102,17 @@ class  AdminController extends Controller
             ->get();
 
         return view('Admin.Report', compact('monthlySales'));
+    }
+    public function viewOrder()
+    {
+        $orders = Order::with(['user', 'items'])->latest()->paginate(10);
+        return view('Admin.order', compact('orders'));
+    }
+
+    public function show(Order $order)
+    {
+        $order->load(['user', 'items']);
+        return view('Admin.order', compact('order'));
     }
 
     public function exportMonthlySales()

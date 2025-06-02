@@ -12,7 +12,12 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'total',
+        'shipping_address',
+        'payment_method',
+        'phone_number',
         'status',
+        'coordinates',
+        'bank_slip_path'
     ];
 
     public function user()
@@ -20,9 +25,8 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    // If you want to relate orders to tumblers (products), add:
-    // public function tumblers()
-    // {
-    //     return $this->belongsToMany(Tumbler::class, 'order_tumbler');
-    // }
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }
