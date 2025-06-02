@@ -20,7 +20,7 @@ class HomeController extends Controller
 
     public function index()
     {
-       
+
         return view('Pages.home');
     }
     public function dashboard()
@@ -66,7 +66,7 @@ class HomeController extends Controller
         return view('Pages.Home_Model_Tumbler',compact('model'));
     }
 
-    
+
     public function search(Request $request)
     {
         $query = $request->input('query');
@@ -141,9 +141,14 @@ class HomeController extends Controller
     public function removeFromCart($key)
     {
         $cart = session()->get('cart', []);
+        $success = false;
         if (isset($cart[$key])) {
             unset($cart[$key]);
             session()->put('cart', $cart);
+            $success = true;
+        }
+        if (request()->ajax()) {
+            return response()->json(['success' => $success]);
         }
         return redirect()->back()->with('success', 'Tumbler removed from cart successfully!');
     }
@@ -176,13 +181,19 @@ class HomeController extends Controller
     public function updateCartQuantity(Request $request, $key)
     {
         $cart = session()->get('cart', []);
+        $success = false;
         if (isset($cart[$key])) {
             if ($request->input('action') === 'increase') {
                 $cart[$key]['quantity'] += 1;
+                $success = true;
             } elseif ($request->input('action') === 'decrease' && $cart[$key]['quantity'] > 1) {
                 $cart[$key]['quantity'] -= 1;
+                $success = true;
             }
             session()->put('cart', $cart);
+        }
+        if ($request->ajax()) {
+            return response()->json(['success' => $success, 'quantity' => $cart[$key]['quantity'] ?? 0]);
         }
         return redirect()->back();
     }

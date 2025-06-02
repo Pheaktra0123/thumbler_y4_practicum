@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="w-full p-4">
-                <h1 class="text-2xl font-bold text-gray-800">{{ $tumbler->tumbler_name ?? 'Tumbler' }} | 
+                <h1 class="text-2xl font-bold text-gray-800">{{ $tumbler->tumbler_name ?? 'Tumbler' }} |
                     @php
                         $sizes = json_decode($tumbler->sizes, true);
                         echo is_array($sizes) && !empty($sizes) ? trim(str_replace(['"', '[', ']'], '', $sizes[0])) : '40';
