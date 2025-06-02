@@ -11,6 +11,7 @@ use App\Notifications\OrderShipped;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Str;
 
 class OrderController extends Controller
 {
@@ -18,6 +19,7 @@ class OrderController extends Controller
     public function submitOrder(Request $request)
     {
         try {
+            $trackingNumbler='THMB' . str(Str::random(8));
             $request->validate([
                 'username' => 'required|string|max:255',
                 'phone' => 'required|string|max:20',
@@ -68,6 +70,7 @@ class OrderController extends Controller
                 $order = Order::create([
                     'user_id' => $user->id,
                     'total' => $total,
+                    'tracking_number' => $trackingNumbler,
                     'shipping_address' => $address,
                     'payment_method' => $request->payment,
                     'phone_number' => $request->phone,

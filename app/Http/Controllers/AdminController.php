@@ -92,6 +92,11 @@ class  AdminController extends Controller
         $order->delete();
         return redirect()->back()->with('success', 'Order rejected and deleted!');
     }
+    public function detailOrder($orderId)
+    {
+        $orders = \App\Models\Order::with(['user', 'items'])->findOrFail($orderId);
+        return view('Admin.detail_order', compact('orders'));
+    }
     public function reportView(Request $request)
     {
         // Group orders by month and sum total
@@ -112,7 +117,7 @@ class  AdminController extends Controller
     public function show(Order $order)
     {
         $order->load(['user', 'items']);
-        return view('Admin.order', compact('order'));
+        return view('Admin.detail_order', compact('order'));
     }
 
     public function exportMonthlySales()

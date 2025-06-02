@@ -25,7 +25,7 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $loop->iteration }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="font-medium">{{ $order->user->name }}</div>
+                            <div class="font-medium">{{ $order->user->username }}</div>
                             <div class="text-sm text-gray-500">{{ $order->user->email }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $order->created_at->format('M d, Y') }}</td>
@@ -44,6 +44,7 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="{{ route('admin.orders.show', $order->id) }}" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
                             @if($order->status !== 'completed' && $order->status !== 'cancelled')
                             <form action="{{ route('admin.orders.confirm', $order->id) }}" method="POST" class="inline">
                                 @csrf

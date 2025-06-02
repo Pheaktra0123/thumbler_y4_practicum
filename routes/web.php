@@ -139,6 +139,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/admin/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('admin.reports');
     Route::get('/admin/reports/monthly', [ReportController::class, 'monthly'])->name('admin.report.monthly');
     Route::get('/admin/reports/export', [ReportController::class, 'export'])->name('admin.report.export');
+    Route::get('/admin/orders/{order}', [AdminController::class, 'show'])->name('admin.orders.show');
 });
 //test route
 
