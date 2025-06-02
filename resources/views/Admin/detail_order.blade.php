@@ -4,9 +4,28 @@
 
 <body class="bg-gray-100">
     <div class="container mx-auto p-6">
+        <a href="{{ url()->previous() }}"
+            class="inline-flex items-center mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+        </a>
         @if(isset($order))
         <div class="bg-white p-6 rounded-lg shadow-lg">
+
             <!-- Order Header -->
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold">User Order : {{ $order->user->username }}</h1>
+                    
+                </div>
+                <div class="text-right">
+                    <img src="{{ asset($order->user->thumbnail) }}" alt="User Profile Picture" class="w-56 h-56 rounded-full border border-gray-200">
+                    <p class="mt-2 text-sm text-gray-600">{{ $order->user->email }}</p>
+                    
+                </div>
+            </div>
             <div class="flex justify-between items-start mb-6">
                 <div>
                     <h1 class="text-2xl font-bold">Order #{{ $order->id }}</h1>
@@ -112,19 +131,6 @@
                         @endif
                     </div>
                 </div>
-            </div>
-
-            <!-- Order Actions -->
-            <div class="flex justify-between items-center pt-6 border-t">
-                @if($order->status === 'pending' || $order->status === 'processing'))
-                <form action="{{ route('orders.cancel', $order) }}" method="POST">
-                    @csrf
-                    @method('PATCH')
-                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-                        Cancel Order
-                    </button>
-                </form>
-                @endif
             </div>
         </div>
         @else
