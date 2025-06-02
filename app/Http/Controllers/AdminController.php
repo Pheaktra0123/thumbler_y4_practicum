@@ -7,6 +7,8 @@ use App\Models\Tumbler;
 use App\Models\User;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\MonthlySalesExport;
 
 class  AdminController extends Controller
 {
@@ -52,8 +54,11 @@ class  AdminController extends Controller
     public function adminHome()
     {
         $users = User::all();
-        $tumbler = Tumbler::count();
-        return view('dashboard', compact('users', 'tumblers'));
+        $tumblers = Tumbler::get();
+        $orders = \App\Models\Order::all(); // Get all orders
+        $orderCount = $orders->count();     // Count orders
+
+        return view('Admin.Dashboard', compact('users', 'tumblers', 'orderCount'));
     }
 
     public function Model(){
@@ -74,9 +79,44 @@ class  AdminController extends Controller
         $users = $query->paginate(6); // Paginate the results
         return view('Admin/List_roles', compact('users'));
     }
+    public function confirmOrder($orderId)
+    {
+        $order = \App\Models\Order::findOrFail($orderId);
+        $order->status = 'completed';
+        $order->save();
+        return redirect()->back()->with('success', 'Order confirmed!');
+    }
+    public function rejectOrder($orderId)
+    {
+        $order = \App\Models\Order::findOrFail($orderId);
+        $order->delete();
+        return redirect()->back()->with('success', 'Order rejected and deleted!');
+    }
+    public function reportView(Request $request)
+    {
+        // Group orders by month and sum total
+        $monthlySales = Order::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(total) as total_sales, COUNT(*) as orders_count')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
+
+        return view('Admin.Report', compact('monthlySales'));
+    }
     public function viewOrder()
     {
-        $orders = Order::with('user')->latest()->get();
+        $orders = Order::with(['user', 'items'])->latest()->paginate(10);
         return view('Admin.order', compact('orders'));
+    }
+
+    public function show(Order $order)
+    {
+        $order->load(['user', 'items']);
+        return view('Admin.order', compact('order'));
+    }
+
+    public function exportMonthlySales()
+    {
+        return Excel::download(new MonthlySalesExport, 'monthly_sales_report.xlsx');
     }
 }

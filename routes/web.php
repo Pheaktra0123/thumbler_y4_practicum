@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModelTumblerController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TumblerController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController; // <-- add this line
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,6 +56,8 @@ Route::get('/categories', [App\Http\Controllers\HomeController::class, 'Categori
 Route::get('/category/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByCategory'])->name('category.tumblers');
 //route for filter model
 Route::get('/model/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByModel'])->name('model.tumblers');
+//route for filter tumbler by category
+Route::get('/category/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterInCategory'])->name('category.tumblers');
 //search model
 Route::get('/search/model', [\App\Http\Controllers\HomeController::class, 'searchModel'])->name('search.model');
 //route for normal user
@@ -65,10 +70,13 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('User/Tumbler', [HomeController::class, 'tumbler'])->name('user.tumbler');
     Route::get('User/Tumbler/details/{id}', [TumblerController::class, 'details'])->name('user.tumbler.details');
 
-    Route::get('user/viewCart',[HomeController::class, 'cart'])->name('user.viewCart');
-    Route::post('/add-to-cart/{id}', [HomeController::class, 'addToCart'])->name('add.to.cart');
-    Route::post('/remove-from-cart/{key}', [HomeController::class, 'removeFromCart'])->name('remove.from.cart');
-    Route::post('/cart/update-quantity/{key}', [\App\Http\Controllers\HomeController::class, 'updateCartQuantity'])->name('update.cart.quantity');
+    Route::get('user/viewCart', [CartController::class, 'cart'])->name('user.viewCart');
+    Route::post('/add-to-cart/{id}', [CartController::class, 'addToCart'])->name('add.to.cart');
+    Route::post('/remove-from-cart/{key}', [CartController::class, 'removeFromCart'])->name('remove.from.cart');
+    Route::post('/cart/update-quantity/{key}', [\App\Http\Controllers\CartController::class, 'updateCartQuantity'])->name('update.cart.quantity');
+    // Order history
+    Route::get('/hostory/order', [OrderController::class, 'history'])->name('view.history');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
     //rating star and review
     Route::post('/tumbler/{id}/rate', [App\Http\Controllers\TumblerController::class, 'rate'])->name('tumbler.rate');
@@ -78,13 +86,15 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::put('/user/reviews/{id}/update', [TumblerController::class, 'updateReview'])->name('user.reviews.update');
     Route::delete('/user/reviews/{id}/delete', [TumblerController::class, 'deleteReview'])->name('user.reviews.delete');
 
+    Route::post('/cart/submit-order', [OrderController::class, 'submitOrder'])->name('cart.submitOrder');
     //customize tumbler
     Route::get('/customize_tumbler/{id}', [HomeController::class, 'customizeTumbler'])->name('customize.tumbler');
     Route::post('/customize_tumbler/{id}/save', [HomeController::class, 'saveCustomizedTumbler'])->name('customize.tumbler.save');
-    Route::get('/customized_tumblers', [HomeController::class, 'viewCustomizedTumblers'])->name('customized.tumblers');
+    Route::get('/customized-tumblers', [HomeController::class, 'customizedTumblers'])->name('customized.tumblers');
     Route::get('/customized_tumbler/{id}/details', [HomeController::class, 'customizedTumblerDetails'])->name('customized.tumbler.details');
     Route::post('/customized_tumbler/{id}/delete', [HomeController::class, 'deleteCustomizedTumbler'])->name('customized.tumbler.delete');
 });
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('User/Categories', [HomeController::class, 'Categories'])->name('user.categories');
@@ -121,7 +131,14 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::delete('/Admin/delete/tumbler/{id}', [TumblerController::class, 'destroy'])->name('Admin.delete.tumbler');
 
     //Route for Order
-    Route::get('/Admin/Order', [\App\Http\Controllers\AdminController::class, 'viewOrder'])->name('Admin.Order');
+    Route::get('/orders', [OrderController::class, 'adminOrders'])->name('admin.orders');
+    Route::post('/orders/{order}/confirm', [AdminController::class, 'confirmOrder'])->name('admin.orders.confirm');
+    Route::delete('/orders/{order}/reject', [OrderController::class, 'rejectOrder'])->name('admin.orders.reject');
+
+    //Route for Report
+    Route::get('/admin/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('admin.reports');
+    Route::get('/admin/reports/monthly', [ReportController::class, 'monthly'])->name('admin.report.monthly');
+    Route::get('/admin/reports/export', [ReportController::class, 'export'])->name('admin.report.export');
 });
 //test route
 
@@ -152,7 +169,7 @@ Route::get('/debug-tumblers', function () {
         'has_model' => optional($tumblers->first())->model,
     ]);
 });
-
+Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+Route::patch('/orders/{order}/mark-shipped', [OrderController::class, 'markShipped'])->middleware('admin')->name('orders.markShipped');
+Route::patch('/orders/{order}/mark-delivered', [OrderController::class, 'markDelivered'])->middleware('admin')->name('orders.markDelivered');
 Route::get('/search', [HomeController::class, 'search'])->name('search.categories');
-
-

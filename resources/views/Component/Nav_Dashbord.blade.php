@@ -22,8 +22,9 @@
         /* Apply the blur effect */
     }
 </style>
+
 <body id="body">
-    <header class="shadow-lg">
+    <header class="shadow-lg h-full">
         <nav class="flex justify-between item-center bg-blue-900 p-3">
             <div class="text-xl text-gray-200 font-bold uppercase">
                 Tumbler Haven
@@ -129,15 +130,6 @@
                                 Model
                             </a>
                         </li>
-                        <li name="active" data-id="trending" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
-                            <a class="py-3 flex items-center" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 mr-3">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                                </svg>
-
-                                New Trending
-                            </a>
-                        </li>
                         <li name="active" data-id="products" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
                             <a class="py-3 flex items-center" href="{{ route('Admin.view.tumbler')}}">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -151,7 +143,7 @@
                         </li>
                         <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold mx-1 rounded-md">ecommerce</li>
                         <li name="active" data-id="orders" class="px-4 hover:bg-gray-700 mx-1 rounded-md">
-                            <a href="{{ route('Admin.Order')}}" class="py-3 flex items-center">
+                            <a href="{{ route('admin.orders')}}" class="py-3 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" class="w-4 mr-3">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -160,35 +152,14 @@
                                 Orders
                             </a>
                         </li>
-                        <li name="active" data-id="payment" class="px-4 hover:bg-gray-700 mx-1 rounded-md">
-                            <a href="#" class="py-3 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-4 mr-3">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
-                                </svg>
-                                Payments
-                            </a>
-                        </li>
+
                         <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold mx-1 rounded-md">INFORMATION MANAGEMENT</li>
                         <li name="active" data-id="report" class="px-4 hover:bg-gray-700">
-                            <a href="#" class="py-3 flex items-center">
+                            <a href="{{route('admin.reports')}}" class="py-3 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 mr-1">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
                                 </svg>
                                 Reports
-                                <span class="ml-auto text-xs bg-red-500 px-2 py-1 rounded-sm">0</span>
-                            </a>
-                        </li>
-                        <li class="px-4 py-2 mt-2 text-xs uppercase tracking-wider text-gray-500 font-bold mx-1 rounded-md">Apps</li>
-                        <li name="active" data-id="message" class="px-4 cursor-pointer hover:bg-gray-700 mx-1 rounded-md">
-                            <a href="#" class="py-2 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 mr-3">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 3.75H6.912a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859M12 3v8.25m0 0-3-3m3 3 3-3" />
-                                </svg>
-
-                                Messages
-                                <span class="ml-auto text-xs bg-red-500 px-2 py-1 rounded-sm">0</span>
                             </a>
                         </li>
                     </ul>
@@ -196,7 +167,7 @@
             </div>
         </div>
         <!-- Main content -->
-        <div class="flex flex-col w-full max-h-screen overflow-y-auto relative ">
+        <div class="flex flex-col w-full min-h-screen ">
             <div class="">@yield('contents')</div>
         </div>
     </div>

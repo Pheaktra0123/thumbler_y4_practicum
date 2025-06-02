@@ -95,7 +95,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-gray-600">Total Orders</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2">2,847</p>
+                            <p class="text-3xl font-bold text-gray-900 mt-2">{{$orderCount}}</p>
                             <div class="flex items-center mt-2">
                                 <span class="text-green-600 text-sm font-medium flex items-center">
                                     <i class="fas fa-arrow-up mr-1"></i>

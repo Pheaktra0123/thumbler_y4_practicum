@@ -6,7 +6,7 @@
 @section('contents')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="w-full p-6 mt-20 bg-white shadow-lg">
-    <form action="{{ route('customize.tumbler.save', ['id' => $tumbler->id]) }}" method="POST" enctype="multipart/form-data">
+    <form id="customizeForm" action="{{ route('customize.tumbler.save', ['id' => $tumbler->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="flex flex-col items-center relative">
@@ -129,20 +129,30 @@
                                 +
                             </button>
                         </div>
-                         <form method="POST" action="{{ route('add.to.cart', $tumbler->id) }}" class="flex-1" id="addToCartForm">
-                            @csrf
-                            <input type="hidden" name="quantity" id="cartQuantity" value="1">
-                            <input type="hidden" name="color" id="cartColor" value="{{ isset($tumbler->colors[0]) ? (is_string($tumbler->colors[0]) ? trim($tumbler->colors[0], '"[]\\') : '') : '' }}">
-                            <button
-                                type="submit"
-                                class="w-full bg-gray-900 text-white py-3 px-6 rounded-xl font-bold hover:bg-gray-800">
-                                 ${{ $tumbler->price}} - ADD TO CART
-                            </button>
-                        </form>
+                        @php
+    $basePrice = $tumbler->price;
+    $customPrice = $basePrice;
+    $hasEngraving = !empty(request('engraving'));
+    $hasImage = !empty(request('image'));
+    if ($hasEngraving || $hasImage) {
+        $customPrice += 10;
+    }
+@endphp
                     </div>
                 </div>
-                <div class="mt-6">
-                    <button type="submit" class="border p-3 w-full font-bold rounded-lg text-center hover:bg-gray-100">Save Customize</button>
+                <div class="mt-6 flex gap-4">
+                    <button
+                        type="button"
+                        id="addToCartBtn"
+                        class="w-full bg-gray-900 text-white py-3 px-6 rounded-xl font-bold hover:bg-gray-800">
+                        <span id="addToCartPrice">${{ $customPrice }}</span> - ADD TO CART
+                    </button>
+                    <button
+                        type="submit"
+                        id="saveCustomizeBtn"
+                        class="border p-3 w-full font-bold rounded-lg text-center hover:bg-gray-100">
+                        Save Customize <span id="saveCustomizePrice">${{ $customPrice }}</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -150,6 +160,7 @@
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+    // Color selection logic
     const colorButtons = document.querySelectorAll('.color-btn');
     const selectedColorInput = document.getElementById('selectedColor') || document.createElement('input');
     if (!selectedColorInput.id) {
@@ -158,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedColorInput.id = "selectedColor";
         document.body.appendChild(selectedColorInput);
     }
+
     // Find the selected color button
     let selectedBtn = Array.from(colorButtons).find(btn => btn.classList.contains('border-gray-700'));
     if (selectedBtn) {
@@ -165,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (colorButtons[0]) {
         selectedColorInput.value = colorButtons[0].getAttribute("data-color");
     }
+
     colorButtons.forEach(button => {
         button.addEventListener("click", function () {
             colorButtons.forEach(btn => btn.classList.remove("border-gray-700"));
@@ -172,47 +185,56 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedColorInput.value = this.getAttribute("data-color");
         });
     });
+
     // Engraving text logic
     const engravingText = document.getElementById('engravingText');
     const fontSelect = document.getElementById('fontSelect');
     const textOverlay = document.getElementById('textOverlay');
+
     function updateTextOverlay() {
-        textOverlay.textContent = engravingText.value;
-        textOverlay.style.fontFamily = fontSelect.value !== "Select Font" ? fontSelect.value : "";
+        if (engravingText && textOverlay) {
+            textOverlay.textContent = engravingText.value;
+            textOverlay.style.fontFamily = fontSelect.value !== "Select Font" ? fontSelect.value : "";
+        }
     }
-    engravingText.addEventListener('input', updateTextOverlay);
-    fontSelect.addEventListener('change', updateTextOverlay);
+
+    if (engravingText) engravingText.addEventListener('input', updateTextOverlay);
+    if (fontSelect) fontSelect.addEventListener('change', updateTextOverlay);
 
     // Image upload logic
     const uploadImage = document.getElementById('uploadImage');
     const uploadedImage = document.getElementById('uploadedImage');
     const deleteImageBtn = document.getElementById('deleteImageBtn');
-    uploadImage.addEventListener('change', function (e) {
-        const file = e.target.files[0];
-        if (file) {
-            if (file.size > 1024 * 1024) { // 1MB
-                document.getElementById('imageSizeModal').classList.remove('hidden');
-                uploadImage.value = "";
-                return;
+
+    if (uploadImage && uploadedImage && deleteImageBtn) {
+        uploadImage.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 1024 * 1024) { // 1MB
+                    document.getElementById('imageSizeModal').classList.remove('hidden');
+                    uploadImage.value = "";
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function (ev) {
+                    uploadedImage.src = ev.target.result;
+                    uploadedImage.classList.remove('hidden');
+                    uploadedImage.style.display = "block";
+                    deleteImageBtn.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
             }
-            const reader = new FileReader();
-            reader.onload = function (ev) {
-                uploadedImage.src = ev.target.result;
-                uploadedImage.classList.remove('hidden');
-                uploadedImage.style.display = "block";
-                deleteImageBtn.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-    deleteImageBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        uploadedImage.src = "";
-        uploadedImage.classList.add('hidden');
-        uploadedImage.style.display = "none";
-        uploadImage.value = "";
-        deleteImageBtn.classList.add('hidden');
-    });
+        });
+
+        deleteImageBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            uploadedImage.src = "";
+            uploadedImage.classList.add('hidden');
+            uploadedImage.style.display = "none";
+            uploadImage.value = "";
+            deleteImageBtn.classList.add('hidden');
+        });
+    }
 
     // Modal close logic
     const closeModalBtn = document.getElementById('closeModalBtn');
@@ -221,6 +243,95 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('imageSizeModal').classList.add('hidden');
         });
     }
+
+    // Price update logic
+    const basePrice = {{ $basePrice }};
+    const saveCustomizePrice = document.getElementById('saveCustomizePrice');
+    const addToCartPrice = document.getElementById('addToCartPrice');
+
+    function updatePrice() {
+        let hasEngraving = engravingText && engravingText.value.trim().length > 0;
+        let hasImage = uploadImage && uploadImage.files && uploadImage.files.length > 0;
+        let price = basePrice;
+        if (hasEngraving || hasImage) {
+            price += 10;
+        }
+        if (saveCustomizePrice) saveCustomizePrice.textContent = '$' + price;
+        if (addToCartPrice) addToCartPrice.textContent = '$' + price;
+    }
+
+    if (engravingText) engravingText.addEventListener('input', updatePrice);
+    if (uploadImage) uploadImage.addEventListener('change', updatePrice);
+    updatePrice(); // Initial call
+
+    // Quantity buttons
+    const quantityInput = document.getElementById('quantityInput');
+    const increaseQuantity = document.getElementById('increaseQuantity');
+    const decreaseQuantity = document.getElementById('decreaseQuantity');
+
+    if (quantityInput && increaseQuantity && decreaseQuantity) {
+        increaseQuantity.addEventListener('click', function() {
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+        });
+        decreaseQuantity.addEventListener('click', function() {
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
+        });
+    }
+
+    // Add to Cart button
+   // Add to Cart button
+const addToCartBtn = document.getElementById('addToCartBtn');
+const customizeForm = document.getElementById('customizeForm');
+
+if (addToCartBtn && customizeForm) {
+    addToCartBtn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        
+        try {
+            // Create a new FormData object from the form
+            const formData = new FormData(customizeForm);
+            
+            // Add the add_to_cart flag
+            formData.append('add_to_cart', '1');
+
+            // Get CSRF token from meta tag
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            const response = await fetch("{{ route('add.to.cart', $tumbler->id) }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to add to cart');
+            }
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Added to Cart!',
+                text: 'Your customized tumbler has been added to the cart.',
+                confirmButtonColor: '#00b206'
+            }).then(() => {
+                window.location.href = "{{ route('user.viewCart') }}";
+            });
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Failed to add to cart. Please try again.'
+            });
+        }
+    });
+}
 });
 </script>
 @endsection

@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('customized_tumblers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->decimal('total', 10, 2);
-            $table->string('status')->default('pending');
+            $table->foreignId('tumbler_id')->constrained()->onDelete('cascade');
+            $table->string('engraving')->nullable();
+            $table->string('font')->nullable();
+            $table->string('color');
+            $table->integer('quantity');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('customized_tumblers');
     }
 };
