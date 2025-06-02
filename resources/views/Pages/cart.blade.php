@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('contents')
 
 <section class="w-11/12 mx-auto bg-white py-9 px-8 mt-24 mb-12 rounded-lg">
@@ -40,68 +41,87 @@
                                 class="w-[100px] mr-2 inline-block h-[100px]" />
                         </td>
                         <td>{{$item['name']}}</td>
-                        <td class="" ">
-                                            <div class=" w-[30px] h-[30px] inline-block rounded-full"
-                            style="background-color: {{ $item['color'] }};">
+                        <td class="">
+                            <div class=" w-[30px] h-[30px] inline-block rounded-full"
+                                style="background-color: {{ $item['color'] }};">
+                            </div>
+                        </td>
+                        <td class="px-2 py-2">${{ number_format($item['price'], 2) }}</td>
+                        <td class="p-2">
+                            <form action="{{ route('update.cart.quantity', $key) }}" method="POST"
+                                style="display:inline-flex; align-items:center;">
+                                @csrf
+                                <button type="submit" name="action" value="decrease"
+                                    class="px-2 py-1 bg-gray-200 rounded-l hover:bg-gray-300">-</button>
+                                <input type="text" name="quantity" value="{{ $item['quantity'] }}"
+                                    class="w-10 text-center border border-gray-300" readonly>
+                                <button type="submit" name="action" value="increase"
+                                    class="px-2 py-1 bg-gray-200 rounded-r hover:bg-gray-300">+</button>
+                            </form>
+                        </td>
+                        <td class="px-2 py-2">${{ number_format($subtotal, 2) }}</td>
+                        <td class="px-2 py-2">
+                            <form action="{{ route('remove.from.cart', $key) }}" method="POST" class="remove-cart-form">
+                                @csrf
+                                <button type="button" class="text-red-500 hover:text-red-700 remove-cart-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center py-4">Your cart is empty.</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+                <tfoot>
+                    <tr class="border-t border-gray-400">
+                        <td class="px-2 py-2" colspan="2">
+                            <span class="font-bold">Total: ${{ number_format($total, 2) }}</span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
-        </td>
-        <td class="px-2 py-2">${{ number_format($item['price'], 2) }}</td>
-        <td class="p-2">
-            <form action="{{ route('update.cart.quantity', $key) }}" method="POST"
-                style="display:inline-flex; align-items:center;">
-                @csrf
-                <button type="submit" name="action" value="decrease"
-                    class="px-2 py-1 bg-gray-200 rounded-l hover:bg-gray-300">-</button>
-                <input type="text" name="quantity" value="{{ $item['quantity'] }}"
-                    class="w-10 text-center border border-gray-300" readonly>
-                <button type="submit" name="action" value="increase"
-                    class="px-2 py-1 bg-gray-200 rounded-r hover:bg-gray-300">+</button>
-            </form>
-        </td>
-        <td class="px-2 py-2">${{ number_format($subtotal, 2) }}</td>
-        <td class="px-2 py-2">
-            <form action="{{ route('remove.from.cart', $key) }}" method="POST" class="remove-cart-form">
-                @csrf
-                <button type="button" class="text-red-500 remove-cart-btn">Remove</button>
-            </form>
-        </td>
-        </tr>
-        @empty
-        <tr>
-            <td colspan="5" class="text-center py-4">Your cart is empty.</td>
-        </tr>
-        @endforelse
-        </tbody>
-        <tfoot>
-            <tr class="border-t border-gray-400">
-                <td class="px-2 py-2" colspan="2">
-                    <span class="font-bold">Total: ${{ number_format($total, 2) }}</span>
-                </td>
-            </tr>
-        </tfoot>
-        </table>
-    </div>
-    <div class="w-[424px] bg-white rounded-lg p-6">
-        <h2 class="text-[#191919] mb-2 text-xl font-medium leading-[30px]">
-            Cart Total
-        </h2>
-        <div class="w-[376px] py-3 justify-between items-center flex">
-            <span class="text-[#4c4c4c] text-base font-normal leading-normal">Total:</span><span
-                class="text-[#191919] text-base font-semibold leading-tight">${{ number_format($total, 2) }}</span>
+        <div class="w-[424px] bg-white rounded-lg p-6">
+            <h2 class="text-[#191919] mb-2 text-xl font-medium leading-[30px]">
+                Cart Total
+            </h2>
+            <div class="w-[376px] py-3 justify-between items-center flex">
+                <span class="text-[#4c4c4c] text-base font-normal leading-normal">Total:</span><span
+                    class="text-[#191919] text-base font-semibold leading-tight">${{ number_format($total, 2) }}</span>
+            </div>
+            <div class="w-[376px] py-3 shadow-[0px_1px_0px_0px_rgba(229,229,229,1.00)] justify-between items-center flex">
+                <span class="text-[#4c4c4c] text-sm font-normal leading-[21px]">Shipping:</span><span
+                    class="text-[#191919] text-sm font-medium leading-[21px]">Free</span>
+            </div>
+            <div class="w-[376px] py-3 shadow-[0px_1px_0px_0px_rgba(229,229,229,1.00)] justify-between items-center flex">
+                <span class="text-[#4c4c4c] text-sm font-normal leading-[21px]">Subtotal:</span><span
+                    class="text-[#191919] text-sm font-medium leading-[21px]">${{ number_format($total, 2) }}</span>
+            </div>
+
+            @php
+            $cart = session('cart', []);
+            $isAviableitem = !empty($cart);
+            @endphp
+
+            @if($isAviableitem)
+            <button id="proceed-checkout" type="button"
+                class="w-[376px] text-white mt-5 px-10 py-4 bg-[#00b206] rounded-[44px] gap-4 text-base font-semibold leading-tight">
+                Proceed to Checkout
+            </button>
+            @else
+            <button type="button"
+                class="w-[376px] text-white mt-5 px-10 py-4 bg-gray-400 rounded-[44px] gap-4 text-base font-semibold leading-tight cursor-not-allowed"
+                disabled>
+                Proceed to Checkout
+            </button>
+            @endif
+
         </div>
-        <div class="w-[376px] py-3 shadow-[0px_1px_0px_0px_rgba(229,229,229,1.00)] justify-between items-center flex">
-            <span class="text-[#4c4c4c] text-sm font-normal leading-[21px]">Shipping:</span><span
-                class="text-[#191919] text-sm font-medium leading-[21px]">Free</span>
-        </div>
-        <div class="w-[376px] py-3 shadow-[0px_1px_0px_0px_rgba(229,229,229,1.00)] justify-between items-center flex">
-            <span class="text-[#4c4c4c] text-sm font-normal leading-[21px]">Subtotal:</span><span
-                class="text-[#191919] text-sm font-medium leading-[21px]">${{ number_format($total, 2) }}</span>
-        </div>
-        <button id="proceed-checkout" type="button"
-            class="w-[376px] text-white mt-5 px-10 py-4 bg-[#00b206] rounded-[44px] gap-4 text-base font-semibold leading-tight">
-            Proceed to checkout
-        </button>
-    </div>
     </div>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

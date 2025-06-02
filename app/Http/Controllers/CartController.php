@@ -105,22 +105,42 @@ class CartController extends Controller
     {
         $users = User::all();
         $cart = session()->get('cart', []);
-        if (empty($cart)) {
-            return redirect()->back()->with('error', 'Your cart is empty!');
-        }
-        return view('Pages.cart', ['users'=> $users,''=> $cart]);
+        return view('Pages.cart', ['users' => $users, '' => $cart]);
     }
     //remove tumbler from cart
     public function removeFromCart($key)
     {
         $cart = session()->get('cart', []);
-        if (isset($cart[$key])) {
-            unset($cart[$key]);
-            session()->put('cart', $cart);
+
+        if (!isset($cart[$key])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Item not found in cart'
+            ], 404);
         }
-        return redirect()->back()->with('success', 'Tumbler removed from cart successfully!');
+
+        unset($cart[$key]);
+        session()->put('cart', $cart);
+
+        // For AJAX requests, return JSON response
+        if (request()->ajax()) {
+            // Calculate new total
+            $total = array_reduce($cart, function ($carry, $item) {
+                return $carry + ($item['price'] * $item['quantity']);
+            }, 0);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Item removed from cart successfully!',
+                'cart_count' => count($cart),
+                'total' => number_format($total, 2)
+            ]);
+        }
+
+        // For normal requests, redirect back
+        return back()->with('success', 'Item removed from cart successfully!');
     }
-    public function clearCart()
+        public function clearCart()
     {
         session()->forget('cart');
         return redirect()->back()->with('success', 'Cart cleared successfully!');
