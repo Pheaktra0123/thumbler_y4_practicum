@@ -271,18 +271,24 @@ class HomeController extends Controller
     //Filter trending tumblers base on sales or reviews 
     public function filterTrandingTumblers()
     {
-        $trendingTumblers = Tumbler::with(['reviews', 'category', 'model'])
-            ->select('tumblers.*', DB::raw('COUNT(order_items.id) as orders_count'))
-            ->leftJoin('order_items', 'tumblers.id', '=', 'order_items.tumbler_id')
+        $trendingTumblers = Tumbler::with(['category', 'model'])
+            ->select(
+                'tumblers.*',
+                DB::raw('COUNT(order_items.id) as orders_count'),
+                DB::raw('COALESCE(AVG(reviews.rating), 0) as average_rating'),
+                DB::raw('COUNT(reviews.id) as reviews_count')
+            )
+            ->leftJoin('order_items', function ($join) {
+                $join->on('tumblers.id', '=', 'order_items.tumbler_id')
+                    ->where('order_items.created_at', '>=', now()->subMonth());
+            })
+            ->leftJoin('reviews', 'tumblers.id', '=', 'reviews.tumbler_id')
             ->groupBy('tumblers.id')
+            ->having('orders_count', '>=', 3) // Minimum 3 purchases
             ->orderByDesc('orders_count')
             ->paginate(8);
 
-        $trendingTumblers->each(function ($tumbler) {
-            $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
-            $tumbler->rating_count = $tumbler->reviews->count();
-        });
-
+        // No need for each loop since we calculated in query
         return view('Pages.Home_Trending_Tumbler', compact('trendingTumblers'));
     }
 }
