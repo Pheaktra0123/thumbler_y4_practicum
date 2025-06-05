@@ -49,9 +49,7 @@ Route::get('/#about-us', function () {
 Route::get('/Model_home', [App\Http\Controllers\HomeController::class, 'model'])->name('model.home');
 //new trending
 
-Route::get('/Trending_home', function () {
-    return view('/Pages/Home_Trending_Tumbler');
-});
+
 Route::get('/categories', [App\Http\Controllers\HomeController::class, 'Categories'])->name('search.categories');
 Route::get('/category/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByCategory'])->name('category.tumblers');
 //route for filter model
@@ -93,6 +91,9 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/customized-tumblers', [HomeController::class, 'customizedTumblers'])->name('customized.tumblers');
     Route::get('/customized_tumbler/{id}/details', [HomeController::class, 'customizedTumblerDetails'])->name('customized.tumbler.details');
     Route::post('/customized_tumbler/{id}/delete', [HomeController::class, 'deleteCustomizedTumbler'])->name('customized.tumbler.delete');
+
+    // Route for filtering tranding sales 
+    Route::get('/Tranding-Tumblers',[HomeController::class, 'filterTrandingTumblers'])->name('trending.tumblers');
 });
 
 

@@ -24,13 +24,17 @@
     </script>
     <style>
         .swal2-confirm {
-            background-color: #f53636 !important; /* Red color */
-            color: #fff !important; /* White text */
+            background-color: #f53636 !important;
+            /* Red color */
+            color: #fff !important;
+            /* White text */
         }
 
         .swal2-cancel {
-            background-color: #d5d5d5 !important; /* Gray color */
-            color: #000 !important; /* Black text */
+            background-color: #d5d5d5 !important;
+            /* Gray color */
+            color: #000 !important;
+            /* Black text */
         }
     </style>
 </head>
@@ -49,7 +53,7 @@
                         <a href="/" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Home</a>
                         <a href="/Categories_home" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Category</a>
                         <a href="/Model_home" class="text-lg font-medium text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Model</a>
-                        <a href="/Trending_home" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
+                        <a href="{{ route('trending.tumblers') }}" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
                         <a href="#about-us" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">About Us</a>
                     </div>
                 </div>
@@ -150,10 +154,10 @@
         </div>
         <div id="menu" class="md:hidden hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Home</a>
-                <a href="#" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Category</a>
-                <a href="#" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Model</a>
-                <a href="#" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
+                <a href="/" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Home</a>
+                <a href="{{ route('search.categories') }}" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Category</a>
+                <a href="{{ route('model.home') }}" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Model</a>
+                <a href="{{ route('trending.tumblers') }}" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
                 <a href="#about-us" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">About Us</a>
             </div>
             <hr class="border-gray-300 w-full">
@@ -180,35 +184,35 @@
                 <div class="bg-white w-80 max-h-[400px] rounded-lg shadow-lg p-4 relative overflow-y-auto">
                     <h3 class="text-xl font-bold mb-4">Your Cart</h3>
                     @if(count($cartItems) > 0)
-                        <ul class="space-y-4">
-                            @foreach($cartItems as $item)
-                                <li class="flex items-center gap-3 border-b pb-2">
-                                    <img src="{{ $item['image'] ? asset('storage/' . $item['image']) : asset('images/default-placeholder.png') }}"
-                                         alt="{{ $item['name'] }}"
-                                         class="w-12 h-12 object-cover rounded border" />
-                                    <div class="flex-1">
-                                        <div class="font-semibold text-gray-800 text-sm">{{ $item['name'] }}</div>
-                                        <div class="text-xs text-gray-500">Qty: {{ $item['quantity'] }}</div>
-                                        <div class="text-xs text-gray-500">Price: ${{ number_format($item['price'], 2) }}</div>
-                                        @if(!empty($item['color']))
-                                            <div class="inline-block w-4 h-4 rounded-full border mt-1" style="background:{{ $item['color'] }}"></div>
-                                        @endif
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="font-bold text-gray-700 text-sm">Total:</span>
-                            <span class="font-bold text-green-600 text-lg">
-                                ${{ number_format(array_sum(array_map(fn($i) => $i['price'] * $i['quantity'], $cartItems)), 2) }}
-                            </span>
-                        </div>
-                        <a href="{{ route('user.viewCart') }}"
-                           class="block mt-4 w-full text-center bg-gray-900 text-white py-2 rounded hover:bg-gray-800 transition">
-                            View Full Cart
-                        </a>
+                    <ul class="space-y-4">
+                        @foreach($cartItems as $item)
+                        <li class="flex items-center gap-3 border-b pb-2">
+                            <img src="{{ $item['image'] ? asset('storage/' . $item['image']) : asset('images/default-placeholder.png') }}"
+                                alt="{{ $item['name'] }}"
+                                class="w-12 h-12 object-cover rounded border" />
+                            <div class="flex-1">
+                                <div class="font-semibold text-gray-800 text-sm">{{ $item['name'] }}</div>
+                                <div class="text-xs text-gray-500">Qty: {{ $item['quantity'] }}</div>
+                                <div class="text-xs text-gray-500">Price: ${{ number_format($item['price'], 2) }}</div>
+                                @if(!empty($item['color']))
+                                <div class="inline-block w-4 h-4 rounded-full border mt-1" style="background:{{ $item['color'] }}"></div>
+                                @endif
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-bold text-gray-700 text-sm">Total:</span>
+                        <span class="font-bold text-green-600 text-lg">
+                            ${{ number_format(array_sum(array_map(fn($i) => $i['price'] * $i['quantity'], $cartItems)), 2) }}
+                        </span>
+                    </div>
+                    <a href="{{ route('user.viewCart') }}"
+                        class="block mt-4 w-full text-center bg-gray-900 text-white py-2 rounded hover:bg-gray-800 transition">
+                        View Full Cart
+                    </a>
                     @else
-                        <p class="text-gray-600 text-center justify-center">Your cart is currently empty.</p>
+                    <p class="text-gray-600 text-center justify-center">Your cart is currently empty.</p>
                     @endif
                 </div>
             </div>
@@ -227,7 +231,7 @@
                 </a>
                 <div class="mt-6 lg:max-w-xl">
                     <p class="text-sm text-gray-800">
-                         At Tumbler Haven, we’re dedicated to making tumbler shopping simple, fun, and fully digital. Our platform allows customers to easily personalize their tumblers in real time and place orders without needing to wait for seller replies or visit a physical store. We focus on delivering high-quality, stylish drinkware that reflects your personality and is perfect for everyday use or as a thoughtful gift.
+                        At Tumbler Haven, we’re dedicated to making tumbler shopping simple, fun, and fully digital. Our platform allows customers to easily personalize their tumblers in real time and place orders without needing to wait for seller replies or visit a physical store. We focus on delivering high-quality, stylish drinkware that reflects your personality and is perfect for everyday use or as a thoughtful gift.
 
                     </p>
                 </div>
@@ -235,7 +239,7 @@
 
             <div class="flex flex-col gap-2 text-sm">
                 <p class="text-base font-bold tracking-wide text-gray-900">Popular Tumblers</p>
-                  <a href="#">The Quencher ProTour Flip Straw Tumbler</a>
+                <a href="#">The Quencher ProTour Flip Straw Tumbler</a>
                 <a href="#">The IceFlow™ Flip Straw Tumbler</a>
                 <a href="#">The Drinkware</a>
                 <p class="text-base font-bold tracking-wide text-gray-900">Trending Popular</p>

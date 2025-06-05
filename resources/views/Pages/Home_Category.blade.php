@@ -18,18 +18,18 @@
                 <img src="tumbler_banner.jpg" alt="Background Image" class="object-cover object-center w-full h-full" />
 
             </div>
-           <div class="absolute inset-9 flex flex-col md:flex-row items-center justify-center">
+            <div class="absolute inset-9 flex flex-col md:flex-row items-center justify-center">
                 <div class="md:w-1/2 mb-4 md:mb-0 text-center">
                     <h1 class="text-grey-700  font-bold text-4xl md:text-5xl leading-tight mb-2">Categories Tumbler Haven
                     </h1>
-                    <p class="font-regular text-xl mb-8 mt-4">One-stop solution for plastic bottles.  We have Tumbler Haven.</p>
+                    <p class="font-regular text-xl mb-8 mt-4">One-stop solution for plastic bottles. We have Tumbler Haven.</p>
                     <form id="model-search-form"
-                          action="{{ route('search.categories') }}"
-                            name="search"
-                            method="GET"
-                            onsubmit="event.preventDefault(); const searchBar = document.getElementById('search-bar'); const searchBtn = document.getElementById('search-btn'); const searchLoading = document.getElementById('search-loading'); const searchBtnText = document.getElementById('search-btn-text'); searchBtn.disabled = true; searchLoading.classList.remove('hidden'); searchBtnText.classList.add('hidden'); this.submit();"
+                        action="{{ route('search.categories') }}"
+                        name="search"
+                        method="GET"
+                        onsubmit="event.preventDefault(); const searchBar = document.getElementById('search-bar'); const searchBtn = document.getElementById('search-btn'); const searchLoading = document.getElementById('search-loading'); const searchBtnText = document.getElementById('search-btn-text'); searchBtn.disabled = true; searchLoading.classList.remove('hidden'); searchBtnText.classList.add('hidden'); this.submit();"
 
-                          class="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300">
+                        class="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300">
                         <input id="search-bar" name="query" placeholder="Search Product Name Here ..."
                             class="px-6 py-2 w-full rounded-md flex-1 outline-none bg-white"
                             value="{{ old('query', $query ?? '') }}">
@@ -103,7 +103,7 @@
 
         <!-- All items section -->
         <h1 class="font-bold text-4xl text-center mt-10 font-serif ">Choose your own Tumbler!!</h1>
-        <p class="text-center text-gray-600 font-serif opacity-50 mt-5">One-stop solution for plastic bottles.  We have Tumbler Haven.</p>
+        <p class="text-center text-gray-600 font-serif opacity-50 mt-5">One-stop solution for plastic bottles. We have Tumbler Haven.</p>
         <div class="flex justify-between items-center px-10 mb-24 ">
             <h3 class="text-lg font-medium opacity-40  text-center font-serif ">Recently Tumbler</h3>
             <p class="text-lg font-medium opacity-50  text-center ">Total Item {{$tumblers->count()}}</p>
@@ -174,9 +174,14 @@
                             @endif
                             <div class="ml-auto">
                                 @if($tumbler->stock > 0)
-                                <p class="text-sm text-gray-600 ml-2 border-b border-black cursor-pointer">Add to Cart</p>
+                                <button class="border border-2 text-sm text-gray-600 px-4 py-2 rounded hover:bg-gray-300  transition duration-200 flex items-center justify-center hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-6 h-6 inline-block mr-2 items-center">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                    </svg>
+                                    Add to Cart
+                                </button>
                                 @else
-                                <p class="text-sm text-red-600 ml-2">Out of Stock</p>
+                                    <p class="text-sm text-red-600 ml-2">Out of Stock</p>
                                 @endif
                             </div>
                         </div>

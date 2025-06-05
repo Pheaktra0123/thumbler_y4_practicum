@@ -20,13 +20,13 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('index','Categories','model','search');
+        $this->middleware('auth')->except('index', 'Categories', 'model', 'search', 'filterByCategory', 'filterByModel', 'filterInCategory', 'filterTrandingTumblers');
     }
 
     public function index()
     {
         $user = Auth::user();
-       $reviews =Review::all();
+        $reviews = Review::all();
         if ($user) {
             // Fetch tumblers with reviews for the authenticated user
             $tumblers = Tumbler::with(['reviews', 'category', 'model'])
@@ -44,23 +44,24 @@ class HomeController extends Controller
             $tumblers = Tumbler::with(['category', 'model'])->paginate(4);
         }
 
-        return view('Pages.home', compact('user','reviews'));
+        return view('Pages.home', compact('user', 'reviews'));
     }
     public function dashboard()
     {
         return view('User/user_dashboard');
     }
-    public function userEdit(){
+    public function userEdit()
+    {
         return view('User/Profile_Edit');
     }
 
     public function adminHome()
     {
-        $users=User::all();
+        $users = User::all();
         $tumblers = Tumbler::get();
         $orders = Order::all(); // Get all orders
         $orderCount = $orders->count();     // Count orders
-        return view('Admin/Dashboard',compact('users','tumblers','orderCount'));
+        return view('Admin/Dashboard', compact('users', 'tumblers', 'orderCount'));
     }
     public function Categories()
     {
@@ -87,8 +88,8 @@ class HomeController extends Controller
     }
     public function model()
     {
-        $model=ModelTumbler::all();
-        return view('Pages.Home_Model_Tumbler',compact('model'));
+        $model = ModelTumbler::all();
+        return view('Pages.Home_Model_Tumbler', compact('model'));
     }
 
 
@@ -139,7 +140,7 @@ class HomeController extends Controller
     {
         $query = request()->input('query');
         $tumblers = Tumbler::where('model_id', $modelId)
-            ->when($query, function($q) use ($query) {
+            ->when($query, function ($q) use ($query) {
                 $q->where('tumbler_name', 'LIKE', "%{$query}%");
             })
             ->with(['reviews', 'category', 'model'])
@@ -155,11 +156,11 @@ class HomeController extends Controller
         return view('Pages.model', compact('tumblers', 'model'));
     }
     // Filter tumblers in a specific category with search functionality
-    public function filterInCategory( $categoryId)
+    public function filterInCategory($categoryId)
     {
-         $query = request()->input('query');
+        $query = request()->input('query');
         $tumblers = Tumbler::where('category_id', $categoryId)
-            ->when($query, function($q) use ($query) {
+            ->when($query, function ($q) use ($query) {
                 $q->where('tumbler_name', 'LIKE', "%{$query}%");
             })
             ->with(['reviews', 'category', 'model'])
@@ -171,7 +172,7 @@ class HomeController extends Controller
             $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
             $tumbler->rating_count = $tumbler->reviews->count();
         }
-        $category =ModelTumbler::findOrFail($categoryId);
+        $category = ModelTumbler::findOrFail($categoryId);
         return view('Pages.category', compact('tumblers', 'category', 'query'));
     }
     // Display tumblers on the home page with categories
@@ -238,7 +239,7 @@ class HomeController extends Controller
     }
     public function customizedTumblers()
     {
-        $customized =CustomizedTumbler::where('user_id', auth()->id())->get();
+        $customized = CustomizedTumbler::where('user_id', auth()->id())->get();
         return view('Pages.customized_tumblers', compact('customized'));
     }
     public function deleteCustomizedTumbler($id)
@@ -256,8 +257,8 @@ class HomeController extends Controller
     public function customizedTumblerDetails($id)
     {
         $custom = \App\Models\CustomizedTumbler::where('user_id', auth()->id())
-        ->where('id', $id)
-        ->first();
+            ->where('id', $id)
+            ->first();
 
         if (!$custom) {
             return redirect()->route('customized.tumblers')->with('error', 'Customization not found.');
@@ -266,5 +267,22 @@ class HomeController extends Controller
         $tumbler = \App\Models\Tumbler::find($custom->tumbler_id);
 
         return view('Pages.customized_detail', compact('custom', 'tumbler'));
+    }
+    //Filter trending tumblers base on sales or reviews 
+    public function filterTrandingTumblers()
+    {
+        $trendingTumblers = Tumbler::with(['reviews', 'category', 'model'])
+            ->select('tumblers.*', DB::raw('COUNT(order_items.id) as orders_count'))
+            ->leftJoin('order_items', 'tumblers.id', '=', 'order_items.tumbler_id')
+            ->groupBy('tumblers.id')
+            ->orderByDesc('orders_count')
+            ->paginate(8);
+
+        $trendingTumblers->each(function ($tumbler) {
+            $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
+            $tumbler->rating_count = $tumbler->reviews->count();
+        });
+
+        return view('Pages.Home_Trending_Tumbler', compact('trendingTumblers'));
     }
 }
