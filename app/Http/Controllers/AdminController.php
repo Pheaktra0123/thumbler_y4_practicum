@@ -120,8 +120,5 @@ class  AdminController extends Controller
         return view('Admin.detail_order', compact('order'));
     }
 
-    public function exportMonthlySales()
-    {
-        return Excel::download(new MonthlySalesExport, 'monthly_sales_report.xlsx');
-    }
+   
 }

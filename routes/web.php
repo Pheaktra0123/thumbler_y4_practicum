@@ -140,15 +140,14 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/orders', [OrderController::class, 'adminOrders'])->name('admin.orders');
     Route::post('/orders/{order}/confirm', [AdminController::class, 'confirmOrder'])->name('admin.orders.confirm');
     Route::delete('/orders/{order}/reject', [OrderController::class, 'rejectOrder'])->name('admin.orders.reject');
-
-    //Route for Report
-    Route::get('/admin/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('admin.reports');
-    Route::get('/admin/reports/monthly', [ReportController::class, 'monthly'])->name('admin.report.monthly');
-    Route::get('/admin/reports/export', [ReportController::class, 'export'])->name('admin.report.export');
-    Route::get('/admin/orders/{order}', [AdminController::class, 'show'])->name('admin.orders.show');
 });
 //test route
 
+Route::prefix('admin/reports')->group(function () {
+    Route::get('/', [ReportController::class, 'index'])->name('admin.reports');
+    Route::get('/monthly', [ReportController::class, 'monthly'])->name('admin.report.monthly');
+    Route::get('/export', [ReportController::class, 'export'])->name('admin.report.export');
+});
 Route::get("/Tumblers", function () {
     return view("/Admin/Product");
 });

@@ -166,9 +166,9 @@
             </div>
 
             <!-- Pagination Links -->
-            <!-- <div class="mt-8">
-                {{ $trendingTumblers->links() }}
-            </div> -->
+            <div class="mt-8">
+                {{ $trendingTumblers->links('vendor.pagination.custom') }}
+            </div>
         </div>
     </section>
 
