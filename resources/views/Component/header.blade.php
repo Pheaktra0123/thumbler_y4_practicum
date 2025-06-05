@@ -227,27 +227,21 @@
                 </a>
                 <div class="mt-6 lg:max-w-xl">
                     <p class="text-sm text-gray-800">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi felis mi, faucibus dignissim
-                        lorem
-                        id, imperdiet interdum mauris. Vestibulum ultrices sed libero non porta. Vivamus malesuada
-                        urna eu
-                        nibh malesuada, non finibus massa laoreet. Nunc nisi velit, feugiat a semper quis, pulvinar
-                        id
-                        libero. Vivamus mi diam, consectetur non orci ut, tincidunt pretium justo. In vehicula porta
-                        molestie. Suspendisse potenti.
+                         At Tumbler Haven, we’re dedicated to making tumbler shopping simple, fun, and fully digital. Our platform allows customers to easily personalize their tumblers in real time and place orders without needing to wait for seller replies or visit a physical store. We focus on delivering high-quality, stylish drinkware that reflects your personality and is perfect for everyday use or as a thoughtful gift.
+
                     </p>
                 </div>
             </div>
 
             <div class="flex flex-col gap-2 text-sm">
-                <p class="text-base font-bold tracking-wide text-gray-900">Popular Courses</p>
-                <a href="#">UPSC - Union Public Service Commission</a>
-                <a href="#">General Knowledge</a>
-                <a href="#">MBA</a>
-                <p class="text-base font-bold tracking-wide text-gray-900">Popular Topics</p>
-                <a href="#">Human Resource Management</a>
-                <a href="#">Operations Management</a>
-                <a href="#">Marketing Management</a>
+                <p class="text-base font-bold tracking-wide text-gray-900">Popular Tumblers</p>
+                  <a href="#">The Quencher ProTour Flip Straw Tumbler</a>
+                <a href="#">The IceFlow™ Flip Straw Tumbler</a>
+                <a href="#">The Drinkware</a>
+                <p class="text-base font-bold tracking-wide text-gray-900">Trending Popular</p>
+                <a href="#">GO Everyday Wine Tumbler</a>
+                <a href="#">Adventure Stacking Beer Pint</a>
+                <a href="#">Adventure Stacking Beer Pint</a>
             </div>
 
             <div class="w-full h-full">
@@ -258,7 +252,7 @@
         </div>
 
         <div class="flex flex-col-reverse justify-between pt-5 pb-10 border-t lg:flex-row">
-            <p class="text-sm text-gray-600">© Copyright 2023 Company. All rights reserved.</p>
+            <p class="text-sm text-gray-600">© Copyright 2025 Company. All rights reserved.</p>
             <ul class="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
                 <li>
                     <a href="#"

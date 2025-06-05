@@ -136,10 +136,7 @@
 
                         <div class="relative  w-full bg-gray-100  md:p-4 p-0 rounded-md content-center">
                             <h2 class="text-3xl font-semibold text-gray-900 underline underline-offset-8 decoration-gray-700 ">Our Website</h2>
-                            <p class="text-md mt-4 text-gray-600">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore placeat assumenda nam
-                                veritatis, magni doloremque pariatur quos fugit ipsa id voluptatibus deleniti officiis cum ratione eligendi
-                                sed necessitatibus aliquam error laborum delectus quaerat. Delectus hic error eligendi sed repellat natus fuga
-                                nobis tempora possimus ullam!</p>
+                             <p class="text-md mt-4 text-gray-600">At Tumbler Haven, we make tumbler shopping easy, fun, and fully online. Our platform lets you customize your own tumbler in real time and place orders instantly—no more waiting or store visits. We’re here to help you express your style with high-quality, personalized drinkware delivered right to your door.</p>
                         </div>
 
                     </div>
@@ -148,10 +145,7 @@
                         <div class="md:w-[50%] w-full bg-gray-100  md:p-4 p-0 rounded-md content-center">
                             <h2 class="text-3xl font-semibold text-gray-900 underline underline-offset-8 decoration-gray-700">Our Service</h2>
 
-                            <p class="text-md mt-4 text-gray-600">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore placeat assumenda nam
-                                veritatis, magni doloremque pariatur quos fugit ipsa id voluptatibus deleniti officiis cum ratione eligendi
-                                sed necessitatibus aliquam error laborum delectus quaerat. Delectus hic error eligendi sed repellat natus fuga
-                                nobis tempora possimus ullam!</p>
+                             <p class="text-md mt-4 text-gray-600">Tumbler Haven provides a seamless online service that lets customers design and purchase custom tumblers from the comfort of their home. We offer a variety of tumbler sizes and styles, a real-time customization tool, and a fast ordering process with no need for back-and-forth messaging. With reliable delivery and a user-friendly experience, we make it easy to create a tumbler that’s truly your own.</p>
                         </div>
                         <img class="delay-[300ms] duration-[500ms] taos:translate-y-[100%] taos:opacity-0 md:w-[50%] w-full md:rounded-t-lg rounded-sm" src="aboutus2.png" alt="billboard image" data-taos-offset="100" />
 
@@ -170,10 +164,9 @@
 
                         <div class="md:w-[50%] w-full bg-gray-100  md:p-4 p-0 rounded-md content-center">
                             <h2 class="text-3xl font-semibold text-gray-900 underline underline-offset-8 decoration-gray-700">Our Team</h2>
-                            <p class="text-md mt-4 text-gray-600">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore placeat assumenda nam
-                                veritatis, magni doloremque pariatur quos fugit ipsa id voluptatibus deleniti officiis cum ratione eligendi
-                                sed necessitatibus aliquam error laborum delectus quaerat. Delectus hic error eligendi sed repellat natus fuga
-                                nobis tempora possimus ullam!</p>
+                            <p class="text-md mt-4 text-gray-600">The team behind Tumbler Haven is a passionate group of creative thinkers, developers, and customer-focused individuals who believe in blending technology with personalization. With backgrounds in web development, design, and e-commerce, we work together to build a platform that is easy to use, visually appealing, and truly helpful for our users. Our goal is to deliver not just custom tumblers, but a smooth and satisfying online shopping experience. We are committed to innovation, quality, and making every customer feel valued.</p>
+
+
                         </div>
 
                     </div>

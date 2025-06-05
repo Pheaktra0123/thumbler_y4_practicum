@@ -101,8 +101,7 @@
         <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-md text-center">
                 <h2 class="font-serif text-2xl font-bold sm:text-3xl">Our Top Trending Tumbler</h2>
-                <p class="mt-4 text-base text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus
-                    faucibus massa dignissim tempus.</p>
+                <p class="mt-4 text-base text-gray-700">Discover our latest trending tumbler — a perfect blend of style, durability, and personalization</p>
             </div>
 
             <div class="mt-10 grid grid-cols-2 gap-6 lg:mt-16 lg:grid-cols-4 lg:gap-4 bg-gray-50">

@@ -23,7 +23,7 @@
                 <div class="md:w-1/2 mb-4 md:mb-0 text-center">
                     <h1 class="text-grey-700  font-bold text-4xl md:text-5xl leading-tight mb-2">Model Tumbler Haven
                     </h1>
-                    <p class="font-regular text-xl mb-8 mt-4">One stop solution for flour grinding services</p>
+                    <p class="font-regular text-xl mb-8 mt-4">One stop solution for plastic bottles.  We have Tumbler Haven. </p>
                     <form id="model-search-form"
                           action="{{ route('search.model') }}"
                             name="search"

@@ -20,9 +20,9 @@
             </div>
            <div class="absolute inset-9 flex flex-col md:flex-row items-center justify-center">
                 <div class="md:w-1/2 mb-4 md:mb-0 text-center">
-                    <h1 class="text-grey-700  font-bold text-4xl md:text-5xl leading-tight mb-2">Model Tumbler Haven
+                    <h1 class="text-grey-700  font-bold text-4xl md:text-5xl leading-tight mb-2">Categories Tumbler Haven
                     </h1>
-                    <p class="font-regular text-xl mb-8 mt-4">One stop solution for flour grinding services</p>
+                    <p class="font-regular text-xl mb-8 mt-4">One-stop solution for plastic bottles.  We have Tumbler Haven.</p>
                     <form id="model-search-form"
                           action="{{ route('search.categories') }}"
                             name="search"
@@ -82,7 +82,7 @@
                                             <path d="M12 5l7 7-7 7"></path>
                                         </svg>
                                     </a>
-                                    <span class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">  
+                                    <span class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
                                     </span>
                                     <span class="text-gray-400 inline-flex items-center leading-none text-sm">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -103,7 +103,7 @@
 
         <!-- All items section -->
         <h1 class="font-bold text-4xl text-center mt-10 font-serif ">Choose your own Tumbler!!</h1>
-        <p class="text-center text-gray-600 font-serif opacity-50 mt-5">One stop solution for flour grinding services</p>
+        <p class="text-center text-gray-600 font-serif opacity-50 mt-5">One-stop solution for plastic bottles.  We have Tumbler Haven.</p>
         <div class="flex justify-between items-center px-10 mb-24 ">
             <h3 class="text-lg font-medium opacity-40  text-center font-serif ">Recently Tumbler</h3>
             <p class="text-lg font-medium opacity-50  text-center ">Total Item {{$tumblers->count()}}</p>
