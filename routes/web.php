@@ -75,7 +75,6 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     // Order history
     Route::get('/hostory/order', [OrderController::class, 'history'])->name('view.history');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-
     //rating star and review
     Route::post('/tumbler/{id}/rate', [App\Http\Controllers\TumblerController::class, 'rate'])->name('tumbler.rate');
     Route::post('/tumbler/{id}/review', [TumblerController::class, 'addReview'])->name('tumbler.addReview');
@@ -96,7 +95,13 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/Tranding-Tumblers',[HomeController::class, 'filterTrandingTumblers'])->name('trending.tumblers');
 });
 
+Route::post('/orders/clear', [OrderController::class, 'clearAllHistory'])
+    ->name('orders.clear')
+    ->middleware('auth');
 
+Route::post('/orders/delete/{id}', [OrderController::class, 'clearHistoryById'])
+    ->name('orders.delete')
+    ->middleware('auth');
 Route::middleware(['auth'])->group(function () {
     Route::get('User/Categories', [HomeController::class, 'Categories'])->name('user.categories');
 });

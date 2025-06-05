@@ -19,7 +19,7 @@ class OrderController extends Controller
     public function submitOrder(Request $request)
     {
         try {
-            $trackingNumbler='THMB' . str(Str::random(8));
+            $trackingNumbler = 'THMB' . str(Str::random(8));
             $request->validate([
                 'username' => 'required|string|max:255',
                 'phone' => 'required|string|max:20',
@@ -128,8 +128,49 @@ class OrderController extends Controller
 
     public function history()
     {
-        $orders = auth()->user()->orders()->with('items')->latest()->get();
+        $orders = Order::where('user_id', auth()->id())
+            ->where('hidden_for_user', false)
+            ->with(['items' => function ($query) {
+                $query->where('hidden_for_user', false);
+            }])
+            ->latest()
+            ->paginate(10);
+
         return view("User.history", compact('orders'));
+    }
+    public function clearAllHistory()
+    {
+        // Hide all orders for the authenticated user only
+        Order::where('user_id', auth()->id())
+            ->where('hidden_for_user', false)
+            ->update(['hidden_for_user' => true]);
+
+        // Hide all order items for the user's orders
+        $orderIds = Order::where('user_id', auth()->id())
+            ->where('hidden_for_user', false)
+            ->pluck('id');
+
+        OrderItem::whereIn('order_id', $orderIds)
+            ->update(['hidden_for_user' => true]);
+
+        return redirect()->back()->with('success', 'Order history cleared successfully.');
+    }
+
+    public function clearHistoryById($id)
+    {
+        // Only hide the order if it belongs to the authenticated user
+        $order = Order::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->where('hidden_for_user', false)
+            ->firstOrFail();
+
+        $order->update(['hidden_for_user' => true]);
+
+        // Hide the associated order items
+        OrderItem::where('order_id', $order->id)
+            ->update(['hidden_for_user' => true]);
+
+        return back()->with('success', 'Order removed from your history.');
     }
 
     public function show(Order $order)

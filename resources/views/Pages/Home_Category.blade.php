@@ -165,28 +165,34 @@
                             <span class="text-gray-800 ml-2 font-semibold">{{ number_format($rating, 1) }} <span class="text-gray-500 font-normal">out of 5</span></span>
 
                         </div>
-                        <div class="flex items-center">
-                            <p class="text-lg font-semibold text-black cursor-auto my-3">${{ number_format($tumbler->price, 2) }}</p>
-                            @if($tumbler->original_price)
-                            <del>
-                                <p class="text-sm text-gray-600 cursor-auto ml-2">${{ number_format($tumbler->original_price, 2) }}</p>
-                            </del>
-                            @endif
-                            <div class="ml-auto">
-                                @if($tumbler->stock > 0)
-                                <button class="border border-2 text-sm text-gray-600 px-4 py-2 rounded hover:bg-gray-300  transition duration-200 flex items-center justify-center hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-6 h-6 inline-block mr-2 items-center">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                    </svg>
-                                    Add to Cart
-                                </button>
-                                @else
-                                    <p class="text-sm text-red-600 ml-2">Out of Stock</p>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
                 </a>
+                <div class="flex items-center">
+                    <p class="text-lg font-semibold text-black cursor-auto my-3">${{ number_format($tumbler->price, 2) }}</p>
+                    @if($tumbler->original_price)
+                    <del>
+                        <p class="text-sm text-gray-600 cursor-auto ml-2">${{ number_format($tumbler->original_price, 2) }}</p>
+                    </del>
+                    @endif
+                    <div class="ml-auto">
+                        @if($tumbler->stock > 0)
+                        <form action="{{route('add.to.cart', $tumbler->id)}}" method="POST" class="flex items-center add-to-cart-form" id="addToCartForm">
+                            @csrf
+                            <button
+                                type="submit"
+                                class="border border-2 text-sm text-gray-600 px-4 py-2 rounded hover:bg-gray-300  transition duration-200 flex items-center justify-center hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-6 h-6 inline-block mr-2 items-center">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                </svg>
+                                Add to Cart
+                            </button>
+                        </form>
+                        @else
+                        <p class="text-sm text-red-600 ml-2">Out of Stock</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
             </div>
             @empty
             <div class="col-span-full text-center text-gray-600 mt-10 mb-10">
@@ -210,34 +216,34 @@
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const searchBar = document.getElementById('search-bar');
-            const searchButton = document.getElementById('search-button');
-            const loadingSpinner = document.getElementById('loading-spinner');
-            const resultsContainer = document.getElementById('search-results');
-            let searchTimeout;
+                    const searchBar = document.getElementById('search-bar');
+                    const searchButton = document.getElementById('search-button');
+                    const loadingSpinner = document.getElementById('loading-spinner');
+                    const resultsContainer = document.getElementById('search-results');
+                    let searchTimeout;
 
-            function performSearch() {
-                const query = searchBar.value;
-                if (query.length < 2) return; // Don't search for very short queries
+                    function performSearch() {
+                        const query = searchBar.value;
+                        if (query.length < 2) return; // Don't search for very short queries
 
-                loadingSpinner.classList.remove('opacity-0');
+                        loadingSpinner.classList.remove('opacity-0');
 
-                fetch(`/search?query=${encodeURIComponent(query)}`, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        resultsContainer.innerHTML = ''; // Clear existing results
+                        fetch(`/search?query=${encodeURIComponent(query)}`, {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                resultsContainer.innerHTML = ''; // Clear existing results
 
-                        if (data.tumblers.length === 0) {
-                            resultsContainer.innerHTML = '<div class="col-span-full text-center">No products found</div>';
-                            return;
-                        }
+                                if (data.tumblers.length === 0) {
+                                    resultsContainer.innerHTML = '<div class="col-span-full text-center">No products found</div>';
+                                    return;
+                                }
 
-                        data.tumblers.forEach(tumbler => {
-                            const card = `
+                                data.tumblers.forEach(tumbler => {
+                                    const card = `
                         <div class="bg-white rounded-lg shadow-md p-4">
                             <img src="${tumbler.image_url || '/default-tumbler.jpg'}" alt="${tumbler.name}" class="w-full h-48 object-cover rounded-md">
                             <h3 class="mt-2 text-lg font-semibold">${tumbler.name}</h3>
@@ -245,44 +251,101 @@
                             <p class="mt-2 text-green-600 font-bold">$${tumbler.price}</p>
                         </div>
                     `;
-                            resultsContainer.innerHTML += card;
+                                    resultsContainer.innerHTML += card;
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                resultsContainer.innerHTML = '<div class="col-span-full text-center text-red-500">An error occurred while searching</div>';
+                            })
+                            .finally(() => {
+                                loadingSpinner.classList.add('opacity-0');
+                            });
+                    }
+                    //pop up add to cart
+                    const addToCartForm = document.getElementById('addToCartForm');
+                    if (addToCartForm) {
+                        addToCartForm.addEventListener('submit', function(e) {
+                                e.preventDefault();
+                                const formData = new FormData(addToCartForm);
+                                fetch(addToCartForm.action, {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                                            'X-Requested-With': 'XMLHttpRequest',
+                                            'Accept': 'application/json'
+                                        },
+                                        body: formData
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.cartCount !== undefined) {
+                                            document.querySelectorAll('.cart-badge').forEach(el => {
+                                                el.textContent = data.cartCount;
+                                            });
+                                        }
+                                        Swal.fire('Added to cart!', '', 'success');
+                                    })
+                                    .catch(() => Swal.fire('Failed to add to cart!', '', 'error'));
+                            }
+                        );
+                        }
+
+                        // Search as you type with debouncing
+                        searchBar.addEventListener('input', function() {
+                            clearTimeout(searchTimeout);
+                            searchTimeout = setTimeout(performSearch, 300);
                         });
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        resultsContainer.innerHTML = '<div class="col-span-full text-center text-red-500">An error occurred while searching</div>';
-                    })
-                    .finally(() => {
-                        loadingSpinner.classList.add('opacity-0');
+
+                        // Search when search button is clicked
+                        searchButton.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            performSearch();
+                        });
+
+                        // Search when Enter key is pressed
+                        searchBar.addEventListener('keypress', function(e) {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                performSearch();
+                            }
+                        });
                     });
-            }
-
-            // Search as you type with debouncing
-            searchBar.addEventListener('input', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(performSearch, 300);
-            });
-
-            // Search when search button is clicked
-            searchButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                performSearch();
-            });
-
-            // Search when Enter key is pressed
-            searchBar.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    performSearch();
-                }
-            });
-        });
     </script>
     @endpush
     <!-- Loading Spinner -->
     <div id="pagination-loading-spinner" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.add-to-cart-form').forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    fetch(form.action, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire('Added to cart!', '', 'success');
+                            } else {
+                                Swal.fire('Failed to add to cart!', data.message || '', 'error');
+                            }
+                        })
+                        .catch(() => Swal.fire('Failed to add to cart!', '', 'error'));
+                });
+            });
+        });
+    </script>
     </body>
 
 </html>

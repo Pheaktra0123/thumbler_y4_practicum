@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 
 class Order extends Model
 {
@@ -19,6 +20,15 @@ class Order extends Model
         'coordinates',
         'bank_slip_path'
     ];
+    // In your Order model
+    
+    public function scopeVisibleToUser($query)
+    {
+        return $query->where('hidden_for_user', false);
+    }
+
+    // Then in your controller where you fetch orders:
+
 
     public function user()
     {
@@ -27,6 +37,9 @@ class Order extends Model
 
     public function items()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class)
+            ->when(Schema::hasColumn('order_items', 'hidden_for_user'), function ($query) {
+                $query->where('hidden_for_user', false);
+            });
     }
 }

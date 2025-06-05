@@ -153,14 +153,14 @@
                         $selectedColor = isset($tumbler->colors[0]) ? (is_string($tumbler->colors[0]) ? trim($tumbler->colors[0], '"[]\\') : '') : '';
                         @endphp
 
-                       <a id="customizeLink"
-   href="{{ route('customize.tumbler', ['id' => $tumbler->id, 'color' => $selectedColor]) }}">
-    <button id="customizeButton"
-        class="w-full text-black py-3 px-6 border-2 rounded-full font-bold ">
-        Customize
-    </button>
-</a>
-                       
+                        <a id="customizeLink"
+                            href="{{ route('customize.tumbler', ['id' => $tumbler->id, 'color' => $selectedColor]) }}">
+                            <button id="customizeButton"
+                                class="w-full text-black py-3 px-6 border-2 rounded-full font-bold ">
+                                Customize
+                            </button>
+                        </a>
+
                     </div>
                 </div>
             </div>
@@ -179,33 +179,33 @@
                     <!-- Move Image to the Right & Push It Down -->
                     <div class="h-[100px] w-[200px] flex items-center justify-center rounded-lg   ml-24 mt-44 mb-24">
                         {{-- Rating Form Section --}}
-                    @if(auth()->check())
-                    <form id="ratingForm" action="{{ route('tumbler.rate', $tumbler->id) }}" method="POST" class="my-8 bg-white rounded-lg shadow p-6 ">
-                         <img class="w-100 h-100 object-cover rounded-lg product-image" src="{{ asset('storage/' . $tumbler->thumbnails[0]) }}" alt="Product Image">
-                        @csrf
-                        <label for="rating" class="block font-bold mb-2 text-lg text-gray-700">Your Rating:</label>
-                        <div class="flex items-center mb-4 space-x-2 justify-center">
-                            @for($i = 1; $i <= 5; $i++)
-                                <label class="cursor-pointer transition-transform transform hover:scale-125">
-                                <input type="radio" name="rating" value="{{ $i }}" class="hidden peer" required {{ old('rating') == $i ? 'checked' : '' }}>
-                                <svg class="w-9 h-9 transition-colors duration-200 peer-checked:text-yellow-400 text-gray-300 hover:text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
-                                    <polygon points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " />
+                        @if(auth()->check())
+                        <form id="ratingForm" action="{{ route('tumbler.rate', $tumbler->id) }}" method="POST" class="my-8 bg-white rounded-lg shadow p-6 ">
+                            <img class="w-100 h-100 object-cover rounded-lg product-image" src="{{ asset('storage/' . $tumbler->thumbnails[0]) }}" alt="Product Image">
+                            @csrf
+                            <label for="rating" class="block font-bold mb-2 text-lg text-gray-700">Your Rating:</label>
+                            <div class="flex items-center mb-4 space-x-2 justify-center">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <label class="cursor-pointer transition-transform transform hover:scale-125">
+                                    <input type="radio" name="rating" value="{{ $i }}" class="hidden peer" required {{ old('rating') == $i ? 'checked' : '' }}>
+                                    <svg class="w-9 h-9 transition-colors duration-200 peer-checked:text-yellow-400 text-gray-300 hover:text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                                        <polygon points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " />
+                                    </svg>
+                                    </label>
+                                    @endfor
+                            </div>
+                            <textarea name="comment" class="w-full border rounded p-2 mb-4" placeholder="Leave a comment (optional)">{{ old('comment') }}</textarea>
+                            <button id="submitRatingBtn" type="submit" class="bg-blue-600 text-white px-6 py-2 rounded font-bold flex items-center justify-center gap-2">
+                                <span>Submit Rating</span>
+                                <svg id="ratingLoading" class="w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
                                 </svg>
-                                </label>
-                                @endfor
-                        </div>
-                        <textarea name="comment" class="w-full border rounded p-2 mb-4" placeholder="Leave a comment (optional)">{{ old('comment') }}</textarea>
-                        <button id="submitRatingBtn" type="submit" class="bg-blue-600 text-white px-6 py-2 rounded font-bold flex items-center justify-center gap-2">
-                            <span>Submit Rating</span>
-                            <svg id="ratingLoading" class="w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                            </svg>
-                        </button>
-                    </form>
-                    @else
-                    <p class="text-sm text-gray-500 text-center">Please <a href="{{ route('login') }}" class="text-blue-600 underline">login</a> to rate this tumbler.</p>
-                    @endif
+                            </button>
+                        </form>
+                        @else
+                        <p class="text-sm text-gray-500 text-center">Please <a href="{{ route('login') }}" class="text-blue-600 underline">login</a> to rate this tumbler.</p>
+                        @endif
                     </div>
 
                 </div>
