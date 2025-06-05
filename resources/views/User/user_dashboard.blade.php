@@ -74,28 +74,28 @@
                                             </svg>
                                             <p class="text-gray-500  text-start items-start">Joined: {{auth()->user()->created_at->diffForHumans()}}</p>
                                         </div>
-                                        <div class="flex gap-4 text-lg mt-5">
-                                            <h3 class="font-medium">Bio:</h3>
-                                            <p class="text-gray-500  text-start items-center"> @if(auth()->user()->description) {{auth()->user()->description}} @else Not Yet @endif</p>
+                                        <div
+                                            class="flex items-center justify-between mt-4 w-full">
+
+                                            <div class="flex gap-4 text-start items-center text-lg">
+                                                <h3 class="font-normal text-md">Address:</h3>
+                                                <p class="text-gray-500 text-sm"> @if(auth()->user()->address) {{auth()->user()->address}} @else your address @endif</p>
+                                            </div>
+                                            <div class="text-start items-center flex gap-4 ">
+                                                <h3 class="font-normal text-md">Phone Number: </h3>
+                                                <p class="text-gray-500 text-sm ">@if(auth()->user()->phone) {{auth()->user()->phone}} @else your phone number @endif</p>
+                                            </div>
                                         </div>
-                                        <div class="flex gap-4 text-lg ">
-                                            <h3 class="font-medium">Role:</h3>
-                                            <p class="text-gray-500  text-start items-center"> @if(auth()->user()->role == 1) Admin @else User @endif</p>
-                                        </div>
-                                        <div class="flex gap-4 text-start items-center text-lg">
-                                            <h3 class="font-medium">Address:</h3>
-                                            <p class="text-gray-500"> @if(auth()->user()->address) {{auth()->user()->address}} @else Not Yet @endif</p>
-                                        </div>
-                                        <div class="text-start items-center flex gap-4 text-lg">
-                                            <h3 class="font-medium">Phone Number: </h3>
-                                            <p class="text-gray-500">@if(auth()->user()->phone) {{auth()->user()->phone}} @else Not Yet @endif</p>
+                                        <div class="flex gap-4  mt-5">
+                                            <h3 class="font-normal text-md">Bio:</h3>
+                                            <p class="text-gray-500 text-sm  text-start items-center"> @if(auth()->user()->description) {{auth()->user()->description}} @else Description @endif</p>
                                         </div>
                                     </div>
                                 </div>
                                 <a href="/User/Profile/Edit">
                                     <div class="flex gap-2 px-2">
                                         <button
-                                            class="flex-1 rounded-full border-2 border-gray-400  font-semibold text-black px-4 py-2 fucus:bg-gray-800 hover:bg-gray-700 fucus:text-white hover:text-white hover:outline-none hover:border-transparent">
+                                            class="flex-1 rounded-lg border-2 border-gray-400  font-semibold text-black px-4 py-2 fucus:bg-gray-800 hover:bg-gray-700 fucus:text-white hover:text-white hover:outline-none hover:border-transparent">
                                             Edit Profile
                                         </button>
                                     </div>

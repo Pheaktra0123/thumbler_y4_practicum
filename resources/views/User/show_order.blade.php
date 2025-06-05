@@ -111,10 +111,11 @@
                     &larr; Back to Orders
                 </a>
                 @if($order->status === 'pending' || $order->status === 'processing')
-                <form action="{{ route('orders.cancel', $order) }}" method="POST">
+                <form id="cancel-order-form" action="{{ route('orders.cancel', $order) }}" method="POST">
                     @csrf
                     @method('PATCH')
-                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                    <input type="hidden" name="cancel_note" id="cancel_note_input">
+                    <button type="button" id="cancel-order-btn" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
                         Cancel Order
                     </button>
                 </form>
@@ -123,4 +124,32 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cancelBtn = document.getElementById('cancel-order-btn');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Cancel Order',
+                    text: 'You can provide a reason for cancellation (optional):',
+                    input: 'textarea',
+                    inputPlaceholder: 'Enter your reason here (optional)...',
+                    showCancelButton: true,
+                    confirmButtonText: 'Submit',
+                    cancelButtonText: 'Close',
+                    inputAttributes: {
+                        'aria-label': 'Reason for cancellation'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('cancel_note_input').value = result.value || '';
+                        document.getElementById('cancel-order-form').submit();
+                    }
+                });
+            });
+        }
+    });
+</script>
 @endsection

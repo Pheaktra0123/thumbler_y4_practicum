@@ -122,25 +122,18 @@ class CartController extends Controller
         unset($cart[$key]);
         session()->put('cart', $cart);
 
-        // For AJAX requests, return JSON response
+        // Return JSON for AJAX
         if (request()->ajax()) {
-            // Calculate new total
-            $total = array_reduce($cart, function ($carry, $item) {
-                return $carry + ($item['price'] * $item['quantity']);
-            }, 0);
-
             return response()->json([
                 'success' => true,
-                'message' => 'Item removed from cart successfully!',
-                'cart_count' => count($cart),
-                'total' => number_format($total, 2)
+                'message' => 'Item removed from cart successfully!'
             ]);
         }
 
-        // For normal requests, redirect back
-        return back()->with('success', 'Item removed from cart successfully!');
+        // Fallback for normal requests
+        return redirect()->back()->with('success', 'Item removed from cart successfully!');
     }
-        public function clearCart()
+    public function clearCart()
     {
         session()->forget('cart');
         return redirect()->back()->with('success', 'Cart cleared successfully!');

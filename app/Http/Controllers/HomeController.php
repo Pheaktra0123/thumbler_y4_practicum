@@ -13,6 +13,7 @@ use App\Models\CustomizedTumbler;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use App\Models\Order;
+use App\Models\Review;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -24,8 +25,26 @@ class HomeController extends Controller
 
     public function index()
     {
+        $user = Auth::user();
+       $reviews =Review::all();
+        if ($user) {
+            // Fetch tumblers with reviews for the authenticated user
+            $tumblers = Tumbler::with(['reviews', 'category', 'model'])
+                ->whereHas('reviews', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                ->paginate(4);
 
-        return view('Pages.home');
+            foreach ($tumblers as $tumbler) {
+                $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
+                $tumbler->rating_count = $tumbler->reviews->count();
+            }
+        } else {
+            // If no user is authenticated, fetch all tumblers without reviews
+            $tumblers = Tumbler::with(['category', 'model'])->paginate(4);
+        }
+
+        return view('Pages.home', compact('user','reviews'));
     }
     public function dashboard()
     {

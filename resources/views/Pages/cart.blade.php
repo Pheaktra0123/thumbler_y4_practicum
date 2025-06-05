@@ -61,7 +61,7 @@
                         </td>
                         <td class="px-2 py-2">${{ number_format($subtotal, 2) }}</td>
                         <td class="px-2 py-2">
-                            <form action="{{ route('remove.from.cart', $key) }}" method="POST" class="remove-cart-form">
+                            <form action="{{ route('remove.from.cart', $key) }}" method="POST" class="remove-cart-form" style="display:inline;">
                                 @csrf
                                 <button type="button" class="text-red-500 hover:text-red-700 remove-cart-btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -69,6 +69,17 @@
                                     </svg>
                                 </button>
                             </form>
+                            @if(isset($item['customized_id']))
+                            <button
+                                type="button"
+                                class="inline-block ml-2 text-blue-500 hover:text-blue-700 view-customized-btn"
+                                data-customized-id="{{ $item['customized_id'] }}"
+                                title="View Details">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </button>
+                            @endif
                         </td>
                     </tr>
                     @empty
@@ -170,17 +181,17 @@
                         fetch(form.action, {
                                 method: 'POST',
                                 headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                    'X-Requested-With': 'XMLHttpRequest'
                                 },
                                 body: formData
                             })
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
-                                    btn.closest('tr').remove();
-                                    Swal.fire('Removed!', 'Item removed from cart.', 'success');
-                                    // Optionally reload to update totals
-                                    location.reload();
+                                    Swal.fire('Removed!', 'Item removed from cart.', 'success').then(() => {
+                                        location.reload();
+                                    });
                                 } else {
                                     Swal.fire('Error', 'Could not remove item.', 'error');
                                 }
@@ -468,6 +479,27 @@
                         window.location.reload();
                     });
                 }
+            });
+        });
+
+        document.querySelectorAll('.view-customized-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const id = btn.getAttribute('data-customized-id');
+                // Fetch details via AJAX or show in a modal
+                fetch(`/customized_tumbler/${id}/popup`)
+                    .then(response => response.text())
+                    .then(html => {
+                        Swal.fire({
+                            title: 'Customized Tumbler Details',
+                            html: html,
+                            width: 600,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                    })
+                    .catch(() => {
+                        Swal.fire('Error', 'Could not load details.', 'error');
+                    });
             });
         });
     });

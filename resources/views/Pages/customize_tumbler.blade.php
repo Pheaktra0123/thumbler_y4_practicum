@@ -56,11 +56,21 @@
                                         if (empty($cleanColor)) $cleanColor = '#cccccc';
                                         $isSelected = $cleanColor == $selectedColor;
                                     @endphp
-                                    <button
-                                        class="color-btn w-8 h-8 rounded-full border-2 {{ $isSelected ? 'border-gray-700' : 'border-transparent' }} hover:border-gray-700 focus:border-gray-700"
+                                    <input type="hidden" name="color" value="{{ $cleanColor }}"
+                                        class="color-btn w-8 h-8 rounded-full border-2 {{ $isSelected ? 'border-gray-300' : 'border-transparent' }} hover:border-gray-700 focus:border-gray-700"
                                         style="background-color: {{ $cleanColor }}"
                                         data-color="{{ $cleanColor }}">
+                                    <button type="button" class="color-btn w-8 h-8 rounded-full border-2 {{ $isSelected ? 'border-gray-700' : 'border-transparent' }} hover:border-gray-700 focus:border-gray-700"
+                                        style="background-color: {{ $cleanColor }}"
+                                        data-color="{{ $cleanColor }}"
+                                        onclick="document.getElementById('selectedColor').value = '{{ $cleanColor }}';">
+                                        @if ($isSelected)
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-700">
+                                                <path fill-rule="evenodd" d="M12 2.25c5.385 0 9.75 4.365 9.75 9.75s-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12 6.615 2.25 12 2.25Zm3.03 7.97a1.5 1.5 0 0 1 .02 2.12l-4.5 4.5a1.5 1.5 0 0 1-2.12-.02l-2-2a1.5 1.5 0 0 1 .02-2.12l3-3a1.5 1.5 0 0 1 2.12-.02l3.48 3.48Z" clip-rule="evenodd" />
+                                            </svg>
+                                        @endif
                                     </button>
+                                    
                                 @endforeach
                             </div>
                         </div>
@@ -156,6 +166,7 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" name="color" id="selectedColor" value="{{ $selectedColor }}">
     </form>
 </div>
 <script>
