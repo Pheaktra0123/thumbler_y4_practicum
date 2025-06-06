@@ -2,7 +2,7 @@
 @extends("Component.Nav_Dashbord")
 @section('title', 'Orders')
 @section('contents')
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-4">
     <h1 class="text-2xl font-bold mb-6">Order Management</h1>
 
     <div class="bg-white rounded-lg shadow overflow-hidden">
@@ -44,7 +44,7 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('admin.orders.show', $order->id) }}" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
+                            <a href="" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
                             @if($order->status !== 'completed' && $order->status !== 'cancelled')
                             <form action="{{ route('admin.orders.confirm', $order->id) }}" method="POST" class="inline">
                                 @csrf
@@ -61,7 +61,11 @@
                     @endforeach
                 </tbody>
             </table>
+
         </div>
     </div>
+</div>
+<div class="px-6 ">
+    {{ $orders->links('vendor.pagination.custom') }}
 </div>
 @endsection

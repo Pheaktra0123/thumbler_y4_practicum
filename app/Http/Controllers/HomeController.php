@@ -57,11 +57,31 @@ class HomeController extends Controller
 
     public function adminHome()
     {
-        $users = User::all();
+        $users = User::paginate(5); // Get all users and paginate
         $tumblers = Tumbler::get();
         $orders = Order::all(); // Get all orders
         $orderCount = $orders->count();     // Count orders
-        return view('Admin/Dashboard', compact('users', 'tumblers', 'orderCount'));
+
+        $monthlyOrders = Order::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->pluck('count', 'month')
+            ->toArray();
+
+        // Fill in missing months with 0
+        $chartData = [];
+        $labels = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $monthName = date('M', mktime(0, 0, 0, $i, 1));
+            $labels[] = $monthName;
+            $chartData[] = $monthlyOrders[$i] ?? 0;
+        }
+        $statusCounts = Order::selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+        return view('Admin/Dashboard', compact('users', 'tumblers', 'orderCount', 'chartData', 'labels','statusCounts'));
     }
     public function Categories()
     {
@@ -274,9 +294,8 @@ class HomeController extends Controller
         $trendingTumblers = Tumbler::with(['category', 'model'])
             ->select(
                 'tumblers.*',
-                DB::raw('COUNT(order_items.id) as orders_count'),
-                DB::raw('COALESCE(AVG(reviews.rating), 0) as average_rating'),
-                DB::raw('COUNT(reviews.id) as reviews_count')
+                DB::raw('COUNT(DISTINCT order_items.id) as orders_count'),
+                DB::raw('COUNT(DISTINCT reviews.id) as reviews_count')
             )
             ->leftJoin('order_items', function ($join) {
                 $join->on('tumblers.id', '=', 'order_items.tumbler_id')
@@ -284,11 +303,10 @@ class HomeController extends Controller
             })
             ->leftJoin('reviews', 'tumblers.id', '=', 'reviews.tumbler_id')
             ->groupBy('tumblers.id')
-            ->having('orders_count', '>=', 3) // Minimum 3 purchases
+            ->havingRaw('COUNT(DISTINCT order_items.id) >= 3') // Important: use raw to match select
             ->orderByDesc('orders_count')
             ->paginate(8);
 
-        // No need for each loop since we calculated in query
         return view('Pages.Home_Trending_Tumbler', compact('trendingTumblers'));
     }
 }

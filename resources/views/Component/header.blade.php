@@ -1,4 +1,3 @@
-@section('title','Home')
 <!DOCTYPE html>
 <html lang="es">
 
@@ -14,32 +13,78 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById("menu");
-            menu.classList.toggle("hidden");
-        }
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
     <style>
         .swal2-confirm {
             background-color: #f53636 !important;
-            /* Red color */
             color: #fff !important;
-            /* White text */
         }
 
         .swal2-cancel {
             background-color: #d5d5d5 !important;
-            /* Gray color */
             color: #000 !important;
-            /* Black text */
+        }
+
+        /* Active link styling */
+        .nav-link.active {
+            color: #4f46e5 !important;
+            font-weight: 600 !important;
+            text-decoration: underline !important;
+            text-underline-offset: 8px !important;
+        }
+
+        /* Loading spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Page transition overlay */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .page-transition.active {
+            opacity: 1;
+            pointer-events: all;
         }
     </style>
 </head>
 
 <body class="bg-gray-100">
+    <!-- Page Transition Overlay -->
+    <div id="pageTransition" class="page-transition">
+        <div class="loader"></div>
+    </div>
+
     <nav class="fixed top-0 left-0 right-0 z-50 bg-white/50 bg-opacity-90 backdrop-blur-md">
         <div class="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
@@ -50,11 +95,11 @@
                 </div>
                 <div class="hidden md:block text-gray-700">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="/" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Home</a>
-                        <a href="/Categories_home" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Category</a>
-                        <a href="/Model_home" class="text-lg font-medium text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">Model</a>
-                        <a href="{{ route('trending.tumblers') }}" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
-                        <a href="#about-us" class="text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out  px-3 py-2 rounded-md transition-colors duration-300">About Us</a>
+                        <a href="/" class="nav-link text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out px-3 py-2 rounded-md transition-colors duration-300">Home</a>
+                        <a href="/Categories_home" class="nav-link text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out px-3 py-2 rounded-md transition-colors duration-300">Category</a>
+                        <a href="/Model_home" class="nav-link text-lg font-medium text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out px-3 py-2 rounded-md transition-colors duration-300">Model</a>
+                        <a href="{{ route('trending.tumblers') }}" class="nav-link text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
+                        <a href="#about-us" class="nav-link text-lg font-semibold text-gray-700 hover:underline hover:underline-offset-8 hover:transition hover:deration-700 hover:ease-in-out px-3 py-2 rounded-md transition-colors duration-300">About Us</a>
                     </div>
                 </div>
                 <div class="hidden md:block">
@@ -63,14 +108,12 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
                                 <path fill-rule="evenodd" d="m9.69 18.933.003.001C9.89 19.02 10 19 10 19s.11.02.308-.066l.002-.001.006-.003.018-.008a5.741 5.741 0 0 0 .281-.14c.186-.096.446-.24.757-.433.62-.384 1.445-.966 2.274-1.765C15.302 14.988 17 12.493 17 9A7 7 0 1 0 3 9c0 3.492 1.698 5.988 3.355 7.584a13.731 13.731 0 0 0 2.273 1.765 11.842 11.842 0 0 0 .976.544l.062.029.018.008.006.003ZM10 11.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" clip-rule="evenodd" />
                             </svg>
-
                             <a href="#" onclick="showLocationPopup(); return false;" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Location</a>
                         </div>
                         <div class="relative flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
                                 <path d="M15.993 1.385a1.87 1.87 0 0 1 2.623 2.622l-4.03 5.27a12.749 12.749 0 0 1-4.237 3.562 4.508 4.508 0 0 0-3.188-3.188 12.75 12.75 0 0 1 3.562-4.236l5.27-4.03ZM6 11a3 3 0 0 0-3 3 .5.5 0 0 1-.72.45.75.75 0 0 0-1.035.931A4.001 4.001 0 0 0 9 14.004V14a3.01 3.01 0 0 0-1.66-2.685A2.99 2.99 0 0 0 6 11Z" />
                             </svg>
-
                             <a href="{{ route('customized.tumblers') }}" class="text-md font-normal text-gray-900 hover:text-gray-600 px-2 py-2 rounded-md transition-colors duration-300">Customized</a>
                         </div>
                     </div>
@@ -81,14 +124,10 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-6 w-6 h-6">
                                 <path fill-rule="evenodd" d="M6 5v1H4.667a1.75 1.75 0 0 0-1.743 1.598l-.826 9.5A1.75 1.75 0 0 0 3.84 19H16.16a1.75 1.75 0 0 0 1.743-1.902l-.826-9.5A1.75 1.75 0 0 0 15.333 6H14V5a4 4 0 0 0-8 0Zm4-2.5A2.5 2.5 0 0 0 7.5 5v1h5V5A2.5 2.5 0 0 0 10 2.5ZM7.5 10a2.5 2.5 0 0 0 5 0V8.75a.75.75 0 0 1 1.5 0V10a4 4 0 0 1-8 0V8.75a.75.75 0 0 1 1.5 0V10Z" clip-rule="evenodd" />
                             </svg>
-
-                            <span
-                                class="cart-badge w-4 h-4 md:w-5 md:h-5 bg-red-500 text-white text-xs font-semibold rounded-full text-center content-items-center place-content-center absolute -top-1 md:-top-2 right-0 md:right-8">
+                            <span class="cart-badge w-4 h-4 md:w-5 md:h-5 bg-red-500 text-white text-xs font-semibold rounded-full text-center content-items-center place-content-center absolute -top-1 md:-top-2 right-0 md:right-8">
                                 {{ $cartCount ?? 0 }}
                             </span>
-                            <a
-                                href="{{route('user.viewCart')}}"
-                                class="hidden md:block ml-2 text-md font-normal text-gray-900 hover:text-gray-600 transition-colors duration-300">
+                            <a href="{{route('user.viewCart')}}" class="hidden md:block ml-2 text-md font-normal text-gray-900 hover:text-gray-600 transition-colors duration-300">
                                 Cart
                             </a>
                         </div>
@@ -102,12 +141,10 @@
                                     src="{{ auth()->user()->thumbnail ? asset(auth()->user()->thumbnail) : 'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=320&amp;h=320&amp;q=80' }}"
                                     alt="Profile Image">
                                 @else
-                                <!-- Display a default profile when register  -->
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 w-8 h-8">
                                     <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
                                 </svg>
                                 @endif
-
                             </button>
                             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow " id="user-dropdown">
                                 <div class="px-4 py-3">
@@ -154,11 +191,11 @@
         </div>
         <div id="menu" class="md:hidden hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="/" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Home</a>
-                <a href="{{ route('search.categories') }}" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Category</a>
-                <a href="{{ route('model.home') }}" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Model</a>
-                <a href="{{ route('trending.tumblers') }}" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
-                <a href="#about-us" class="text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">About Us</a>
+                <a href="/" class="nav-link-mobile text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Home</a>
+                <a href="{{ route('search.categories') }}" class="nav-link-mobile text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Category</a>
+                <a href="{{ route('model.home') }}" class="nav-link-mobile text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Model</a>
+                <a href="{{ route('trending.tumblers') }}" class="nav-link-mobile text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">New Trending</a>
+                <a href="#about-us" class="nav-link-mobile text-md block font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">About Us</a>
             </div>
             <hr class="border-gray-300 w-full">
             <div class="flex item-center justify-center gap-1 p-4 ">
@@ -166,7 +203,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                         <path fill-rule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" />
                     </svg>
-                    <a href="#" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Location</a>
+                    <a href="#" onclick="showLocationPopup(); return false;" class="text-sm font-medium text-gray-900 hover:text-gray-600 px-3 py-2 rounded-md transition-colors duration-300">Location</a>
                 </div>
                 <div class="relative flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -217,13 +254,12 @@
                 </div>
             </div>
         </section>
-        <div class=" relative  ">
+        <div class="relative">
             <div>@yield('contents')</div>
         </div>
     </main>
-    <footer class="px-3 pt-4 lg:px-9  bg-gray-50">
+    <footer class="px-3 pt-4 lg:px-9 bg-gray-50">
         <div class="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
-
             <div class="sm:col-span-2">
                 <a href="#" class="inline-flex items-center">
                     <span class="ml-2 text-xl font-bold tracking-wide text-gray-800">BE THE FIRST TO KNOW
@@ -231,12 +267,10 @@
                 </a>
                 <div class="mt-6 lg:max-w-xl">
                     <p class="text-sm text-gray-800">
-                        At Tumbler Haven, we’re dedicated to making tumbler shopping simple, fun, and fully digital. Our platform allows customers to easily personalize their tumblers in real time and place orders without needing to wait for seller replies or visit a physical store. We focus on delivering high-quality, stylish drinkware that reflects your personality and is perfect for everyday use or as a thoughtful gift.
-
+                        At Tumbler Haven, we're dedicated to making tumbler shopping simple, fun, and fully digital. Our platform allows customers to easily personalize their tumblers in real time and place orders without needing to wait for seller replies or visit a physical store. We focus on delivering high-quality, stylish drinkware that reflects your personality and is perfect for everyday use or as a thoughtful gift.
                     </p>
                 </div>
             </div>
-
             <div class="flex flex-col gap-2 text-sm">
                 <p class="text-base font-bold tracking-wide text-gray-900">Popular Tumblers</p>
                 <a href="#">The Quencher ProTour Flip Straw Tumbler</a>
@@ -247,14 +281,11 @@
                 <a href="#">Adventure Stacking Beer Pint</a>
                 <a href="#">Adventure Stacking Beer Pint</a>
             </div>
-
             <div class="w-full h-full">
-                <p class=" font-bold tracking-wide text-gray-900 text-center font-serif">Tumbler Haven </p>
+                <p class="font-bold tracking-wide text-gray-900 text-center font-serif">Tumbler Haven </p>
                 <img src="footer.png" alt="">
             </div>
-
         </div>
-
         <div class="flex flex-col-reverse justify-between pt-5 pb-10 border-t lg:flex-row">
             <p class="text-sm text-gray-600">© Copyright 2025 Company. All rights reserved.</p>
             <ul class="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
@@ -271,77 +302,139 @@
                 </li>
             </ul>
         </div>
-
     </footer>
-</body>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const cartIcon = document.getElementById("cartIcon");
-        const cartDialog = document.getElementById("cartDialog");
-        const closeCartDialog = document.getElementById("closeCartDialog");
-        let hoverTimeout;
 
-        // Remove click event for cartIcon (do not open on click)
-        // cartIcon.addEventListener("click", ...); // <-- Remove or comment out
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Set active nav link based on current URL
+            const currentUrl = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileNavLinks = document.querySelectorAll('.nav-link-mobile');
 
-        // Show cart dialog on hover
-        cartIcon.addEventListener("mouseenter", function() {
-            clearTimeout(hoverTimeout);
-            cartDialog.classList.remove("hidden");
-        });
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentUrl) {
+                    link.classList.add('active');
+                }
+            });
 
-        // Hide cart dialog when mouse leaves both icon and dialog
-        cartIcon.addEventListener("mouseleave", function() {
-            hoverTimeout = setTimeout(() => {
+            mobileNavLinks.forEach(link => {
+                if (link.getAttribute('href') === currentUrl) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Initialize cart dialog functionality
+            const cartIcon = document.getElementById("cartIcon");
+            const cartDialog = document.getElementById("cartDialog");
+            const closeCartDialog = document.getElementById("closeCartDialog");
+            let hoverTimeout;
+
+            cartIcon.addEventListener("mouseenter", function() {
+                clearTimeout(hoverTimeout);
+                cartDialog.classList.remove("hidden");
+            });
+
+            cartIcon.addEventListener("mouseleave", function() {
+                hoverTimeout = setTimeout(() => {
+                    cartDialog.classList.add("hidden");
+                }, 200);
+            });
+
+            cartDialog.addEventListener("mouseenter", function() {
+                clearTimeout(hoverTimeout);
+            });
+
+            cartDialog.addEventListener("mouseleave", function() {
                 cartDialog.classList.add("hidden");
-            }, 200);
-        });
-        cartDialog.addEventListener("mouseenter", function() {
-            clearTimeout(hoverTimeout);
-        });
-        cartDialog.addEventListener("mouseleave", function() {
-            cartDialog.classList.add("hidden");
-        });
+            });
 
-        // Close button inside dialog
-        closeCartDialog.addEventListener("click", function() {
-            cartDialog.classList.add("hidden");
-        });
-    });
-
-    function confirmLogout() {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You will be logged out!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#f53636',
-            cancelButtonColor: '#d5d5d5',
-            confirmButtonText: 'Yes, log out!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = "/logout";
+            // Close button inside dialog
+            if (closeCartDialog) {
+                closeCartDialog.addEventListener("click", function() {
+                    cartDialog.classList.add("hidden");
+                });
             }
-        });
-    }
 
-    function showLocationPopup() {
-        Swal.fire({
-            title: 'Our Store Location',
-            html: `
-                <div class="mb-2 font-semibold text-gray-700">Tumbler Haven Store</div>
-                <div class="mb-2 text-gray-600 text-sm">Royal University of Phnom Penh</div>
-                <div style="width:100%;border-radius:8px;overflow:hidden;">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.7652965627717!2d104.88816677481728!3d11.56867598863239!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109519fe4077d69%3A0x20138e822e434660!2sRoyal%20University%20of%20Phnom%20Penh!5e0!3m2!1sen!2skh!4v1748585371174!5m2!1sen!2skh"
-                        width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-            `,
-            width: 600,
-            showCloseButton: true,
-            showConfirmButton: false,
+            // Add click event listeners to all navigation links
+            const allLinks = document.querySelectorAll('a[href]:not([href^="#"]):not([onclick])');
+            allLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Don't intercept if it's an external link or has a target
+                    if (this.target || this.href.startsWith('javascript:') || this.href.startsWith('mailto:') || this.href.startsWith('tel:')) {
+                        return;
+                    }
+
+                    e.preventDefault();
+                    const href = this.href;
+
+                    // Show loading overlay
+                    const transitionOverlay = document.getElementById('pageTransition');
+                    transitionOverlay.classList.add('active');
+
+                    // Load the new page after a short delay to allow the animation to show
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 300);
+                });
+            });
         });
-    }
-</script>
+
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You will be logged out!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f53636',
+                cancelButtonColor: '#d5d5d5',
+                confirmButtonText: 'Yes, log out!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading before logout
+                    const transitionOverlay = document.getElementById('pageTransition');
+                    transitionOverlay.classList.add('active');
+
+                    setTimeout(() => {
+                        window.location.href = "/logout";
+                    }, 300);
+                }
+            });
+        }
+
+        function showLocationPopup() {
+            Swal.fire({
+                title: 'Our Store Location',
+                html: `
+                    <div class="mb-2 font-semibold text-gray-700">Tumbler Haven Store</div>
+                    <div class="mb-2 text-gray-600 text-sm">Royal University of Phnom Penh</div>
+                    <div style="width:100%;border-radius:8px;overflow:hidden;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.7652965627717!2d104.88816677481728!3d11.56867598863239!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109519fe4077d69%3A0x20138e822e434660!2sRoyal%20University%20of%20Phnom%20Penh!5e0!3m2!1sen!2skh!4v1748585371174!5m2!1sen!2skh"
+                            width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                `,
+                width: 600,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById("menu");
+            const menuIcon = document.getElementById("menu-icon");
+            const closeIcon = document.getElementById("close-icon");
+
+            menu.classList.toggle("hidden");
+            menuIcon.classList.toggle("hidden");
+            closeIcon.classList.toggle("hidden");
+        }
+
+        // Show loading state when page is about to unload
+        window.addEventListener('beforeunload', function() {
+            const transitionOverlay = document.getElementById('pageTransition');
+            transitionOverlay.classList.add('active');
+        });
+    </script>
+</body>
 
 </html>

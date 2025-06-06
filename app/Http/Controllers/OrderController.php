@@ -186,7 +186,7 @@ class OrderController extends Controller
     {
         $orders = Order::with(['user', 'items'])
             ->latest()
-            ->paginate(10);
+            ->paginate(5);
 
         return view('Admin.order', compact('orders'));
     }

@@ -142,9 +142,6 @@
 <div>
      {{ $users->appends(request()->query())->links('vendor.pagination.custom') }}
 </div>
-<div id="pagination-loading-spinner" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-    </div>
 <!-- Delete Confirmation Modal -->
 <div id="deleteRoleModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg shadow-lg w-1/3">
