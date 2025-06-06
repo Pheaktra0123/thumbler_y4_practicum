@@ -16,10 +16,16 @@ class  AdminController extends Controller
     {
         $this->middleware('auth');
     }
-    public function customer(){
-        $users=User::where('type','user')->paginate(5);
+    public function customer()
+    {
+        $users = User::where('type', 'user')->paginate(5);
 
-        return view('Admin/Auth',compact('users'));
+        // Debug output
+        foreach ($users as $user) {
+            \Log::info("User {$user->id} online status: " . ($user->isOnline() ? 'Online' : 'Offline'));
+        }
+
+        return view('Admin/Auth', compact('users'));
     }
     public function editRole($id){
         $users=User::find($id);
@@ -40,16 +46,6 @@ class  AdminController extends Controller
 
     return back()->with('success', 'User role updated successfully');
 }
-    public function deleteRole($id){
-        $users=User::find($id);
-        $users->delete();
-        return redirect()->back()->with('success','User Deleted Successfully');
-    }
-    public function index()
-    {
-        $tumblers=Tumbler::all();
-        return view('pages/home',compact('tumblers'));
-    }
 
     public function adminHome()
     {
@@ -59,10 +55,6 @@ class  AdminController extends Controller
         $orderCount = $orders->count();     // Count orders
 
         return view('Admin.Dashboard', compact('users', 'tumblers', 'orderCount'));
-    }
-
-    public function Model(){
-        return view('CRUD/Model_Crud/View_model');
     }
     public function ListRole(Request $request)
     {
@@ -86,34 +78,6 @@ class  AdminController extends Controller
         $order->save();
         return redirect()->back()->with('success', 'Order confirmed!');
     }
-    public function rejectOrder($orderId)
-    {
-        $order = \App\Models\Order::findOrFail($orderId);
-        $order->delete();
-        return redirect()->back()->with('success', 'Order rejected and deleted!');
-    }
-    public function detailOrder($orderId)
-    {
-        $orders = \App\Models\Order::with(['user', 'items'])->findOrFail($orderId);
-        return view('Admin.detail_order', compact('orders'));
-    }
-    public function reportView(Request $request)
-    {
-        // Group orders by month and sum total
-        $monthlySales = Order::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(total) as total_sales, COUNT(*) as orders_count')
-            ->groupBy('year', 'month')
-            ->orderBy('year', 'desc')
-            ->orderBy('month', 'desc')
-            ->get();
-
-        return view('Admin.Report', compact('monthlySales'));
-    }
-    public function viewOrder()
-    {
-        $orders = Order::with(['user', 'items'])->latest()->paginate(10);
-        return view('Admin.order', compact('orders'));
-    }
-
     public function show(Order $order)
     {
         $order->load(['user', 'items']);

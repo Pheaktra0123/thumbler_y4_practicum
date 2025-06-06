@@ -8,7 +8,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @section('contents')
 
-<section class="w-11/12 mx-auto bg-white py-9 px-8 mt-24 mb-12 rounded-lg">
+<section class="w-11/12 mx-auto bg-white py-9 px-8 mt-2 mb-12 rounded-lg">
     <h1 class="text-center text-[#191919]  text-[32px] font-semibold leading-[38px]">
         My Shopping Cart
     </h1>

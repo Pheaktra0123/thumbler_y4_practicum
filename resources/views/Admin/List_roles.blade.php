@@ -26,9 +26,6 @@
                 Name
             </th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Title
-            </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
             </th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -48,7 +45,12 @@
             <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 h-10 w-10">
-                        <img class="h-10 w-10 rounded-full" src="{{ asset($user->thumbnail) }}" alt="">
+                        @if (empty($user->thumbnail) || $user->thumbnail === 'default.png')
+                        <img class="h-10 w-10 rounded-full" src="{{ asset('profile_placeholder.jpg') }}" alt="">
+                        @else
+                        <img class="h-10 w-10 rounded-full" src="{{asset($user->thumbnail) }}" alt="">
+                        @endif
+                        <!-- <img class="h-10 w-10 rounded-full" src="{{ asset($user->thumbnail) }}" alt=""> -->
                     </div>
                     <div class="ml-4">
                         <div class="text-sm font-medium text-gray-900">
@@ -61,16 +63,12 @@
                 </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-900">Regional Paradigm Technician</div>
-                <div class="text-sm text-gray-500">Optimization</div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-                @if($user->status === 'active')
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    Active
+                @if($user->isOnline())
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    Online
                 </span>
                 @else
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                     Offline
                 </span>
                 @endif
@@ -88,7 +86,10 @@
                     data-id="{{ $user->id }}"
                     data-username="{{ $user->username }}"
                     data-type="{{ $user->type }}">
-                    Edit
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                    </svg>
+
                 </button>
 
                 <!-- Delete Button -->
@@ -96,7 +97,10 @@
                     @csrf
                     @method('DELETE')
                     <button type="button" class="ml-2 text-red-600 hover:text-red-900 delete-role-btn" data-id="{{ $user->id }}">
-                        Delete
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+
                     </button>
                 </form>
             </td>
@@ -140,7 +144,7 @@
     </div>
 </div>
 <div>
-     {{ $users->appends(request()->query())->links('vendor.pagination.custom') }}
+    {{ $users->appends(request()->query())->links('vendor.pagination.custom') }}
 </div>
 <!-- Delete Confirmation Modal -->
 <div id="deleteRoleModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">

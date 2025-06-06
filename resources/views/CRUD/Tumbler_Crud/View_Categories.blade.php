@@ -139,28 +139,24 @@
                         <div class="overflow-hidden h-1/2">
                             <table class="min-w-full rounded-xl text-center">
                                 <thead>
-                                    <tr class="bg-gray-100">
-                                        <th scope="col" class="p-2 text-left text-sm leading-6 font-semibold text-gray-900 capitalize rounded-t-xl">ID</th>
-                                        <th scope="col" class="p-2 text-left text-sm leading-6 font-semibold text-gray-900 capitalize">Category</th>
-                                        <th scope="col" class="p-2 text-left text-sm leading-6 font-semibold text-gray-900 capitalize">Total Model</th>
-                                        <th scope="col" class="p-2 text-left text-sm leading-6 font-semibold text-gray-900 capitalize">Thumbnail</th>
-                                        <th scope="col" class="p-2 text-left text-sm leading-6 font-semibold text-gray-900 capitalize rounded-t-xl">Actions</th>
+                                    <tr class="bg-gray-100 text-center">
+                                        <th scope="col" class="p-2 text-center text-sm leading-6 font-semibold text-gray-900 capitalize rounded-t-xl">ID</th>
+                                        <th scope="col" class="p-2 text-center text-sm leading-6 font-semibold text-gray-900 capitalize">Category</th>
+                                        <th scope="col" class="p-2 text-center text-sm leading-6 font-semibold text-gray-900 capitalize">Thumbnail</th>
+                                        <th scope="col" class="p-2 text-center text-sm leading-6 font-semibold text-gray-900 capitalize rounded-t-xl">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-300">
                                     @foreach($Categories as $category)
-                                    <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
+                                    <tr class="bg-white transition-all duration-500 hover:bg-gray-50 text-center">
                                         <td class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">{{$category->id}}</td>
                                         <td class="p-2 whitespace-nowrap text-sm font-medium text-gray-900">{{$category->name}}</td>
-                                        <td class="p-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $category->models?->count() ?? 0 }}
-                                        </td>
                                         <td class="p-2 whitespace-nowrap text-sm font-medium text-gray-900 object-cover object">
-                                            <img src="{{Storage::url($category->Thumbnail)}}" style="width: 70px; height:70px;" alt="Img">
+                                            <img src="{{Storage::url($category->Thumbnail)}}" style="width: 70px; height:70px; margin:auto;" alt="Img">
                                         </td>
 
                                         <td class="p-2">
-                                            <div class="flex items-center gap-1">
+                                            <div class="flex items-center gap-1 justify-center">
                                                 <!-- Edit Button -->
                                                 <button data-modal-target="edit-modal{{$category->id}}" data-modal-toggle="edit-modal{{$category->id}}" class="p-2 rounded-full group transition-all duration-500 flex item-center" type="button">
                                                     <svg class="cursor-pointer" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -9,6 +9,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TumblerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController; // <-- add this line
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -140,6 +142,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/orders', [OrderController::class, 'adminOrders'])->name('admin.orders');
     Route::post('/orders/{order}/confirm', [AdminController::class, 'confirmOrder'])->name('admin.orders.confirm');
     Route::delete('/orders/{order}/reject', [OrderController::class, 'rejectOrder'])->name('admin.orders.reject');
+    Route::get('/orders/{order}/details', [AdminController::class, 'show'])->name('admin.orders.details');
 });
 //test route
 
@@ -175,6 +178,15 @@ Route::get('/debug-tumblers', function () {
         'has_model' => optional($tumblers->first())->model,
     ]);
 });
+Route::get('/test-online', function () {
+    $user = Auth::user();
+    return [
+        'user_id' => $user->id,
+        'is_online' => $user->isOnline(),
+        'cache_key' => 'user-online-' . $user->id,
+        'cache_exists' => Cache::has('user-online-' . $user->id)
+    ];
+})->middleware('auth');
 Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 Route::patch('/orders/{order}/mark-shipped', [OrderController::class, 'markShipped'])->middleware('admin')->name('orders.markShipped');
 Route::patch('/orders/{order}/mark-delivered', [OrderController::class, 'markDelivered'])->middleware('admin')->name('orders.markDelivered');

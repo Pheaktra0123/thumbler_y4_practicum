@@ -16,7 +16,7 @@
     <div class="bg-gray-100">
         <div>
             <div x-data="{ open: false }" class="relative overflow-hidden">
-                <main class="relative mt-24">
+                <main class="relative mt-2">
                     <div class="mx-auto max-w-screen-xl px-4 pb-6 sm:px-6 lg:px-8 lg:pb-16">
                         <div class="overflow-hidden rounded-lg bg-white shadow ">
                             <div class="lg:grid lg:grid-cols-12 lg:gap-x-5 lg:items-start lg:mt-10 lg:px-10 lg:pb-5">

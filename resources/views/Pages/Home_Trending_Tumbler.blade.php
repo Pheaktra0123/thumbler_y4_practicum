@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="w-full mx-auto mt-20">
+    <div class="w-full mx-auto">
         <div id="default-carousel" class="relative rounded-lg overflow-hidden shadow-lg" data-carousel="static">
             <!-- Carousel wrapper -->
             <div class="relative h-80 md:h-96" data-carousel-inner>

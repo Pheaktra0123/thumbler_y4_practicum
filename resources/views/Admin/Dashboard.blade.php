@@ -24,13 +24,15 @@
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">Total Revenue</dt>
                             <dd class="flex items-baseline">
-                                <div class="text-2xl font-semibold text-gray-900">$48,291</div>
+                                <div class="text-2xl font-semibold text-gray-900">
+                                    {{ isset($totalRevenue) ? number_format($totalRevenue, 2) : '0.00' }}
+                                </div>
                                 <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
                                     <svg class="self-center flex-shrink-0 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                                     </svg>
                                     <span class="sr-only">Increased by</span>
-                                    12%
+                                    {{ isset($revenueIncreasePercentage) ? $revenueIncreasePercentage : 0 }}%
                                 </div>
                             </dd>
                         </dl>
@@ -168,7 +170,6 @@
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -177,7 +178,12 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10">
-                                    <img class="h-10 w-10 rounded-full" src="{{ asset($user->thumbnail) }}" alt="">
+                                    @if (empty($user->thumbnail) || $user->thumbnail === 'default.png')
+                                    <img class="h-10 w-10 rounded-full" src="{{ asset('profile_placeholder.jpg') }}" alt="">
+                                    @else
+                                    <img class="h-10 w-10 rounded-full" src="{{asset($user->thumbnail) }}" alt="">
+                                    @endif
+                                    <!-- <img class="h-10 w-10 rounded-full" src="{{ asset($user->thumbnail) }}" alt=""> -->
                                 </div>
                                 <div class="ml-4">
                                     <div class="text-sm font-medium text-gray-900">{{ $user->username }}</div>
@@ -186,14 +192,18 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                            @if($user->isOnline())
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Online
+                            </span>
+                            @else
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                Offline
+                            </span>
+                            @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->type }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->email }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                            <a href="#" class="ml-2 text-red-600 hover:text-red-900">Delete</a>
-                        </td>
                     </tr>
                     @endforeach
                 </tbody>

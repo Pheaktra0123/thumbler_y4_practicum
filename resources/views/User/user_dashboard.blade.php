@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <main class="mt-24">
+    <main class="mt-2">
         <div class="mx-auto max-w-screen-xl px-4 pb-6 sm:px-6 lg:px-8 lg:pb-12">
             <div class="overflow-hidden rounded-lg bg-white shadow">
                 <div class="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
@@ -61,7 +61,7 @@
                                     @else
                                     <!-- Display a default image or a placeholder -->
                                     <img class="h-56 w-56 rounded-full border-4 border-gray-300 mx-auto my-4"
-                                        src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
+                                        src="{{ asset('profile_placeholder.jpg') }}"
                                         alt="Default Profile Image">
                                     @endif
 

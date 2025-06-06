@@ -3,16 +3,16 @@
 @section("contents")
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <table class="mx-auto divide-y divide-gray-200 overflow-x-auto bg-white shadow-md rounded-lg w-11/12 rounded-lg">
-<div class="relative max-w-sm mx-auto mt-4 mb-4">
+    <div class="relative max-w-sm mx-auto mt-4 mb-4">
         <form action="{{ route('admin.users.role') }}" method="GET">
-            <input 
-                class="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
-                type="search" 
-                name="search" 
-                value="{{ request('search') }}" 
+            <input
+                class="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                type="search"
+                name="search"
+                value="{{ request('search') }}"
                 placeholder="Search by username, email, or role">
-            <button 
-                type="submit" 
+            <button
+                type="submit"
                 class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-700 bg-gray-100 border border-gray-300 rounded-r-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M14.795 13.408l5.204 5.204a1 1 0 01-1.414 1.414l-5.204-5.204a7.5 7.5 0 111.414-1.414zM8.5 14A5.5 5.5 0 103 8.5 5.506 5.506 0 008.5 14z" />
@@ -24,9 +24,6 @@
         <tr>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Name
-            </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Title
             </th>
             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
@@ -44,63 +41,70 @@
     </thead>
     <tbody class="bg-white divide-y divide-gray-200">
         @foreach($users as $user)
-            <tr>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 h-10 w-10">
-                            <img class="h-10 w-10 rounded-full" src="{{ asset($user->thumbnail) }}" alt="">
+        <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                        @if (empty($user->thumbnail) || $user->thumbnail === 'default.png')
+                        <img class="h-10 w-10 rounded-full" src="{{ asset('profile_placeholder.jpg') }}" alt="">
+                        @else
+                        <img class="h-10 w-10 rounded-full" src="{{asset($user->thumbnail) }}" alt="">
+                        @endif
+                        <!-- <img class="h-10 w-10 rounded-full" src="{{ asset($user->thumbnail) }}" alt=""> -->
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">
+                            {{ $user->username }}
                         </div>
-                        <div class="ml-4">
-                            <div class="text-sm font-medium text-gray-900">
-                                {{ $user->username }}
-                            </div>
-                            <div class="text-sm text-gray-500">
-                                {{ $user->email }}
-                            </div>
+                        <div class="text-sm text-gray-500">
+                            {{ $user->email }}
                         </div>
                     </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900">Regional Paradigm Technician</div>
-                    <div class="text-sm text-gray-500">Optimization</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    @if($user->status === 'active')
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            Active
-                        </span>
-                    @else
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                            Offline
-                        </span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{ $user->type }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{ $user->email }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <!-- Edit Button -->
-                    <button 
-                        class="text-indigo-600 hover:text-indigo-900 edit-role-btn" 
-                        data-id="{{ $user->id }}" 
-                        data-username="{{ $user->username }}" 
-                        data-type="{{ $user->type }}">
-                        Edit
-                    </button>
+                </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                @if($user->isOnline())
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    Online
+                </span>
+                @else
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                    Offline
+                </span>
+                @endif
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ $user->type }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ $user->email }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <!-- Edit Button -->
+                <button
+                    class="text-indigo-600 hover:text-indigo-900 edit-role-btn"
+                    data-id="{{ $user->id }}"
+                    data-username="{{ $user->username }}"
+                    data-type="{{ $user->type }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                    </svg>
 
-                    <!-- Delete Button -->
-                    <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" class="inline delete-role-form">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="ml-2 text-red-600 hover:text-red-900 delete-role-btn" data-id="{{ $user->id }}">
-                            Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
+                </button>
+
+                <!-- Delete Button -->
+                <form action="{{ route('admin.deleteUser', $user->id) }}" method="POST" class="inline delete-role-form">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" class="ml-2 text-red-600 hover:text-red-900 delete-role-btn" data-id="{{ $user->id }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+
+                    </button>
+                </form>
+            </td>
+        </tr>
         @endforeach
     </tbody>
 </table>
@@ -165,7 +169,7 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const editButtons = document.querySelectorAll('.edit-role-btn');
         const modal = document.getElementById('editRoleModal');
         const form = document.getElementById('editRoleForm');
@@ -180,7 +184,7 @@
         let deleteForm = null;
 
         editButtons.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 const userId = this.getAttribute('data-id');
                 const username = this.getAttribute('data-username');
                 const type = this.getAttribute('data-type');
@@ -191,35 +195,35 @@
 
                 // Update the form action URL
                 form.action = `/admin/users/${userId}/update`;
-                
+
                 modal.classList.remove('hidden');
             });
         });
-        
-        cancelBtn.addEventListener('click', function () {
+
+        cancelBtn.addEventListener('click', function() {
             modal.classList.add('hidden');
         });
 
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             // Use traditional form submission instead of fetch
             this.submit();
         });
 
         // Delete functionality remains the same
         deleteButtons.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 deleteForm = this.closest('.delete-role-form');
                 deleteModal.classList.remove('hidden');
             });
         });
 
-        cancelDeleteBtn.addEventListener('click', function () {
+        cancelDeleteBtn.addEventListener('click', function() {
             deleteModal.classList.add('hidden');
         });
 
-        confirmDeleteBtn.addEventListener('click', function () {
+        confirmDeleteBtn.addEventListener('click', function() {
             if (deleteForm) {
                 deleteForm.submit();
             }

@@ -29,7 +29,7 @@
                     <option value="">All Tumblers</option>
                     @foreach($tumblers as $tumbler)
                     <option value="{{ $tumbler->id }}" {{ request('tumbler') == $tumbler->id ? 'selected' : '' }}>
-                        {{ $tumbler->name }}
+                        {{ $tumbler->name}}
                     </option>
                     @endforeach
                 </select>
@@ -96,7 +96,7 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
+                            <a href="{{ route('admin.orders.details',$order->id) }}" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
                             @if($order->status !== 'completed' && $order->status !== 'cancelled')
                             <form action="{{ route('admin.orders.confirm', $order->id) }}" method="POST" class="inline">
                                 @csrf
