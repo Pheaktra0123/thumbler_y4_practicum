@@ -182,13 +182,37 @@ class OrderController extends Controller
         $order->load('items');
         return view('User.show_order', compact('order'));
     }
-    public function adminOrders()
+    public function adminOrders(Request $request)
     {
-        $orders = Order::with(['user', 'items'])
-            ->latest()
-            ->paginate(5);
+        $query = Order::with(['user', 'items.tumbler'])->latest();
 
-        return view('Admin.order', compact('orders'));
+        // Search filter
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('username', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%");
+                })->orWhere('tracking_number', 'like', "%$search%");
+            });
+        }
+
+        // Tumbler filter
+        if ($request->has('tumbler')) {
+            $query->whereHas('items', function ($q) use ($request) {
+                $q->where('tumbler_id', $request->tumbler);
+            });
+        }
+
+        // Status filter
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->paginate(5);
+        $tumblers = Tumbler::all(); // For the tumbler filter dropdown
+
+        return view('Admin.order', compact('orders','tumblers'));
     }
     public function order(Request $request)
     {

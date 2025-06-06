@@ -84,7 +84,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.users.role') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                        <a href="/admin/users" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                             </svg>
@@ -111,7 +111,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('Admin.view.tumbler') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                        <a href="/Admin/view/tumbler" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-4 mr-3">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -124,7 +124,7 @@
                         <span class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Order Management</span>
                     </li>
                     <li>
-                        <a href="{{ route('admin.orders') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                        <a href="/orders" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-4 mr-3">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -182,6 +182,9 @@
             links.forEach(link => {
                 if (link.href && !link.href.includes('/logout')) {
                     link.addEventListener('click', function(e) {
+                        // Update active menu item immediately
+                        updateActiveMenuItem(link.getAttribute('href'));
+
                         if (link.target !== '_blank') {
                             loadingOverlay.classList.remove('hidden');
                         }
@@ -200,16 +203,18 @@
             // Hide when page loads
             window.addEventListener('load', function() {
                 loadingOverlay.classList.add('hidden');
+                updateActiveMenuItem(window.location.pathname);
             });
 
             // Handle back/forward navigation
             window.addEventListener('pageshow', function(event) {
                 if (event.persisted) {
                     loadingOverlay.classList.add('hidden');
+                    updateActiveMenuItem(window.location.pathname);
                 }
             });
 
-            // Your existing logout modal code
+            // Logout modal handling
             document.getElementById('logout-button').addEventListener('click', function() {
                 document.getElementById('logout-modal').classList.remove('hidden');
             });
@@ -218,15 +223,26 @@
                 document.getElementById('logout-modal').classList.add('hidden');
             });
 
-            // Active menu item highlight
-            const currentPath = window.location.pathname;
-            const menuItems = document.querySelectorAll('aside nav a');
-            menuItems.forEach(item => {
-                if (item.getAttribute('href') === currentPath) {
-                    item.classList.add('bg-blue-50', 'text-blue-600');
-                    item.classList.remove('text-gray-700', 'hover:bg-gray-100');
-                }
-            });
+            // Function to update active menu item
+            function updateActiveMenuItem(currentPath) {
+                const menuItems = document.querySelectorAll('aside nav a');
+                menuItems.forEach(item => {
+                    const itemPath = item.getAttribute('href');
+
+                    // Remove all active classes first
+                    item.classList.remove('bg-blue-50', 'text-blue-600');
+                    item.classList.add('text-gray-700', 'hover:bg-gray-100');
+
+                    // Check if current path matches or starts with the item path
+                    if (currentPath === itemPath || currentPath.startsWith(itemPath + '/')) {
+                        item.classList.add('bg-blue-50', 'text-blue-600');
+                        item.classList.remove('text-gray-700', 'hover:bg-gray-100');
+                    }
+                });
+            }
+
+            // Initialize active menu item on page load
+            updateActiveMenuItem(window.location.pathname);
         });
     </script>
 </body>
