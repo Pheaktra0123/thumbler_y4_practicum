@@ -169,8 +169,15 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="/" class="flex items-center text-indigo-600 font-bold text-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        <svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.11 155.44" class="size-8  mr-2 ">
+                            <style>
+                                .cls-1 {
+                                    fill: #4f46e5;
+                                }
+                            </style>
+                            <g id="Objects">
+                                <path class="cls-1" d="m118,27.22l-2.57-12.6c-.18-.87-.93-1.5-1.82-1.52-8.04-.16-46.15-.3-72.52-.38L37.01,0l-6.72,2.15,3.37,10.55c-7.39-.02-13.23-.04-16.25-.04-1.32,0-2.46.92-2.73,2.21l-2.56,12.35H0v11.88h7.96l20.01,116.34h74.16l20.01-116.34h7.96v-11.88h-12.11Zm-84.08,121.16l-4.81-27.97h71.88l-4.81,27.97h-62.26Zm9.3-56.42c0-11.81,9.58-21.39,21.39-21.39s21.39,9.58,21.39,21.39-9.58,21.39-21.39,21.39-21.39-9.58-21.39-21.39Zm67.43-27.65H19.46l-3.74-21.77h98.67l-3.74,21.77Z" />
+                            </g>
                         </svg>
                         TUMBLER HAVEN
                     </a>
@@ -303,6 +310,7 @@
                                 <span class="text-red-500">Sign out</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 text-red-500" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+                                </svg>
                             </a>
                             @else
                             <a href="{{ route('login') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign in</a>
@@ -529,9 +537,24 @@
                 });
             });
 
-            // Show loading overlay for page transitions
-            const allLinks = document.querySelectorAll('a[href]:not([href^="#"]):not([onclick])');
-            allLinks.forEach(link => {
+            // Improved page transition handling
+            const transitionOverlay = document.getElementById('pageTransition');
+            let isTransitioning = false;
+
+            // Function to handle page transitions
+            function handlePageTransition(href) {
+                if (isTransitioning) return;
+                isTransitioning = true;
+
+                transitionOverlay.classList.add('active');
+
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 300);
+            }
+
+            // Handle regular link clicks
+            document.querySelectorAll('a[href]:not([href^="#"]):not([onclick])').forEach(link => {
                 link.addEventListener('click', function(e) {
                     // Don't intercept if it's an external link or has a target
                     if (this.target || this.href.startsWith('javascript:') ||
@@ -540,24 +563,41 @@
                     }
 
                     e.preventDefault();
-                    const href = this.href;
-
-                    // Show loading overlay
-                    const transitionOverlay = document.getElementById('pageTransition');
-                    transitionOverlay.classList.add('active');
-
-                    // Load the new page after a short delay to allow the animation to show
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 300);
+                    handlePageTransition(this.href);
                 });
             });
 
-            // Show loading state when page is about to unload
-            window.addEventListener('beforeunload', function() {
-                const transitionOverlay = document.getElementById('pageTransition');
-                transitionOverlay.classList.add('active');
+            // Handle browser navigation (back/forward buttons)
+            window.addEventListener('pageshow', function(event) {
+                // Hide loading overlay if it's still visible
+                transitionOverlay.classList.remove('active');
+                isTransitioning = false;
+
+                // Check if page is loaded from cache (bfcache)
+                if (event.persisted) {
+                    // Hide any remaining loading indicators
+                    transitionOverlay.classList.remove('active');
+                }
             });
+
+            // Handle page load start
+            window.addEventListener('beforeunload', function() {
+                if (!isTransitioning) {
+                    transitionOverlay.classList.add('active');
+                }
+            });
+
+            // Handle page load completion
+            window.addEventListener('load', function() {
+                transitionOverlay.classList.remove('active');
+                isTransitioning = false;
+            });
+
+            // Fallback: Hide loading overlay after 5 seconds if still visible
+            setTimeout(() => {
+                transitionOverlay.classList.remove('active');
+                isTransitioning = false;
+            }, 5000);
         });
     </script>
 </body>
