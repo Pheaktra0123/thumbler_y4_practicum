@@ -5,7 +5,7 @@
 
 @section('contents')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<div class="w-full p-6 mt-20 bg-white shadow-lg">
+<div class="w-full p-6 bg-white shadow-lg">
     <form id="customizeForm" action="{{ route('customize.tumbler.save', ['id' => $tumbler->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -16,8 +16,8 @@
                         $firstThumb = $thumbs[0] ?? 'black-nobg.png';
                     @endphp
                     <img class="w-full h-full object-cover rounded-lg" src="{{ asset('storage/' . $firstThumb) }}" alt="Tumbler" id="tumblerImage">
-                    <div id="textOverlay" class="absolute text-neutral-400 text-3xl font-bold"></div>
-                    <img id="uploadedImage" class="absolute hidden" style="max-width: 100px; max-height: 100px; object-fit: contain;" alt="Uploaded Image">
+                    <div id="textOverlay" class="absolute text-neutral-400 text-3xl font-bold text-center"></div>
+                    <img id="uploadedImage" class="absolute hidden" style="max-width: 100px; max-height: 100px;margin:auto; object-fit: contain;" alt="Uploaded Image">
                 </div>
             </div>
             <div class="w-full p-4">
@@ -80,7 +80,7 @@
                 <div class="mt-6 border p-4 rounded-lg">
                     <label class="text-lg font-semibold text-gray-700">Engraving <span class="text-gray-500">+ $10</span></label>
                     <div class="mt-3 flex items-center gap-4">
-                        <input type="text" id="engravingText" placeholder="6 Letters only!" maxlength="6
+                        <input type="text" id="engravingText" placeholder="6 Letters only!" maxlength="6"
                             class="border p-3 rounded-lg text-center w-44 smalllcase" name="engraving">
                         <select id="fontSelect" class="border p-3 rounded-lg w-44" name="font">
                             <option selected disabled>Select Font</option>
@@ -329,7 +329,7 @@ if (addToCartBtn && customizeForm) {
                 icon: 'success',
                 title: 'Added to Cart!',
                 text: 'Your customized tumbler has been added to the cart.',
-                confirmButtonColor: '#00b206'
+                confirmButtonColor: '#00b206',
             }).then(() => {
                 window.location.href = "{{ route('user.viewCart') }}";
             });

@@ -66,7 +66,7 @@
                                                     <div class="flex items-center">
                                                         <div class="inline-block h-12 w-12 flex-shrink-0 overflow-hidden rounded-full"
                                                             aria-hidden="true">
-                                                            <img class="h-full w-full rounded-full" src="{{ auth()->user()->thumbnail ? asset(auth()->user()->thumbnail) : 'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=4&amp;w=320&amp;h=320&amp;q=80' }}" alt="">
+                                                            <img class="h-full w-full rounded-full" src="{{ auth()->user()->thumbnail ? asset(auth()->user()->thumbnail) : asset('profile_placeholder.jpg')}}" alt="">
                                                         </div>
                                                         <div class="ml-5 rounded-md shadow-sm">
                                                             <div

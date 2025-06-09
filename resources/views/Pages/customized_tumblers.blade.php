@@ -4,9 +4,10 @@
 @section('title', 'My Customized Tumblers')
 
 @section('contents')
-<div class="w-11/12  mx-auto mt-24 mb-16 bg-white shadow-lg p-8 rounded-lg">
-    <h1 class="text-2xl font-bold mb-6">My Customized Tumblers</h1>
+<div class="w-11/12  mx-auto  bg-white  p-8 rounded-lg">
+    <h1 class="text-2xl font-bold ">My Customized Tumblers</h1>
     @if(empty($customized) || count($customized) === 0)
+        <div class="flex items-center justify-center h-64">
         <div class="text-gray-500">No customizations found.</div>
     @else
         <div class="space-y-6">

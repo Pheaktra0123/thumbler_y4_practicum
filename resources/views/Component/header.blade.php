@@ -154,6 +154,10 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -162,7 +166,6 @@
     <div id="pageTransition" class="page-transition">
         <div class="loader"></div>
     </div>
-
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -225,7 +228,7 @@
                         </a>
 
                         <!-- Cart Dropdown -->
-                        <div x-show="open" x-transition:enter="transition ease-out duration-200"
+                        <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0 translate-y-1"
                             x-transition:enter-end="opacity-100 translate-y-0"
                             x-transition:leave="transition ease-in duration-150"
@@ -292,7 +295,7 @@
                         </button>
 
                         <!-- Profile Dropdown -->
-                        <div x-show="open" @click.away="open = false"
+                        <div x-show="open" x-cloak @click.away="open = false"
                             x-transition:enter="transition ease-out duration-100"
                             x-transition:enter-start="transform opacity-0 scale-95"
                             x-transition:enter-end="transform opacity-100 scale-100"
@@ -307,7 +310,7 @@
                                 <p class="text-xs text-gray-500 truncate">{{ auth()->user()->email }}</p>
                             </div>
                             <a href="/User/Dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
-                            <a href="#" @click="confirmLogout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                            <a href="/logout" @click.prevent="confirmLogout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
                                 <span class="text-red-500">Sign out</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 text-red-500" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
@@ -461,7 +464,6 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('main', () => ({
                 openMobileMenu: false,
-
                 confirmLogout() {
                     Swal.fire({
                         title: 'Are you sure?',
