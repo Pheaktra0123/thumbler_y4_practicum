@@ -105,18 +105,24 @@
             <div class="mx-auto max-w-md text-center">
                 <h2 class="font-serif text-2xl font-bold sm:text-3xl">Our Top Trending Tumbler</h2>
                 <p class="mt-4 text-base text-gray-700">Discover our latest trending tumbler — a perfect blend of style, durability, and personalization</p>
+
             </div>
 
-            <div class="mt-10 grid grid-cols-2 gap-6 lg:mt-24 lg:grid-cols-4 lg:gap-4 ">
+            <div class="mt-10 grid grid-cols-2 gap-6 lg:mt-24 lg:grid-cols-4 lg:gap-4">
                 @foreach($trendingTumblers as $tumblerTrending)
                 <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl mt-4">
                     <a href="{{ route('tumbler.details', $tumblerTrending->id) }}">
                         @php
                         $thumbs = is_array($tumblerTrending->thumbnails) ? $tumblerTrending->thumbnails : json_decode($tumblerTrending->thumbnails, true);
-                        $firstThumb = $thumbs[0] ?? 'default.png'; // fallback image
+                        $firstThumb = $thumbs[0] ?? 'default.png';
                         @endphp
-                        <img src="{{ asset('storage/' . $firstThumb) }}" alt="{{ $tumblerTrending->name }}" class="h-80 w-72 object-cover  rounded-t-xl" />
+                        <img src="{{ asset('storage/' . $firstThumb) }}" alt="{{ $tumblerTrending->name }}" class="h-80 w-72 object-cover rounded-t-xl" />
                         <div class="px-4 py-3 w-72">
+                            <div class="mb-2">
+                                <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                                    {{ $tumblerTrending->purchases_count }} {{ Str::plural('purchase', $tumblerTrending->purchases_count) }}
+                                </span>
+                            </div>
                             <span class="text-gray-400 mr-3 uppercase text-xs">{{ $tumblerTrending->category->name ?? 'Uncategorized' }}</span>
                             <div>
                                 <p class="text-s mt-2 font-bold text-black truncate block capitalize">{{ $tumblerTrending->name }}</p>
@@ -124,51 +130,15 @@
                                     {{ $tumblerTrending->model->name ?? 'No model' }} | {{ $tumblerTrending->size }} OZ
                                 </p>
                             </div>
-                            <!-- Star Rating -->
-                            <div class="flex items-center mt-1 mb-3">
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <=$tumblerTrending->rating)
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5 text-yellow-500">
-                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                                    </svg>
-                                    @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5 text-gray-300">
-                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                                    </svg>
-                                    @endif
-                                    @endfor
-                                    <span class="text-xs text-gray-500 ml-1">({{ $tumblerTrending->rating_count }})</span>
-                            </div>
-                            <div class="flex items-center">
-                                <p class="text-lg font-semibold text-black cursor-auto my-3">${{ number_format($tumblerTrending->price, 2) }}</p>
-                                @if($tumblerTrending->discount_price)
-                                <del>
-                                    <p class="text-sm text-gray-600 cursor-auto ml-2">${{ number_format($tumblerTrending->discount_price, 2) }}</p>
-                                </del>
-                                @endif
-                                <div class="ml-auto">
-                                    @if($tumblerTrending->stock > 0)
-                                    <button class="border border-2 text-sm text-gray-600 px-4 py-2 rounded hover:bg-gray-300  transition duration-200 flex items-center justify-center hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-6 h-6 inline-block mr-2 items-center">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                        </svg>
-                                        Add to Cart
-                                    </button>
-                                    @else
-                                    <p class="text-sm text-red-600 ml-2">Out of Stock</p>
-                                    @endif
-                                </div>
-                            </div>
                         </div>
                     </a>
                 </div>
                 @endforeach
             </div>
-
             <!-- Pagination Links -->
-            <div class="mt-8">
+            <!-- <div class="mt-8">
                 {{ $trendingTumblers->links('vendor.pagination.custom') }}
-            </div>
+            </div> -->
         </div>
     </section>
 

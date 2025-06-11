@@ -81,7 +81,7 @@ class HomeController extends Controller
             ->groupBy('status')
             ->pluck('count', 'status')
             ->toArray();
-        return view('Admin/Dashboard', compact('users', 'tumblers', 'orderCount', 'chartData', 'labels','statusCounts'));
+        return view('Admin/Dashboard', compact('users', 'tumblers', 'orderCount', 'chartData', 'labels', 'statusCounts'));
     }
     public function Categories()
     {
@@ -294,17 +294,18 @@ class HomeController extends Controller
         $trendingTumblers = Tumbler::with(['category', 'model'])
             ->select(
                 'tumblers.*',
-                DB::raw('COUNT(DISTINCT order_items.id) as orders_count'),
-                DB::raw('COUNT(DISTINCT reviews.id) as reviews_count')
+                // Count total purchases (order_items)
+                DB::raw('(SELECT COUNT(*) 
+                          FROM order_items 
+                          WHERE order_items.tumbler_id = tumblers.id) as purchases_count')
             )
-            ->leftJoin('order_items', function ($join) {
-                $join->on('tumblers.id', '=', 'order_items.tumbler_id')
-                    ->where('order_items.created_at', '>=', now()->subMonth());
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('order_items')
+                    ->whereColumn('order_items.tumbler_id', 'tumblers.id');
             })
-            ->leftJoin('reviews', 'tumblers.id', '=', 'reviews.tumbler_id')
-            ->groupBy('tumblers.id')
-            ->havingRaw('COUNT(DISTINCT order_items.id) >= 3') // Important: use raw to match select
-            ->orderByDesc('orders_count')
+            ->having('purchases_count', '>=', 15) // Set to 15 for trending
+            ->orderByDesc('purchases_count')
             ->paginate(8);
 
         return view('Pages.Home_Trending_Tumbler', compact('trendingTumblers'));
