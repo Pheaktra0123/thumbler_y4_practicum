@@ -84,7 +84,7 @@
     </style>
 
     <!-- Product Section -->
-    <div class="py-0 mt-24 mx-auto p-4 sm:p-10 fade-in">
+    <div class="py-0 mx-auto p-4 sm:p-10 fade-in">
         <div class="mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row -mx-4 slide-up">
                 <div class="md:flex-1 px-4">

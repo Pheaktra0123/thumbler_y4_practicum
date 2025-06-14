@@ -8,112 +8,113 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @section('contents')
 
-<section class="w-11/12 mx-auto bg-white py-9 px-8 mt-2 mb-12 rounded-lg">
-    <h1 class="text-center text-[#191919]  text-[32px] font-semibold leading-[38px]">
+<section class="w-full max-w-7xl mx-auto bg-white py-6 px-2 sm:px-4 md:px-8 mt-2 mb-12 rounded-lg">
+    <h1 class="text-center text-[#191919] text-2xl sm:text-3xl md:text-[32px] font-semibold leading-tight md:leading-[38px]">
         My Shopping Cart
     </h1>
-    <div class="flex items-start mt-8 gap-6">
-        <div class="bg-white p-4 w-[800px] rounded-xl">
-            <table class="w-full bg-white rounded-xl">
-                <thead>
-                    <tr
-                        class="text-center border-b border-gray-400 w-full text-[#7f7f7f] text-sm font-medium uppercase leading-[14px] tracking-wide">
-                        <th class="text-left px-2 py-2">Product</th>
-                        <th class="px-2 py-2">Name</th>
-                        <th class="px-2 py-2">Color</th>
-                        <th class="px-2 py-2">price</th>
-                        <th class="px-2 py-2">Quantity</th>
-                        <th class="px-2 py-2">Subtotal</th>
-                        <th class="w-7 px-2 py-2"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                    $cart = session('cart', []);
-                    $total = 0;
-                    @endphp
-                    @forelse($cart as $key => $item)
-                    @php $subtotal = $item['price'] * $item['quantity'];
-                    $total += $subtotal; @endphp
-                    <tr class="text-center">
-                        <td class="px-2 py-2 text-left align-top">
-                            <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}"
-                                class="w-[100px] mr-2 inline-block h-[100px]" />
-                        </td>
-                        <td>{{$item['name']}}</td>
-                        <td class="">
-                            <div class=" w-[30px] h-[30px] inline-block rounded-full"
-                                style="background-color: {{ $item['color'] }};">
-                            </div>
-                        </td>
-                        <td class="px-2 py-2">${{ number_format($item['price'], 2) }}</td>
-                        <td class="p-2">
-                            <form action="{{ route('update.cart.quantity', $key) }}" method="POST"
-                                style="display:inline-flex; align-items:center;">
-                                @csrf
-                                <button type="submit" name="action" value="decrease"
-                                    class="px-2 py-1 bg-gray-200 rounded-l hover:bg-gray-300">-</button>
-                                <input type="text" name="quantity" value="{{ $item['quantity'] }}"
-                                    class="w-10 text-center border border-gray-300" readonly>
-                                <button type="submit" name="action" value="increase"
-                                    class="px-2 py-1 bg-gray-200 rounded-r hover:bg-gray-300">+</button>
-                            </form>
-                        </td>
-                        <td class="px-2 py-2">${{ number_format($subtotal, 2) }}</td>
-                        <td class="px-2 py-2">
-                            <form action="{{ route('remove.from.cart', $key) }}" method="POST" class="remove-cart-form" style="display:inline;">
-                                @csrf
-                                <button type="button" class="text-red-500 hover:text-red-700 remove-cart-btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+    <div class="flex flex-col lg:flex-row items-start mt-8 gap-6">
+        <div class="bg-white p-2 sm:p-4 w-full lg:w-[800px] rounded-xl overflow-x-auto">
+            <div class="w-full overflow-x-auto">
+                <table class="min-w-[600px] w-full bg-white rounded-xl">
+                    <thead>
+                        <tr
+                            class="text-center border-b border-gray-400 w-full text-[#7f7f7f] text-xs sm:text-sm font-medium uppercase leading-[14px] tracking-wide">
+                            <th class="text-left px-2 py-2">Product</th>
+                            <th class="px-2 py-2">Name</th>
+                            <th class="px-2 py-2">Color</th>
+                            <th class="px-2 py-2">Price</th>
+                            <th class="px-2 py-2">Quantity</th>
+                            <th class="px-2 py-2">Subtotal</th>
+                            <th class="w-7 px-2 py-2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $cart = session('cart', []);
+                        $total = 0;
+                        @endphp
+                        @forelse($cart as $key => $item)
+                        @php $subtotal = $item['price'] * $item['quantity'];
+                        $total += $subtotal; @endphp
+                        <tr class="text-center">
+                            <td class="px-2 py-2 text-left align-top">
+                                <img src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}"
+                                    class="w-[70px] sm:w-[100px] mr-2 inline-block h-[70px] sm:h-[100px]" />
+                            </td>
+                            <td>{{$item['name']}}</td>
+                            <td>
+                                <div class="w-6 h-6 sm:w-[30px] sm:h-[30px] inline-block rounded-full"
+                                    style="background-color: {{ $item['color'] }};">
+                                </div>
+                            </td>
+                            <td class="px-2 py-2">${{ number_format($item['price'], 2) }}</td>
+                            <td class="p-2">
+                                <form action="{{ route('update.cart.quantity', $key) }}" method="POST"
+                                    class="inline-flex items-center">
+                                    @csrf
+                                    <button type="submit" name="action" value="decrease"
+                                        class="px-2 py-1 bg-gray-200 rounded-l hover:bg-gray-300">-</button>
+                                    <input type="text" name="quantity" value="{{ $item['quantity'] }}"
+                                        class="w-8 sm:w-10 text-center border border-gray-300" readonly>
+                                    <button type="submit" name="action" value="increase"
+                                        class="px-2 py-1 bg-gray-200 rounded-r hover:bg-gray-300">+</button>
+                                </form>
+                            </td>
+                            <td class="px-2 py-2">${{ number_format($subtotal, 2) }}</td>
+                            <td class="px-2 py-2">
+                                <form action="{{ route('remove.from.cart', $key) }}" method="POST" class="remove-cart-form" style="display:inline;">
+                                    @csrf
+                                    <button type="button" class="text-red-500 hover:text-red-700 remove-cart-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </form>
+                                @if(isset($item['customized_id']))
+                                <button
+                                    type="button"
+                                    class="inline-block ml-2 text-blue-500 hover:text-blue-700 view-customized-btn"
+                                    data-customized-id="{{ $item['customized_id'] }}"
+                                    title="View Details">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </button>
-                            </form>
-                            @if(isset($item['customized_id']))
-                            <button
-                                type="button"
-                                class="inline-block ml-2 text-blue-500 hover:text-blue-700 view-customized-btn"
-                                data-customized-id="{{ $item['customized_id'] }}"
-                                title="View Details">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </button>
-                            @endif
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center py-4">Your cart is empty.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-                <tfoot>
-                    <tr class="border-t border-gray-400">
-                        <td class="px-2 py-2" colspan="2">
-                            <span class="font-bold">Total: ${{ number_format($total, 2) }}</span>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+                                @endif
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-4">Your cart is empty.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                    <tfoot>
+                        <tr class="border-t border-gray-400">
+                            <td class="px-2 py-2" colspan="7">
+                                <span class="font-bold">Total: ${{ number_format($total, 2) }}</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
-        <div class="w-[424px] bg-white rounded-lg p-6">
-            <h2 class="text-[#191919] mb-2 text-xl font-medium leading-[30px]">
+        <div class="w-full lg:w-[424px] bg-white rounded-lg p-4 sm:p-6 mt-6 lg:mt-0">
+            <h2 class="text-[#191919] mb-2 text-lg sm:text-xl font-medium leading-[30px]">
                 Cart Total
             </h2>
-            <div class="w-[376px] py-3 justify-between items-center flex">
-                <span class="text-[#4c4c4c] text-base font-normal leading-normal">Total:</span><span
-                    class="text-[#191919] text-base font-semibold leading-tight">${{ number_format($total, 2) }}</span>
+            <div class="w-full py-3 flex justify-between items-center">
+                <span class="text-[#4c4c4c] text-base font-normal leading-normal">Total:</span>
+                <span class="text-[#191919] text-base font-semibold leading-tight">${{ number_format($total, 2) }}</span>
             </div>
-            <div class="w-[376px] py-3 shadow-[0px_1px_0px_0px_rgba(229,229,229,1.00)] justify-between items-center flex">
-                <span class="text-[#4c4c4c] text-sm font-normal leading-[21px]">Shipping:</span><span
-                    class="text-[#191919] text-sm font-medium leading-[21px]">Free</span>
+            <div class="w-full py-3 border-t border-b border-gray-200 flex justify-between items-center">
+                <span class="text-[#4c4c4c] text-sm font-normal leading-[21px]">Shipping:</span>
+                <span class="text-[#191919] text-sm font-medium leading-[21px]">Free</span>
             </div>
-            <div class="w-[376px] py-3 shadow-[0px_1px_0px_0px_rgba(229,229,229,1.00)] justify-between items-center flex">
-                <span class="text-[#4c4c4c] text-sm font-normal leading-[21px]">Subtotal:</span><span
-                    class="text-[#191919] text-sm font-medium leading-[21px]">${{ number_format($total, 2) }}</span>
+            <div class="w-full py-3 border-b border-gray-200 flex justify-between items-center">
+                <span class="text-[#4c4c4c] text-sm font-normal leading-[21px]">Subtotal:</span>
+                <span class="text-[#191919] text-sm font-medium leading-[21px]">${{ number_format($total, 2) }}</span>
             </div>
-
             @php
             $cart = session('cart', []);
             $isAviableitem = !empty($cart);
@@ -121,17 +122,16 @@
 
             @if($isAviableitem)
             <button id="proceed-checkout" type="button"
-                class="w-[376px] text-white mt-5 px-10 py-4 bg-[#00b206] rounded-[44px] gap-4 text-base font-semibold leading-tight">
+                class="w-full text-white mt-5 px-6 py-4 bg-[#00b206] rounded-[44px] gap-4 text-base font-semibold leading-tight">
                 Proceed to Checkout
             </button>
             @else
             <button type="button"
-                class="w-[376px] text-white mt-5 px-10 py-4 bg-gray-400 rounded-[44px] gap-4 text-base font-semibold leading-tight cursor-not-allowed"
+                class="w-full text-white mt-5 px-6 py-4 bg-gray-400 rounded-[44px] gap-4 text-base font-semibold leading-tight cursor-not-allowed"
                 disabled>
                 Proceed to Checkout
             </button>
             @endif
-
         </div>
     </div>
 </section>
@@ -207,23 +207,28 @@
         document.getElementById('proceed-checkout').addEventListener('click', function(e) {
             e.preventDefault();
             Swal.fire({
-                title: '<h1 class="block text-3xl font-bold text-[#00b206] mb-2">Checkout</h1>',
-                width: 800,
+                title: '<h1 class="block text-2xl sm:text-3xl font-bold text-[#00b206] mb-2">Checkout</h1>',
+                width: '100%',
+                customClass: {
+                    popup: 'max-w-full sm:max-w-2xl md:max-w-3xl p-2 sm:p-6 rounded-2xl shadow-lg',
+                    confirmButton: 'bg-[#00b206] text-white px-6 py-2 rounded-lg font-semibold',
+                    cancelButton: 'bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold ml-2'
+                },
                 html: `
                 <div class="text-left space-y-4">
-                    <div class="flex w-full item-center justify-between gap-4">
-                        <div class="w-1/2">
-                            <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Username</label>
+                    <div class="flex flex-col sm:flex-row w-full items-center justify-between gap-4">
+                        <div class="w-full sm:w-1/2">
+                            <label class="block text-base sm:text-xl font-semibold text-gray-700 mb-2 text-start">Username</label>
                             <input id="swal-username" class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow" type="text" value="{{ auth()->user() ? auth()->user()->username : '' }}">
                         </div>
-                        <div class="w-1/2">
-                            <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Phone Number</label>
+                        <div class="w-full sm:w-1/2">
+                            <label class="block text-base sm:text-xl font-semibold text-gray-700 mb-2 text-start">Phone Number</label>
                             <input id="swal-phone" class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow" type="text" value="{{ auth()->user() && auth()->user()->phone ? auth()->user()->phone : '' }}" placeholder="Enter your phone number">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Address</label>
-                        <div class="flex items-center space-x-4 mb-2">
+                        <label class="block text-base sm:text-xl font-semibold text-gray-700 mb-2 text-start">Address</label>
+                        <div class="flex flex-col sm:flex-row items-center sm:space-x-4 mb-2 gap-2">
                             <label class="flex items-center space-x-1">
                                 <input type="radio" name="address-type" id="address-input-radio" checked>
                                 <span class="text-sm">Input Address</span>
@@ -250,19 +255,19 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xl font-semibold text-gray-700 mb-2 text-start">Payment Method</label>
-                        <div class="flex flex-wrap gap-3">
-                            <label class="cursor-pointer border border-gray-300 rounded-md hover:shadow-lg transition-shadow">
+                        <label class="block text-base sm:text-xl font-semibold text-gray-700 mb-2 text-start">Payment Method</label>
+                        <div class="flex flex-col sm:flex-row flex-wrap gap-3">
+                            <label class="cursor-pointer border border-gray-300 rounded-md hover:shadow-lg transition-shadow w-full sm:w-72">
                                 <input type="radio" class="peer sr-only" name="payment" value="cash" checked />
-                                <div class="w-72 max-w-xl rounded-md bg-white  p-5 text-gray-600  ring-2 ring-transparent transition-all hover:shadow peer-checked:text-sky-600 peer-checked:ring-blue-400 peer-checked:ring-offset-2">
+                                <div class="rounded-md bg-white p-5 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-sky-600 peer-checked:ring-blue-400 peer-checked:ring-offset-2">
                                     <div class="flex items-center justify-between">
                                         <span class="text-sm font-bold">Pay by Cash</span>
                                     </div>
                                 </div>
                             </label>
-                            <label class="cursor-pointer border border-gray-300 rounded-md hover:shadow-lg transition-shadow">
+                            <label class="cursor-pointer border border-gray-300 rounded-md hover:shadow-lg transition-shadow w-full sm:w-72">
                                 <input type="radio" class="peer sr-only" name="payment" value="online" id="pay-online-radio" />
-                                <div class="w-72 max-w-xl rounded-md bg-white  p-5 text-gray-600  ring-2 ring-transparent transition-all hover:shadow peer-checked:text-sky-600 peer-checked:ring-blue-400 peer-checked:ring-offset-2">
+                                <div class="rounded-md bg-white p-5 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-sky-600 peer-checked:ring-blue-400 peer-checked:ring-offset-2">
                                     <div class="flex items-center justify-between">
                                         <span class="text-sm font-bold">Online Pay</span>
                                     </div>
@@ -279,7 +284,7 @@
                 </div>
             `,
                 customClass: {
-                    popup: 'p-6 rounded-2xl shadow-lg',
+                    popup: 'max-w-full sm:max-w-2xl md:max-w-3xl p-2 sm:p-6 rounded-2xl shadow-lg',
                     confirmButton: 'bg-[#00b206] text-white px-6 py-2 rounded-lg font-semibold',
                     cancelButton: 'bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-semibold ml-2'
                 },
@@ -349,26 +354,42 @@
                         });
                     });
                     document.getElementById('bank-upload-div').style.display = 'none';
-                    // Bank slip preview
+                    // Bank slip preview with fixed animation
                     const bankSlipInput = document.getElementById('swal-bank-slip');
                     const previewImg = document.getElementById('bank-slip-preview');
                     const tickIcon = document.getElementById('bank-slip-tick');
+
                     if (bankSlipInput && previewImg && tickIcon) {
                         bankSlipInput.addEventListener('change', function() {
                             const file = this.files[0];
-                            if (file) {
+                            if (!file) return;
+
+                            // Clear previous state
+                            previewImg.style.display = 'none';
+                            tickIcon.style.display = 'none';
+
+                            // Show loading state
+                            bankSlipInput.disabled = true;
+                            bankSlipInput.parentElement.classList.add('opacity-50');
+
+                            // Simulate processing delay (remove this in production)
+                            setTimeout(() => {
                                 const reader = new FileReader();
                                 reader.onload = function(e) {
                                     previewImg.src = e.target.result;
                                     previewImg.style.display = 'block';
+
+                                    // Show success state
                                     tickIcon.style.display = 'inline-block';
+                                    tickIcon.classList.add('animate-bounce');
+                                    setTimeout(() => {
+                                        tickIcon.classList.remove('animate-bounce');
+                                        bankSlipInput.disabled = false;
+                                        bankSlipInput.parentElement.classList.remove('opacity-50');
+                                    }, 1000);
                                 };
                                 reader.readAsDataURL(file);
-                            } else {
-                                previewImg.src = '';
-                                previewImg.style.display = 'none';
-                                tickIcon.style.display = 'none';
-                            }
+                            }, 500);
                         });
                     }
                 },
@@ -439,11 +460,16 @@
                     // Submit order via AJAX
                     return fetch('{{ route("cart.submitOrder") }}', {
                             method: 'POST',
+                            headers: {
+                                'Accept': 'application/json'
+                            },
                             body: formData,
                         })
                         .then(response => {
                             if (!response.ok) {
-                                return response.json().then(err => {
+                                return response.json().catch(() => {
+                                    throw new Error('Order failed. Please check your input.');
+                                }).then(err => {
                                     throw new Error(err.message || 'Order failed');
                                 });
                             }

@@ -18,114 +18,151 @@ class OrderController extends Controller
     //
     public function submitOrder(Request $request)
     {
+        // Validate request data
+        $validated = $request->validate([
+            'username' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'payment' => 'required|in:cash,online',
+            'addresses' => 'required_without:coords|array',
+            'addresses.*' => 'string|max:500',
+            'coords' => ['required_without:addresses', 'string', 'regex:/^-?\d+\.\d+,\s*-?\d+\.\d+$/'],
+            'bank_slip' => 'required_if:payment,online|image|mimes:jpeg,png,jpg|max:2048',
+            'selected_location_name' => 'nullable|string'
+        ]);
+
+        // Check if cart is empty
+        $cart = session('cart', []);
+        if (empty($cart)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Your cart is empty.'
+            ], 400);
+        }
+
+        // Calculate order total
+        $total = array_reduce($cart, fn($carry, $item) => $carry + ($item['price'] * $item['quantity']), 0);
+
+        // Prepare address data
+        $address = $this->prepareAddressData($request);
+
+        // Handle bank slip upload if payment is online
+        $bankSlipPath = $this->handleBankSlipUpload($request);
+
+        // Generate tracking number
+        $trackingNumber = 'THMB' . Str::random(8);
+
+        DB::beginTransaction();
+
         try {
-            $trackingNumbler = 'THMB' . str(Str::random(8));
-            $request->validate([
-                'username' => 'required|string|max:255',
-                'phone' => 'required|string|max:20',
-                'payment' => 'required|in:cash,online',
-                'addresses' => 'required_without:coords|array',
-                'addresses.*' => 'string|max:500',
-                'coords' => ['required_without:addresses', 'string', 'regex:/^-?\d+\.\d+,\s*-?\d+\.\d+$/'],
-                'bank_slip' => 'required_if:payment,online|image|mimes:jpeg,png,jpg|max:2048',
-                'selected_location_name' => 'nullable|string' // Add this line
+            // Create the order
+            $order = $this->createOrder(
+                Auth::id(),
+                $total,
+                $trackingNumber,
+                $address,
+                $validated['payment'],
+                $validated['phone'],
+                $request->coords,
+                $bankSlipPath
+            );
+
+            // Create order items
+            $this->createOrderItems($order->id, $cart);
+
+            DB::commit();
+
+            // Clear the cart
+            session()->forget('cart');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Order placed successfully!',
+                'order_id' => $order->id
             ]);
-
-            $user = Auth::user();
-            $cart = session('cart', []);
-
-            if (empty($cart)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Your cart is empty.'
-                ], 400);
-            }
-
-            // Calculate total
-            $total = array_reduce($cart, function ($carry, $item) {
-                return $carry + ($item['price'] * $item['quantity']);
-            }, 0);
-
-            // Handle address
-            $address = '';
-            if ($request->has('addresses')) {
-                $address = implode("\n", $request->addresses);
-            } elseif ($request->has('coords')) {
-                $address = $request->coords;
-                if ($request->has('selected_location_name')) {
-                    $address .= "\n" . $request->selected_location_name;
-                }
-            }
-
-            // Handle bank slip upload for online payment
-            $bankSlipPath = null;
-            if ($request->payment === 'online' && $request->hasFile('bank_slip')) {
-                $bankSlipPath = $request->file('bank_slip')->store('bank_slips', 'public');
-            }
-
-            DB::beginTransaction();
-
-            try {
-                // Create order
-                $order = Order::create([
-                    'user_id' => $user->id,
-                    'total' => $total,
-                    'tracking_number' => $trackingNumbler,
-                    'shipping_address' => $address,
-                    'payment_method' => $request->payment,
-                    'phone_number' => $request->phone,
-                    'status' => $request->payment === 'cash' ? 'pending' : 'processing',
-                    'coordinates' => $request->coords ?? null,
-                    'bank_slip_path' => $bankSlipPath
-                ]);
-
-                // Create order items
-                foreach ($cart as $item) {
-                    OrderItem::create([
-                        'order_id' => $order->id,
-                        'tumbler_id' => $item['tumbler_id'] ?? null,
-                        'name' => $item['name'],
-                        'image' => $item['image'],
-                        'color' => $item['color'] ?? null,
-                        'engraving' => $item['engraving'] ?? null,
-                        'font' => $item['font'] ?? null,
-                        'is_customized' => $item['customized'] ?? false,
-                        'price' => $item['price'],
-                        'quantity' => $item['quantity']
-                    ]);
-                }
-
-                DB::commit();
-
-                // Clear cart
-                session()->forget('cart');
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Order placed successfully!',
-                    'order_id' => $order->id
-                ]);
-            } catch (\Exception $e) {
-                DB::rollBack();
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to create order: ' . $e->getMessage()
-                ], 500);
-            }
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation error',
-                'errors' => $e->errors()
-            ], 422);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage()
+                'message' => 'Failed to create order: ' . $e->getMessage()
             ], 500);
         }
     }
 
+    /**
+     * Prepare address data from request
+     */
+    private function prepareAddressData(Request $request): string
+    {
+        if ($request->has('addresses')) {
+            return implode("\n", $request->addresses);
+        }
+
+        $address = $request->coords;
+        if ($request->has('selected_location_name')) {
+            $address .= "\n" . $request->selected_location_name;
+        }
+
+        return $address;
+    }
+
+    /**
+     * Handle bank slip upload for online payments
+     */
+    private function handleBankSlipUpload(Request $request): ?string
+    {
+        if ($request->payment !== 'online' || !$request->hasFile('bank_slip')) {
+            return null;
+        }
+
+        return $request->file('bank_slip')->store('bank_slips', 'public');
+    }
+
+    /**
+     * Create a new order record
+     */
+    private function createOrder(
+        int $userId,
+        float $total,
+        string $trackingNumber,
+        string $address,
+        string $paymentMethod,
+        string $phone,
+        ?string $coordinates,
+        ?string $bankSlipPath
+    ): Order {
+        return Order::create([
+            'user_id' => $userId,
+            'total' => $total,
+            'tracking_number' => $trackingNumber,
+            'shipping_address' => $address,
+            'payment_method' => $paymentMethod,
+            'phone_number' => $phone,
+            'status' => $paymentMethod === 'cash' ? 'pending' : 'processing',
+            'coordinates' => $coordinates,
+            'bank_slip_path' => $bankSlipPath
+        ]);
+    }
+
+    /**
+     * Create order items from cart
+     */
+    private function createOrderItems(int $orderId, array $cartItems): void
+    {
+        foreach ($cartItems as $item) {
+            OrderItem::create([
+                'order_id' => $orderId,
+                'tumbler_id' => $item['tumbler_id'] ?? null,
+                'name' => $item['name'],
+                'image' => $item['image'],
+                'color' => $item['color'] ?? null,
+                'engraving' => $item['engraving'] ?? null,
+                'font' => $item['font'] ?? null,
+                'is_customized' => $item['customized'] ?? false,
+                'price' => $item['price'],
+                'quantity' => $item['quantity']
+            ]);
+        }
+    }
     public function history()
     {
         $orders = Order::where('user_id', auth()->id())

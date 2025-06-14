@@ -81,7 +81,7 @@ class HomeController extends Controller
             ->groupBy('status')
             ->pluck('count', 'status')
             ->toArray();
-        return view('Admin/Dashboard', compact('users', 'tumblers', 'orderCount', 'chartData', 'labels','statusCounts'));
+        return view('Admin/Dashboard', compact('users', 'tumblers', 'orderCount', 'chartData', 'labels', 'statusCounts'));
     }
     public function Categories()
     {
@@ -304,9 +304,10 @@ class HomeController extends Controller
                 DB::raw('COUNT(DISTINCT order_items.id) as orders_count'),
                 DB::raw('COUNT(DISTINCT reviews.id) as reviews_count')
             )
-            ->leftJoin('order_items', function ($join) {
-                $join->on('tumblers.id', '=', 'order_items.tumbler_id')
-                    ->where('order_items.created_at', '>=', now()->subMonth());
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('order_items')
+                    ->whereColumn('order_items.tumbler_id', 'tumblers.id');
             })
             ->leftJoin('reviews', 'tumblers.id', '=', 'reviews.tumbler_id')
             ->groupBy(
