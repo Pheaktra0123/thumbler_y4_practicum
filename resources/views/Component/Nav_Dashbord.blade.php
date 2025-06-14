@@ -134,7 +134,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.reports') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                        <a href="{{ route('admin.report.user-orders') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 mr-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
                             </svg>
@@ -173,7 +173,6 @@
     </div>
 
     <script>
-        // Loading overlay handling
         document.addEventListener('DOMContentLoaded', function() {
             const loadingOverlay = document.getElementById('loading-overlay');
 
@@ -182,9 +181,14 @@
             links.forEach(link => {
                 if (link.href && !link.href.includes('/logout')) {
                     link.addEventListener('click', function(e) {
-                        // Update active menu item immediately
+                        // Skip overlay for export links (download)
+                        if (
+                            link.href.includes('export-user-orders') ||
+                            link.hasAttribute('download')
+                        ) {
+                            return; // Do not show overlay
+                        }
                         updateActiveMenuItem(link.getAttribute('href'));
-
                         if (link.target !== '_blank') {
                             loadingOverlay.classList.remove('hidden');
                         }
@@ -206,12 +210,10 @@
                 updateActiveMenuItem(window.location.pathname);
             });
 
-            // Handle back/forward navigation
+            // Hide overlay on back/forward navigation
             window.addEventListener('pageshow', function(event) {
-                if (event.persisted) {
-                    loadingOverlay.classList.add('hidden');
-                    updateActiveMenuItem(window.location.pathname);
-                }
+                loadingOverlay.classList.add('hidden');
+                updateActiveMenuItem(window.location.pathname);
             });
 
             // Logout modal handling
@@ -228,12 +230,8 @@
                 const menuItems = document.querySelectorAll('aside nav a');
                 menuItems.forEach(item => {
                     const itemPath = item.getAttribute('href');
-
-                    // Remove all active classes first
                     item.classList.remove('bg-blue-50', 'text-blue-600');
                     item.classList.add('text-gray-700', 'hover:bg-gray-100');
-
-                    // Check if current path matches or starts with the item path
                     if (currentPath === itemPath || currentPath.startsWith(itemPath + '/')) {
                         item.classList.add('bg-blue-50', 'text-blue-600');
                         item.classList.remove('text-gray-700', 'hover:bg-gray-100');
@@ -241,7 +239,6 @@
                 });
             }
 
-            // Initialize active menu item on page load
             updateActiveMenuItem(window.location.pathname);
         });
     </script>

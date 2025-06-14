@@ -146,10 +146,14 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 });
 //test route
 
-Route::prefix('admin/reports')->group(function () {
-    Route::get('/', [ReportController::class, 'index'])->name('admin.reports');
-    Route::get('/monthly', [ReportController::class, 'monthly'])->name('admin.report.monthly');
-    Route::get('/export', [ReportController::class, 'export'])->name('admin.report.export');
+// User Order Report Routes
+Route::prefix('admin/reports')->name('admin.report.')->group(function () {
+    // Display user order completion report (view)
+    Route::get('/user-orders', [ReportController::class, 'userOrders'])->name('user-orders');
+
+    // Export filtered data to Excel
+    Route::get('/export-user-orders', [ReportController::class, 'exportUserOrders'])
+         ->name('export-user-orders');
 });
 Route::get("/Tumblers", function () {
     return view("/Admin/Product");

@@ -293,7 +293,14 @@ class HomeController extends Controller
     {
         $trendingTumblers = Tumbler::with(['category', 'model'])
             ->select(
-                'tumblers.*',
+                'tumblers.id',
+                'tumblers.tumbler_name',
+                'tumblers.price',
+                'tumblers.sizes',
+                'tumblers.stock',
+                'tumblers.thumbnails',
+                'tumblers.category_id',
+                'tumblers.model_id',
                 DB::raw('COUNT(DISTINCT order_items.id) as orders_count'),
                 DB::raw('COUNT(DISTINCT reviews.id) as reviews_count')
             )
@@ -302,10 +309,21 @@ class HomeController extends Controller
                     ->where('order_items.created_at', '>=', now()->subMonth());
             })
             ->leftJoin('reviews', 'tumblers.id', '=', 'reviews.tumbler_id')
-            ->groupBy('tumblers.id')
-            ->havingRaw('COUNT(DISTINCT order_items.id) >= 3') // Important: use raw to match select
+            ->groupBy(
+                'tumblers.id',
+                'tumblers.tumbler_name',
+                'tumblers.price',
+                'tumblers.sizes',
+                'tumblers.stock',
+                'tumblers.thumbnails',
+                'tumblers.category_id',
+                'tumblers.model_id'
+            )
+            ->havingRaw('COUNT(DISTINCT order_items.id) >= 3')
             ->orderByDesc('orders_count')
             ->paginate(8);
+
+        // Optionally, calculate rating/rating_count here if needed
 
         return view('Pages.Home_Trending_Tumbler', compact('trendingTumblers'));
     }
