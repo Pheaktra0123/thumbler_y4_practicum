@@ -121,27 +121,28 @@ class OrderController extends Controller
      * Create a new order record
      */
     private function createOrder(
-        int $userId,
-        float $total,
-        string $trackingNumber,
-        string $address,
-        string $paymentMethod,
-        string $phone,
-        ?string $coordinates,
-        ?string $bankSlipPath
-    ): Order {
-        return Order::create([
-            'user_id' => $userId,
-            'total' => $total,
-            'tracking_number' => $trackingNumber,
-            'shipping_address' => $address,
-            'payment_method' => $paymentMethod,
-            'phone_number' => $phone,
-            'status' => $paymentMethod === 'cash' ? 'pending' : 'processing',
-            'coordinates' => $coordinates,
-            'bank_slip_path' => $bankSlipPath
-        ]);
-    }
+    int $userId,
+    float $total,
+    string $trackingNumber,
+    string $address,
+    string $paymentMethod,
+    string $phone,
+    ?string $coordinates,
+    ?string $bankSlipPath
+): Order {
+    return Order::create([
+        'user_id' => $userId,
+        'total' => $total,
+        'total_amount' => $total, // Add this line to match your database
+        'tracking_number' => $trackingNumber,
+        'shipping_address' => $address,
+        'payment_method' => $paymentMethod,
+        'phone_number' => $phone,
+        'status' => $paymentMethod === 'cash' ? 'pending' : 'processing',
+        'coordinates' => $coordinates,
+        'bank_slip_path' => $bankSlipPath
+    ]);
+}
 
     /**
      * Create order items from cart

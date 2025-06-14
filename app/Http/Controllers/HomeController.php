@@ -304,11 +304,7 @@ class HomeController extends Controller
                 DB::raw('COUNT(DISTINCT order_items.id) as orders_count'),
                 DB::raw('COUNT(DISTINCT reviews.id) as reviews_count')
             )
-            ->whereExists(function ($query) {
-                $query->select(DB::raw(1))
-                    ->from('order_items')
-                    ->whereColumn('order_items.tumbler_id', 'tumblers.id');
-            })
+            ->leftJoin('order_items', 'tumblers.id', '=', 'order_items.tumbler_id') // <-- Add this line
             ->leftJoin('reviews', 'tumblers.id', '=', 'reviews.tumbler_id')
             ->groupBy(
                 'tumblers.id',
@@ -323,8 +319,6 @@ class HomeController extends Controller
             ->havingRaw('COUNT(DISTINCT order_items.id) >= 3')
             ->orderByDesc('orders_count')
             ->paginate(8);
-
-        // Optionally, calculate rating/rating_count here if needed
 
         return view('Pages.Home_Trending_Tumbler', compact('trendingTumblers'));
     }
