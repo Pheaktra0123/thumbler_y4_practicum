@@ -431,11 +431,11 @@
                                                             <div class="grid gap-4 mb-4 grid-cols-2">
                                                                 <div class="col-span-2">
                                                                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                                                                    <input type="text" name="title" id="edit_name_{{$tumbler->id}}" value="{{ $tumbler->tumbler_name}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type model name" required>
+                                                                    <input type="text" name="tumbler_name" id="edit_name_{{$tumbler->id}}" value="{{ $tumbler->tumbler_name}}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type model name" required>
                                                                 </div>
                                                                 <div class="col-span-2 sm:col-span-1">
                                                                     <label for="category" class="block mb-2 text-sm font-medium text-gray-900">Category</label>
-                                                                    <select id="edit_category_{{$tumbler->id}}" name="categories_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                                                                    <select id="edit_category_{{$tumbler->id}}" name="category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                                                         @foreach($categories as $category)
                                                                         <option value="{{ $category->id }}" {{ $tumbler->category_id == $category->id ? 'selected' : '' }}>
                                                                             {{ $category->name }}
@@ -492,23 +492,59 @@
                                                                     <div id="edit_size_display_{{$tumbler->id}}" class="flex flex-wrap items-center gap-2 min-h-10"></div>
                                                                     <div class="mt-2 text-xs text-gray-500">Enter sizes separated by commas (e.g., 2L,3L,4L)</div>
                                                                 </div>
-                                                                <div class="col-span-2">
-                                                                    <label for="thumbnail" class="block mb-2 text-sm font-medium">Change Model Image</label>
-                                                                    <div class="w-[370px] relative border-2 border-gray-300 border-dashed rounded-lg p-6">
-                                                                        <input type="file" name="thumbnail" class="absolute inset-0 w-full h-full opacity-0 z-50" id="edit_file_upload_{{$tumbler->id}}">
-                                                                        <div class="text-center">
-                                                                            <img id="edit_preview_img_{{$tumbler->id}}" class="mx-auto h-24 w-24" src="{{ Storage::url($tumbler->thumbnails ? (is_array(json_decode($tumbler->thumbnails)) ? json_decode($tumbler->thumbnails)[0] : $tumbler->thumbnails) : 'default.png') }}" alt="Current Thumbnail">
-                                                                            <h3 class="mt-2 text-sm font-medium text-gray-900">
-                                                                                <label for="edit_file_upload_{{$tumbler->id}}" class="relative cursor-pointer">
-                                                                                    <span>Drag and drop</span>
-                                                                                    <span class="text-indigo-600"> or browse</span>
-                                                                                    <span>to upload</span>
-                                                                                </label>
-                                                                            </h3>
-                                                                            <p class="mt-1 text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+            <div class="col-span-2">
+    <label for="edit_description_{{$tumbler->id}}" class="block mb-2 text-sm font-medium text-gray-900">Product Description</label>
+    <textarea id="edit_description_{{$tumbler->id}}" name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500">{{ $tumbler->description }}</textarea>
+</div>                                                    <div class="col-span-2">
+    <label class="block mb-2 text-sm font-medium">Change Product Images</label>
+    <div class="w-full relative border-2 border-gray-300 border-dashed rounded-lg p-6 transition-all duration-300 hover:border-blue-500" id="edit_dropzone_{{$tumbler->id}}">
+        <input type="file" name="thumbnails[]" class="absolute inset-0 w-full h-full opacity-0 z-50 cursor-pointer" id="edit_file_upload_{{$tumbler->id}}" multiple accept="image/*">
+        <div class="text-center" id="edit_upload_prompt_{{$tumbler->id}}">
+            <div class="mx-auto flex items-center justify-center w-14 h-14 rounded-full bg-blue-50">
+                <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <h3 class="mt-4 text-sm font-medium text-gray-900">
+                <label for="edit_file_upload_{{$tumbler->id}}" class="relative cursor-pointer">
+                    <span>Drag and drop your images</span>
+                    <span class="text-blue-600"> or click to browse</span>
+                </label>
+            </h3>
+            <p class="mt-2 text-xs text-gray-500">
+                PNG, JPG, GIF up to 10MB each
+            </p>
+        </div>
+
+        <div id="edit_preview_container_{{$tumbler->id}}" class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            @php
+                $thumbnails = is_array(json_decode($tumbler->thumbnails)) ? json_decode($tumbler->thumbnails) : [$tumbler->thumbnails];
+            @endphp
+            @foreach($thumbnails as $thumbnail)
+                @if($thumbnail)
+                <div class="relative group">
+                    <img src="{{ Storage::url($thumbnail) }}" class="h-24 w-full object-cover rounded-lg shadow-sm" alt="Product image">
+                    <input type="hidden" name="existing_thumbnails[]" value="{{ $thumbnail }}">
+                    <button type="button" onclick="removeEditImage(this, '{{ $tumbler->id }}')" class="absolute top-1 right-1 bg-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                @endif
+            @endforeach
+        </div>
+
+        <div class="mt-4 flex justify-between items-center" id="edit_upload_stats_{{$tumbler->id}}" style="{{ count($thumbnails) > 0 ? '' : 'display: none;' }}">
+            <div class="text-sm text-gray-500">
+                <span id="edit_upload_count_{{$tumbler->id}}">{{ count($thumbnails) }}</span> images selected
+            </div>
+            <button type="button" id="edit_clear_uploads_{{$tumbler->id}}" class="text-sm text-red-600 hover:text-red-800">
+                Clear all
+            </button>
+        </div>
+    </div>
+</div>
                                                             </div>
                                                             <button type="submit" class="text-white mt-5 inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                                                                 Update
@@ -567,6 +603,15 @@
     .catch(error => {
       console.error(error);
     });
+    @foreach($tumblers as $tumbler)
+ClassicEditor
+    .create(document.querySelector('#edit_description_{{$tumbler->id}}'), {
+        toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote']
+    })
+    .catch(error => {
+        console.error(error);
+    });
+@endforeach
     // Enhanced file upload handling with proper browser compatibility
     document.addEventListener('DOMContentLoaded', function() {
         const dropzone = document.getElementById('dropzone');
@@ -714,51 +759,80 @@
                 // No need to prevent default - the files are already attached to the input
                 // Just ensure the file input has all the selected files
                 updateFormFiles();
-            });
+                                             });
         }
     });
 
-    var dropzone = document.getElementById('dropzone');
-    dropzone.addEventListener('dragover', e => {
-        e.preventDefault();
-        dropzone.classList.add('border-indigo-600');
+    @foreach($tumblers as $tumbler)
+document.addEventListener('DOMContentLoaded', function() {
+    const dropzone = document.getElementById('edit_dropzone_{{$tumbler->id}}');
+    const fileUpload = document.getElementById('edit_file_upload_{{$tumbler->id}}');
+    const previewContainer = document.getElementById('edit_preview_container_{{$tumbler->id}}');
+    const clearUploads = document.getElementById('edit_clear_uploads_{{$tumbler->id}}');
+    let selectedFiles = [];
+
+    if (!dropzone || !fileUpload) return;
+
+    // Handle file input change
+    fileUpload.addEventListener('change', function() {
+        selectedFiles = Array.from(this.files);
+        updatePreviews();
     });
 
-    dropzone.addEventListener('dragleave', e => {
-        e.preventDefault();
-        dropzone.classList.remove('border-indigo-600');
-    });
-
-    dropzone.addEventListener('drop', e => {
-        e.preventDefault();
-        dropzone.classList.remove('border-indigo-600');
-        var files = e.dataTransfer.files;
-        displayPreviews(files);
-    });
-
-    var input = document.getElementById('file-upload');
-
-    input.addEventListener('change', e => {
-        var files = e.target.files;
-        displayPreviews(files);
-    });
-
-    function displayPreviews(files) {
-        var previewContainer = document.getElementById('preview-container');
-        previewContainer.innerHTML = ''; // Clear previous previews
-
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                var img = document.createElement('img');
-                img.src = reader.result;
-                img.classList.add('max-h-40', 'mx-auto', 'mt-2');
-                previewContainer.appendChild(img);
-            };
-        }
+    // Clear all selected files and previews (including existing images)
+    if (clearUploads) {
+        clearUploads.addEventListener('click', function(e) {
+            e.preventDefault();
+            selectedFiles = [];
+            fileUpload.value = '';
+            // Remove all previews (including existing images)
+            previewContainer.innerHTML = '';
+            // Remove all hidden inputs for existing images
+            const hiddenInputs = previewContainer.parentElement.querySelectorAll('input[name="existing_thumbnails[]"]');
+            hiddenInputs.forEach(input => input.remove());
+        });
     }
+
+    function updatePreviews() {
+        previewContainer.innerHTML = '';
+        selectedFiles.forEach((file, idx) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'relative group';
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'h-24 w-full object-cover rounded-lg shadow-sm';
+                div.appendChild(img);
+                // Remove button
+                const btn = document.createElement('button');
+                btn.className = 'absolute top-1 right-1 bg-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200';
+                btn.innerHTML = '<svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                btn.onclick = function(ev) {
+                    ev.preventDefault();
+                    selectedFiles.splice(idx, 1);
+                    updatePreviews();
+                };
+                div.appendChild(btn);
+                previewContainer.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Attach files to input before form submit
+    const form = dropzone.closest('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            if (selectedFiles.length > 0) {
+                const dt = new DataTransfer();
+                selectedFiles.forEach(f => dt.items.add(f));
+                fileUpload.files = dt.files;
+            }
+        });
+    }
+});
+@endforeach
 
     function isValidColor(color) {
         // Check for HEX color format (#FFFFFF or #FFF)
@@ -1190,5 +1264,6 @@
             closeDeletePopup();
         });
     };
+    
 </script>
 @endsection

@@ -74,14 +74,15 @@
                                 <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORY</h2>
                                 <h1 class="title-font text-lg font-medium text-gray-900 mb-3 font-mono">{{ $category->name ?? 'Unknown Category' }}</h1>
                                 <div class="flex items-center flex-wrap">
-                                    <a href="{{ route('category.tumblers', $category->id) }}" class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0 font-sans">
-                                        See all items
-                                        <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M5 12h14"></path>
-                                            <path d="M12 5l7 7-7 7"></path>
-                                        </svg>
-                                    </a>
+                                  <a href="{{ route('category.tumblers', ['id' => $category->id]) }}" 
+   class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0 font-sans">
+    See all items
+    <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14"></path>
+        <path d="M12 5l7 7-7 7"></path>
+    </svg>
+</a>
                                     <span class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
                                     </span>
                                     <span class="text-gray-400 inline-flex items-center leading-none text-sm">
@@ -216,34 +217,34 @@
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-                    const searchBar = document.getElementById('search-bar');
-                    const searchButton = document.getElementById('search-button');
-                    const loadingSpinner = document.getElementById('loading-spinner');
-                    const resultsContainer = document.getElementById('search-results');
-                    let searchTimeout;
+            const searchBar = document.getElementById('search-bar');
+            const searchButton = document.getElementById('search-button');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const resultsContainer = document.getElementById('search-results');
+            let searchTimeout;
 
-                    function performSearch() {
-                        const query = searchBar.value;
-                        if (query.length < 2) return; // Don't search for very short queries
+            function performSearch() {
+                const query = searchBar.value;
+                if (query.length < 2) return; // Don't search for very short queries
 
-                        loadingSpinner.classList.remove('opacity-0');
+                loadingSpinner.classList.remove('opacity-0');
 
-                        fetch(`/search?query=${encodeURIComponent(query)}`, {
-                                headers: {
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                }
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                resultsContainer.innerHTML = ''; // Clear existing results
+                fetch(`/search?query=${encodeURIComponent(query)}`, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        resultsContainer.innerHTML = ''; // Clear existing results
 
-                                if (data.tumblers.length === 0) {
-                                    resultsContainer.innerHTML = '<div class="col-span-full text-center">No products found</div>';
-                                    return;
-                                }
+                        if (data.tumblers.length === 0) {
+                            resultsContainer.innerHTML = '<div class="col-span-full text-center">No products found</div>';
+                            return;
+                        }
 
-                                data.tumblers.forEach(tumbler => {
-                                    const card = `
+                        data.tumblers.forEach(tumbler => {
+                            const card = `
                         <div class="bg-white rounded-lg shadow-md p-4">
                             <img src="${tumbler.image_url || '/default-tumbler.jpg'}" alt="${tumbler.name}" class="w-full h-48 object-cover rounded-md">
                             <h3 class="mt-2 text-lg font-semibold">${tumbler.name}</h3>
@@ -251,66 +252,65 @@
                             <p class="mt-2 text-green-600 font-bold">$${tumbler.price}</p>
                         </div>
                     `;
-                                    resultsContainer.innerHTML += card;
-                                });
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                resultsContainer.innerHTML = '<div class="col-span-full text-center text-red-500">An error occurred while searching</div>';
-                            })
-                            .finally(() => {
-                                loadingSpinner.classList.add('opacity-0');
-                            });
-                    }
-                    //pop up add to cart
-                    const addToCartForm = document.getElementById('addToCartForm');
-                    if (addToCartForm) {
-                        addToCartForm.addEventListener('submit', function(e) {
-                                e.preventDefault();
-                                const formData = new FormData(addToCartForm);
-                                fetch(addToCartForm.action, {
-                                        method: 'POST',
-                                        headers: {
-                                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                                            'X-Requested-With': 'XMLHttpRequest',
-                                            'Accept': 'application/json'
-                                        },
-                                        body: formData
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.cartCount !== undefined) {
-                                            document.querySelectorAll('.cart-badge').forEach(el => {
-                                                el.textContent = data.cartCount;
-                                            });
-                                        }
-                                        Swal.fire('Added to cart!', '', 'success');
-                                    })
-                                    .catch(() => Swal.fire('Failed to add to cart!', '', 'error'));
-                            }
-                        );
-                        }
-
-                        // Search as you type with debouncing
-                        searchBar.addEventListener('input', function() {
-                            clearTimeout(searchTimeout);
-                            searchTimeout = setTimeout(performSearch, 300);
+                            resultsContainer.innerHTML += card;
                         });
-
-                        // Search when search button is clicked
-                        searchButton.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            performSearch();
-                        });
-
-                        // Search when Enter key is pressed
-                        searchBar.addEventListener('keypress', function(e) {
-                            if (e.key === 'Enter') {
-                                e.preventDefault();
-                                performSearch();
-                            }
-                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        resultsContainer.innerHTML = '<div class="col-span-full text-center text-red-500">An error occurred while searching</div>';
+                    })
+                    .finally(() => {
+                        loadingSpinner.classList.add('opacity-0');
                     });
+            }
+            //pop up add to cart
+            const addToCartForm = document.getElementById('addToCartForm');
+            if (addToCartForm) {
+                addToCartForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(addToCartForm);
+                    fetch(addToCartForm.action, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'Accept': 'application/json'
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.cartCount !== undefined) {
+                                document.querySelectorAll('.cart-badge').forEach(el => {
+                                    el.textContent = data.cartCount;
+                                });
+                            }
+                            Swal.fire('Added to cart!', '', 'success');
+                        })
+                        .catch(() => Swal.fire('Failed to add to cart!', '', 'error'));
+                });
+            }
+
+            // Search as you type with debouncing
+            searchBar.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(performSearch, 300);
+            });
+
+            // Search when search button is clicked
+            searchButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                performSearch();
+            });
+
+            // Search when Enter key is pressed
+            searchBar.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performSearch();
+                }
+            });
+        });
     </script>
     @endpush
     <!-- Loading Spinner -->

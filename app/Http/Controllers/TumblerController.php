@@ -15,8 +15,8 @@ class TumblerController extends Controller
     public function tumbler()
     {
         $models = ModelTumbler::all();
-        $categories = Categories::paginate(6); // Paginate categories (6 per page)
-        $tumblers = Tumbler::paginate(8); // Paginate tumblers (8 per page)
+        $categories = Categories::all(); // <-- Get all categories
+        $tumblers = Tumbler::paginate(5); // Paginate tumblers (8 per page)
         return view("CRUD/Product_Crud/View_Product", compact('models', 'categories', 'tumblers'));
     }
     // create new tumbler product
@@ -87,7 +87,7 @@ class TumblerController extends Controller
         $tumbler->is_available = $request->input('is_available', true);
         $tumbler->colors = json_encode($colors);
         $tumbler->sizes = json_encode($sizes);
-        $tumbler->thumbnails = json_encode($thumbnailPaths);
+        $tumbler->thumbnails = json_encode(!empty($thumbnailPaths) ? $thumbnailPaths : ['default.png']);
         $tumbler->rating = 3.9; // fallback if not set
         $tumbler->rating_count = 27;
         $tumbler->save();
@@ -103,75 +103,92 @@ class TumblerController extends Controller
         $tumbler->rating = round($tumbler->reviews()->avg('rating'), 1) ?? 0;
         $tumbler->rating_count = $tumbler->reviews()->count();
 
-        $tumbler->colors = is_array($tumbler->colors) ? $tumbler->colors : (json_decode($tumbler->colors, true) ?? []);
-        $tumbler->thumbnails = is_array($tumbler->thumbnails) ? $tumbler->thumbnails : (json_decode($tumbler->thumbnails, true) ?? []);
+        // Safely handle colors
+        try {
+            $tumbler->colors = json_decode($tumbler->colors, true) ?? [];
+        } catch (\Exception $e) {
+            $tumbler->colors = [];
+        }
+
+        // Safely handle thumbnails
+        try {
+            $thumbnails = json_decode($tumbler->thumbnails, true);
+            $tumbler->thumbnails = is_array($thumbnails) ? $thumbnails : [];
+        } catch (\Exception $e) {
+            $tumbler->thumbnails = [];
+        }
+
+        // Ensure we always have at least a default thumbnail
+        if (empty($tumbler->thumbnails)) {
+            $tumbler->thumbnails = ['default.png'];
+        }
 
         return view('Pages.details_tumbler', compact('tumbler'));
     }
     // update tumbler product
-    public function update(Request $request, $id)
-    {
-        // Validate the request
-        $request->validate([
-            'title' => 'required|string|max:255', // This is the field name from the form
-            'categories_id' => 'required|exists:categories,id',
-            'model_id' => 'required|exists:model_tumblers,id',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'description' => 'nullable|string',
-            'is_available' => 'nullable|boolean',
-            'colors' => 'nullable',
-            'sizes' => 'nullable',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-        ]);
+ public function update(Request $request, $id)
+{
+    // Validate the request
+    $request->validate([
+        'tumbler_name' => 'required|string|max:255',
+        'category_id' => 'required|exists:categories,id',
+        'model_id' => 'required|exists:model_tumblers,id',
+        'price' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'description' => 'nullable|string',
+        'is_available' => 'nullable|boolean',
+        'colors' => 'nullable|string',
+        'sizes' => 'nullable|string',
+        'thumbnails.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+        'existing_thumbnails.*' => 'nullable|string',
+        'deleted_thumbnails.*' => 'nullable|string',
+    ]);
 
-        // Find the tumbler by ID
-        $tumbler = Tumbler::findOrFail($id);
+    // Find the tumbler by ID
+    $tumbler = Tumbler::findOrFail($id);
 
-        // Handle thumbnail upload
-        if ($request->hasFile('thumbnail')) {
-            $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
-            $tumbler->thumbnails = json_encode([$thumbnailPath]);
+    // Handle thumbnail deletions first
+    $currentThumbnails = json_decode($tumbler->thumbnails) ?? [];
+    $deletedThumbnails = $request->input('deleted_thumbnails', []);
+    
+    // Filter out deleted thumbnails
+    $updatedThumbnails = array_filter($currentThumbnails, function($thumbnail) use ($deletedThumbnails) {
+        return !in_array($thumbnail, $deletedThumbnails);
+    });
+
+    // Handle new file uploads
+    $newThumbnailPaths = [];
+    if ($request->hasFile('thumbnails')) {
+        foreach ($request->file('thumbnails') as $thumbnail) {
+            $path = $thumbnail->store('thumbnails', 'public');
+            $newThumbnailPaths[] = $path;
         }
-
-        // Handle multiple file uploads
-        if ($request->hasFile('thumbnails')) {
-            $thumbnailPaths = [];
-            foreach ($request->file('thumbnails') as $thumbnail) {
-                $thumbnailPath = $thumbnail->store('thumbnails', 'public');
-                $thumbnailPaths[] = $thumbnailPath;
-            }
-            $tumbler->thumbnails = json_encode($thumbnailPaths); // Store as JSON
-        }
-
-        // Process colors - handle the string input from the form
-        if ($request->has('colors')) {
-            $colors = is_array($request->colors) ? $request->colors : explode(',', $request->colors);
-            $colors = array_map('trim', $colors);
-            $tumbler->colors = json_encode($colors);
-        }
-
-        // Process sizes - handle the string input from the form
-        if ($request->has('sizes')) {
-            $sizes = is_array($request->sizes) ? $request->sizes : explode(',', $request->sizes);
-            $sizes = array_map('trim', $sizes);
-            $tumbler->sizes = json_encode($sizes);
-        }
-
-        // Update the tumbler
-        $tumbler->tumbler_name = $request->input('title'); // Map 'title' from form to 'tumbler_name' in DB
-        $tumbler->category_id = $request->input('categories_id');
-        $tumbler->model_id = $request->input('model_id');
-        $tumbler->price = $request->input('price');
-        $tumbler->stock = $request->input('stock');
-        $tumbler->description = $request->input('description', '');
-        $tumbler->is_available = $request->input('is_available', 1);
-        $tumbler->rating = $tumbler->rating ?? 3.9; // fallback if not set
-        $tumbler->rating_count = $tumbler->rating_count ?? 27;
-        $tumbler->save();
-
-        return redirect()->back()->with('success', 'Tumbler updated successfully!');
     }
+
+    // Merge existing (non-deleted) and new thumbnails
+    $allThumbnails = array_merge(array_values($updatedThumbnails), $newThumbnailPaths);
+
+    // Update the tumbler
+    $tumbler->update([
+        'tumbler_name' => $request->tumbler_name,
+        'category_id' => $request->category_id,
+        'model_id' => $request->model_id,
+        'price' => $request->price,
+        'stock' => $request->stock,
+        'description' => $request->description,
+        'is_available' => $request->is_available ?? 1,
+        'colors' => $request->colors,
+        'sizes' => $request->sizes,
+        'thumbnails' => json_encode($allThumbnails),
+    ]);
+
+    // Delete the actual files from storage for deleted thumbnails
+    foreach ($deletedThumbnails as $deletedThumbnail) {
+        Storage::disk('public')->delete($deletedThumbnail);
+    }
+
+    return redirect()->back()->with('success', 'Tumbler updated successfully!');
+}
 
     // delete tumbler product
     public function destroy($id)

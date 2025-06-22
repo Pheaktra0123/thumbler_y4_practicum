@@ -275,6 +275,7 @@
                             </label>
                         </div>
                         <div id="bank-upload-div" style="display:none;">
+                        <img src={{ asset('qr1.jpg') }} alt="Bank Slip" class="w-64 h-72 mx-auto mb-2 mt-6">
                             <label for="swal-bank-slip" class="block text-sm font-semibold text-gray-700 mb-1">Upload Transaction Slip</label>
                             <input type="file" id="swal-bank-slip" class="w-full border-2 rounded-lg" accept="image/*">
                             <span id="bank-slip-tick" style="display:none;" class="inline-block align-middle ml-2 text-green-600 text-2xl">✔️</span>

@@ -19,7 +19,7 @@
 <body>
     <main>
         <section class="w-full mb-10">
-            <h1 class="text-4xl text-gray-800 uppercase text-center font-medium ">Categories</h1>
+            <h1 class="text-4xl text-gray-800 uppercase text-center font-medium ">Model Tumbler</h1>
         
             <div class="w-11/12 mx-auto flex justify-between item-center place-items-center mt-5">
                 <div class="flex">
@@ -29,7 +29,7 @@
                             type="search"
                             name="search"
                             value="{{ request('search') }}"
-                            placeholder="Search model categories ">
+                            placeholder="Search model models... ">
                     </form>
                 </div>
                 <div class="flex justify-between item-center place-items-center">
@@ -53,7 +53,7 @@
                         <!-- Modal header -->
                         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
                             <h3 class="text-lg font-semibold text-gray-900">
-                                Create New Category
+                                Create New  Model
                             </h3>
                             <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="crud-modal">
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -68,11 +68,11 @@
                             @csrf
                             <div class="grid gap-4 mb-4 grid-cols-2">
                                 <div class="col-span-2">
-                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                                    <input type="text" name="category_name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type Category name" required>
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Model name</label>
+                                    <input type="text" name="category_name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type Model name" required>
                                 </div>
                                 <div class="col-span-2">
-                                    <label for="thumbnail" class="block mb-2 text-sm font-medium">Upload Category Image</label>
+                                    <label for="thumbnail" class="block mb-2 text-sm font-medium">Upload model image</label>
                                     <div class="w-[370px] relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
                                         <input type="file" name="thumbnail" class="absolute inset-0 w-full h-full opacity-0 z-50" id="file-upload">
                                         <div class="text-center">
@@ -98,7 +98,7 @@
                                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                                     </svg>
-                                    <span>Add new category</span>
+                                    <span>Add new model</span>
                                 </div>
 
                                 <!-- Loading State -->
@@ -141,7 +141,7 @@
                                 <thead>
                                     <tr class="bg-gray-100 text-center">
                                         <th scope="col" class="p-2 text-center text-sm leading-6 font-semibold text-gray-900 capitalize rounded-t-xl">ID</th>
-                                        <th scope="col" class="p-2 text-center text-sm leading-6 font-semibold text-gray-900 capitalize">Category</th>
+                                        <th scope="col" class="p-2 text-center text-sm leading-6 font-semibold text-gray-900 capitalize">Model</th>
                                         <th scope="col" class="p-2 text-center text-sm leading-6 font-semibold text-gray-900 capitalize">Thumbnail</th>
                                         <th scope="col" class="p-2 text-center text-sm leading-6 font-semibold text-gray-900 capitalize rounded-t-xl">Actions</th>
                                     </tr>
@@ -204,7 +204,7 @@
                                                         <!-- Modal header -->
                                                         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                                                             <h3 class="text-lg font-semibold text-gray-900">
-                                                                Update Categories
+                                                                Update model
                                                             </h3>
                                                             <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-toggle="edit-modal{{$category->id}}">
                                                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -227,7 +227,7 @@
                                                             </div>
 
                                                             <div class="col-span-2">
-                                                                <label for="thumbnail" class="block mb-2 text-sm font-medium">New Category Image</label>
+                                                                <label for="thumbnail" class="block mb-2 text-sm font-medium">New model Image</label>
                                                                 <div class="w-[370px] relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
                                                                     <input type="file" name="thumbnail" class="absolute inset-0 w-full h-full opacity-0 z-50" id="file-upload">
                                                                     <div class="text-center">
@@ -268,11 +268,6 @@
             </div>
         </section>
     </main>
-
-    <!-- Loading Spinner -->
-    <div id="pagination-loading-spinner" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-    </div>
 </body>
 
 </html>

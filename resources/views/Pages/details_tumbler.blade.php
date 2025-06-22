@@ -7,79 +7,190 @@
 
 <main>
     <style>
-        .product-gallery {
+        /* Image Gallery Styles */
+        .image-gallery {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-container {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 500px;
+        }
+        
+        .gallery-slide {
+            min-width: 100%;
+            position: relative;
+        }
+        
+        .gallery-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 1rem;
+            z-index: 10;
+        }
+        
+        .gallery-btn {
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
-
+        
+        .gallery-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .thumbnail-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .thumbnail-btn {
+            aspect-ratio: 1/1;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
         .thumbnail-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
+        
         .thumbnail-btn.active {
             border-color: #000;
             box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
         }
-
-        .color-btn {
-            transition: all 0.2s ease;
+        
+        .thumbnail-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-
+        
+        /* Color Selection */
+        .color-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
         .color-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
-
+        
         .color-btn.active {
             box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
         }
-
-        .action-btn {
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .quantity-btn {
-            transition: all 0.2s ease;
-        }
-
-        .quantity-btn:hover {
-            background-color: #333;
-            transform: scale(1.1);
-        }
-
+        
+        /* Animations */
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
-
+        
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-
+        
         .slide-up {
             animation: slideUp 0.5s ease-out;
         }
-
+        
         @keyframes slideUp {
             from {
                 transform: translateY(20px);
                 opacity: 0;
             }
-
             to {
                 transform: translateY(0);
                 opacity: 1;
             }
+        }
+        
+        /* Quantity Selector */
+        .quantity-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: #6b7280;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #1f2937;
+        }
+        
+        /* Action Buttons */
+        .action-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Rating Stars */
+        .star-rating {
+            display: flex;
+            align-items: center;
+        }
+        
+        .star {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #d1d5db; /* gray-300 */
+        }
+        
+        .star.filled {
+            color: #f59e0b; /* yellow-400 */
+        }
+        
+        .star.half-filled {
+            position: relative;
+        }
+        
+        .star.half-filled::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background-color: #f59e0b; /* yellow-400 */
+            z-index: 1;
         }
     </style>
 
@@ -87,43 +198,61 @@
     <div class="py-0 mx-auto p-4 sm:p-10 fade-in">
         <div class="mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row -mx-4 slide-up">
+                <!-- Image Gallery Column -->
                 <div class="md:flex-1 px-4">
-                    <div class="h-[500px] flex items-center justify-center rounded-lg mb-4 overflow-hidden">
-                        <!-- Main Product Image -->
-                        <div class="relative w-full h-full product-gallery">
-                            @if(!empty($tumbler->thumbnails))
-                            <img id="mainImage" src="{{ asset('storage/' . $tumbler->thumbnails[0]) }}" alt="Tumbler" class="w-full h-full object-contain transition-opacity duration-300" />
+                    <div class="image-gallery rounded-lg overflow-hidden mb-4">
+                        <div class="gallery-container">
+                            @if($tumbler->thumbnails && count($tumbler->thumbnails) > 0)
+                                @foreach($tumbler->thumbnails as $thumb)
+                                <div class="gallery-slide">
+                                    <img src="{{ asset('storage/' . $thumb) }}" alt="Tumbler Image" loading="lazy">
+                                </div>
+                                @endforeach
                             @else
-                            <img src="{{ asset('images/default-placeholder.png') }}" alt="Default Image" class="w-full h-full object-contain" />
+                                <div class="gallery-slide">
+                                    <img src="{{ asset('images/default-placeholder.png') }}" alt="Default Tumbler Image" loading="lazy">
+                                </div>
                             @endif
                         </div>
+                        
+                        @if($tumbler->thumbnails && count($tumbler->thumbnails) > 1)
+                        <div class="gallery-nav">
+                            <button class="gallery-btn prev-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <button class="gallery-btn next-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                        @endif
                     </div>
-
-                    <!-- Thumbnails -->
-                    @if(!empty($tumbler->thumbnails) && count($tumbler->thumbnails) > 1)
-                    <div class="grid grid-cols-4 gap-3 mt-4">
+                    
+                    @if($tumbler->thumbnails && count($tumbler->thumbnails) > 1)
+                    <div class="thumbnail-container">
                         @foreach($tumbler->thumbnails as $index => $thumb)
-                        <button onclick="changeMainImage('{{ asset('storage/' . $thumb) }}', this)"
-                            class="thumbnail-btn aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 border-transparent transition-all duration-200 {{ $index === 0 ? 'active border-primary' : '' }}">
-                            <img src="{{ asset('storage/' . $thumb) }}" alt="Thumbnail" class="w-full h-full object-cover" />
+                        <button class="thumbnail-btn {{ $index === 0 ? 'active' : '' }}" 
+                                data-index="{{ $index }}">
+                            <img src="{{ asset('storage/' . $thumb) }}" 
+                                 alt="Tumbler Thumbnail {{ $index + 1 }}" 
+                                 loading="lazy">
                         </button>
                         @endforeach
                     </div>
                     @endif
                 </div>
 
-                <!-- Product Info -->
+                <!-- Product Info Column -->
                 <div class="w-full md:w-1/2 px-4 content-center slide-up" style="animation-delay: 0.1s">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
                         {{ $tumbler->tumbler_name }} |
                         @php
-                        $sizes = json_decode($tumbler->sizes, true);
-                        if (is_array($sizes) && !empty($sizes)) {
-                        $firstSize = trim(str_replace(['"', '[', ']'], '', $sizes[0]));
+                        $sizes = json_decode($tumbler->sizes, true) ?? [];
+                        $firstSize = is_array($sizes) && !empty($sizes) ? trim($sizes[0], '"[]\\') : 'N/A';
                         echo $firstSize;
-                        } else {
-                        echo 'N/A';
-                        }
                         @endphp OZ
                     </h2>
 
@@ -136,30 +265,30 @@
                         $halfStar = ($rating - $fullStars) >= 0.5;
                         $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
                         @endphp
-                        <div class="flex items-center space-x-1">
-                            @for ($i = 0; $i < $fullStars; $i++)
-                                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <polygon points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " />
+                        
+                        <div class="star-rating mr-2">
+                            @for($i = 0; $i < $fullStars; $i++)
+                                <svg class="star filled" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                 </svg>
-                                @endfor
-                                @if ($halfStar)
-                                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                    <defs>
-                                        <linearGradient id="half-grad">
-                                            <stop offset="50%" stop-color="currentColor" />
-                                            <stop offset="50%" stop-color="#e5e7eb" />
-                                        </linearGradient>
-                                    </defs>
-                                    <polygon fill="url(#half-grad)" points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " />
+                            @endfor
+                            
+                            @if($halfStar)
+                                <svg class="star half-filled" fill="#e5e7eb" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                 </svg>
-                                @endif
-                                @for ($i = 0; $i < $emptyStars; $i++)
-                                    <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                                    <polygon points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " />
-                                    </svg>
-                                    @endfor
+                            @endif
+                            
+                            @for($i = 0; $i < $emptyStars; $i++)
+                                <svg class="star" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            @endfor
                         </div>
-                        <span class="text-gray-800 ml-2 font-semibold">{{ number_format($rating, 1) }} <span class="text-gray-500 font-normal">out of 5</span></span>
+                        
+                        <span class="text-gray-800 font-semibold">{{ number_format($rating, 1) }} 
+                            <span class="text-gray-500 font-normal">out of 5</span>
+                        </span>
                         <span class="ml-2 text-sm text-gray-500">({{ $ratingCount }} ratings)</span>
                     </div>
 
@@ -172,24 +301,24 @@
                     </div>
 
                     <!-- Price -->
-                    <p id="price" class="text-black font-bold text-2xl my-4">{{ $tumbler->price }}$</p>
+                    <p id="price" class="text-black font-bold text-2xl my-4">
+                        ${{ number_format($tumbler->price, 2) }}
+                    </p>
 
                     <!-- Quantity -->
                     <div class="mb-6">
                         <span class="block font-bold text-gray-500 mb-2">Quantity</span>
-                        <div class="flex items-center content-center content-items-center gap-3">
-                            <button id="decrement" class="quantity-btn border w-10 h-10 flex items-center justify-center rounded-full bg-gray-500 text-white text-sm hover:bg-gray-800">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                        <div class="flex items-center gap-3">
+                            <button id="decrement" class="quantity-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14" />
                                 </svg>
-
                             </button>
-                            <div id="quantity" class="flex items-center justify-center text-gray-700 text-xl font-medium w-10 h-10 text-center">1</div>
-                            <button id="increment" class="quantity-btn border w-10 h-10 flex items-center justify-center rounded-full bg-gray-500 text-white text-sm hover:bg-gray-800">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            <div id="quantity" class="text-gray-700 text-xl font-medium w-10 text-center">1</div>
+                            <button id="increment" class="quantity-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
-
                             </button>
                         </div>
                     </div>
@@ -198,21 +327,21 @@
                     <div class="mb-6">
                         <span class="block font-bold text-gray-700 mb-2">Select Color</span>
                         <div class="flex flex-wrap gap-3">
-                            @foreach($tumbler->colors as $idx => $color)
+                            @foreach($tumbler->colors as $index => $color)
                             @php
                             $cleanColor = is_string($color) ? trim($color, '"[]\\') : '';
                             if (strpos($cleanColor, 'rgb') === 0) {
-                            // valid rgb
+                                // valid rgb format
                             } elseif (!empty($cleanColor) && $cleanColor[0] !== '#' && ctype_xdigit(str_replace(' ', '', $cleanColor))) {
-                            $cleanColor = '#' . $cleanColor;
+                                $cleanColor = '#' . $cleanColor;
                             }
                             if (empty($cleanColor)) $cleanColor = '#cccccc';
                             @endphp
                             <button type="button"
-                                class="color-btn w-10 h-10 rounded-lg border-1 border-gray-100 {{ $idx === 0 ? 'active border-gray-400' : '' }}"
+                                class="color-btn {{ $index === 0 ? 'active' : '' }}"
                                 style="background-color: {{ $cleanColor }}"
                                 data-color="{{ $cleanColor }}"
-                                title="Color {{ $idx + 1 }}">
+                                title="Color {{ $index + 1 }}">
                             </button>
                             @endforeach
                         </div>
@@ -225,22 +354,18 @@
                             @csrf
                             <input type="hidden" name="quantity" id="cartQuantity" value="1">
                             <input type="hidden" name="color" id="cartColor" value="{{ isset($tumbler->colors[0]) && is_string($tumbler->colors[0]) ? trim($tumbler->colors[0], '"[]\\') : '' }}">
-                            <button type="submit" class="action-btn w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-bold hover:bg-gray-800 transition-all">
+                            <button type="submit" class="action-btn w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-bold hover:bg-gray-800 transition-colors">
                                 Add to Cart
                             </button>
                         </form>
                         @else
-                        <button class="flex-1 bg-gray-400 text-white py-3 px-6 rounded-full font-bold cursor-not-allowed" disabled>
+                        <button class="flex-1 bg-gray-400 text-white py-3 px-6 rounded-lg font-bold cursor-not-allowed" disabled>
                             Out of Stock
                         </button>
                         @endif
 
-                        @php
-                        $selectedColor = isset($tumbler->colors[0]) ? (is_string($tumbler->colors[0]) ? trim($tumbler->colors[0], '"[]\\') : '') : '';
-                        @endphp
-
-                        <a id="customizeLink" href="{{ route('customize.tumbler', ['id' => $tumbler->id, 'color' => $selectedColor]) }}" class="flex-1">
-                            <button id="customizeButton" class="action-btn w-full text-black py-3 px-6 border-2 border-gray-300 rounded-lg font-bold hover:border-gray-400 hover:bg-gray-50 transition-all">
+                        <a id="customizeLink" href="{{ route('customize.tumbler', ['id' => $tumbler->id, 'color' => (isset($tumbler->colors[0]) && is_string($tumbler->colors[0])) ? trim($tumbler->colors[0], '"[]\\') : '']) }}" class="flex-1">
+                            <button class="action-btn w-full text-black py-3 px-6 border-2 border-gray-300 rounded-lg font-bold hover:border-gray-400 hover:bg-gray-50 transition-colors">
                                 Customize
                             </button>
                         </a>
@@ -272,18 +397,17 @@
                                     <label class="block font-bold mb-2 text-gray-700">Your Rating:</label>
                                     <div class="flex items-center justify-center space-x-1" id="starRating">
                                         @for($i = 1; $i <= 5; $i++)
-                                            <label class="cursor-pointer transition-transform hover:scale-125">
-                                            <input type="radio" name="rating" value="{{ $i }}" class="hidden peer" required>
-                                            <svg class="w-9 h-9 transition-colors duration-200 peer-checked:text-yellow-400 text-gray-300 hover:text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
-                                                <polygon points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.9 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 " />
-                                            </svg>
+                                            <label class="cursor-pointer">
+                                                <input type="radio" name="rating" value="{{ $i }}" class="hidden peer" required>
+                                                <svg class="w-9 h-9 text-gray-300 peer-checked:text-yellow-400 hover:text-yellow-300 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                             </label>
-                                            @endfor
+                                        @endfor
                                     </div>
                                 </div>
                                 <div>
                                     <label for="comment" class="block font-bold mb-2 text-gray-700">Your Review (optional):</label>
-                                    <textarea name="comment" id="comment" rows="3" class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Share your thoughts about this product..."></textarea>
+                                    <textarea name="comment" id="comment" rows="3" class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Share your thoughts about this product..."></textarea>
                                 </div>
                                 <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-bold flex items-center justify-center gap-2 transition-colors">
                                     <span>Submit Review</span>
@@ -311,75 +435,78 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Change main image when thumbnail is clicked
-        function changeMainImage(src, element) {
-            const mainImage = document.getElementById('mainImage');
-            if (mainImage) {
-                mainImage.style.opacity = 0;
-                setTimeout(() => {
-                    mainImage.src = src;
-                    mainImage.style.opacity = 1;
-                }, 300);
+        // Image Gallery Functionality
+        const galleryContainer = document.querySelector('.gallery-container');
+        const slides = document.querySelectorAll('.gallery-slide');
+        const thumbnails = document.querySelectorAll('.thumbnail-btn');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        let currentSlide = 0;
+        
+        if (slides.length > 1) {
+            // Navigation functions
+            function goToSlide(index) {
+                currentSlide = (index + slides.length) % slides.length;
+                galleryContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+                
+                // Update active thumbnail
+                thumbnails.forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === currentSlide);
+                });
             }
-
-            // Update active thumbnail
-            document.querySelectorAll('.thumbnail-btn').forEach(btn => {
-                btn.classList.remove('active', 'border-primary');
+            
+            // Button event listeners
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+            }
+            
+            // Thumbnail click handlers
+            thumbnails.forEach((thumb, index) => {
+                thumb.addEventListener('click', () => goToSlide(index));
             });
-            element.classList.add('active', 'border-primary');
         }
-
-        // Quantity controls
+        
+        // Quantity Selector
         let quantity = 1;
         const quantityDisplay = document.getElementById("quantity");
         const decrementBtn = document.getElementById("decrement");
         const incrementBtn = document.getElementById("increment");
         const priceDisplay = document.getElementById("price");
-        const basePrice = parseFloat(priceDisplay.textContent.replace('$', ''));
+        const basePrice = parseFloat(priceDisplay.textContent.replace('$', '').replace(',', ''));
         const cartQuantityInput = document.getElementById("cartQuantity");
 
         function updateQuantity(change) {
             quantity += change;
             if (quantity < 1) quantity = 1;
             quantityDisplay.textContent = quantity;
-            priceDisplay.textContent = `$${(basePrice * quantity).toFixed(2)}`;
+            priceDisplay.textContent = '$' + (basePrice * quantity).toFixed(2);
             if (cartQuantityInput) cartQuantityInput.value = quantity;
-
-            // Add animation to quantity change
-            quantityDisplay.classList.add('scale-110');
-            setTimeout(() => {
-                quantityDisplay.classList.remove('scale-110');
-            }, 200);
         }
 
         if (decrementBtn) decrementBtn.addEventListener("click", function(e) {
             e.preventDefault();
             updateQuantity(-1);
-            // Button press animation
-            this.classList.add('scale-90');
-            setTimeout(() => this.classList.remove('scale-90'), 100);
         });
 
         if (incrementBtn) incrementBtn.addEventListener("click", function(e) {
             e.preventDefault();
             updateQuantity(1);
-            // Button press animation
-            this.classList.add('scale-90');
-            setTimeout(() => this.classList.remove('scale-90'), 100);
         });
 
-        // Color selection
+        // Color Selection
         const colorButtons = document.querySelectorAll(".color-btn");
         const cartColorInput = document.getElementById("cartColor");
         const customizeLink = document.getElementById("customizeLink");
 
         function selectColor(button) {
             colorButtons.forEach(btn => {
-                btn.classList.remove("active", "border-gray-400");
-                btn.classList.add("border-gray-200");
+                btn.classList.remove("active");
             });
-            button.classList.add("active", "border-gray-400");
-            button.classList.remove("border-gray-200");
+            button.classList.add("active");
 
             const selectedColor = button.getAttribute("data-color");
             if (cartColorInput) cartColorInput.value = selectedColor;
@@ -395,9 +522,6 @@
         colorButtons.forEach(button => {
             button.addEventListener("click", function() {
                 selectColor(this);
-                // Add bounce animation
-                this.classList.add('animate-bounce');
-                setTimeout(() => this.classList.remove('animate-bounce'), 1000);
             });
         });
 
@@ -447,66 +571,10 @@
                     .catch(() => {
                         submitBtn.innerHTML = 'Add to Cart';
                         submitBtn.disabled = false;
-
-                        // Show error animation
-                        submitBtn.classList.add('animate-shake');
-                        setTimeout(() => {
-                            submitBtn.classList.remove('animate-shake');
-                        }, 500);
-
-                        Swal.fire('Error', 'Failed to add to cart!', 'error');
+                        alert('Failed to add to cart!');
                     });
             });
         }
-
-        // Star rating interaction
-        const starRadios = document.querySelectorAll('input[name="rating"]');
-        const starLabels = document.querySelectorAll('#starRating label');
-
-        starLabels.forEach((label, index) => {
-            label.addEventListener('mouseenter', () => {
-                for (let i = 0; i <= index; i++) {
-                    starLabels[i].querySelector('svg').classList.add('text-yellow-300');
-                    starLabels[i].querySelector('svg').classList.remove('text-gray-300');
-                }
-            });
-
-            label.addEventListener('mouseleave', () => {
-                const checkedRadio = document.querySelector('input[name="rating"]:checked');
-                if (!checkedRadio) {
-                    starLabels.forEach(star => {
-                        star.querySelector('svg').classList.remove('text-yellow-300');
-                        star.querySelector('svg').classList.add('text-gray-300');
-                    });
-                } else {
-                    const checkedIndex = Array.from(starRadios).indexOf(checkedRadio);
-                    starLabels.forEach((star, i) => {
-                        if (i <= checkedIndex) {
-                            star.querySelector('svg').classList.add('text-yellow-400');
-                            star.querySelector('svg').classList.remove('text-gray-300');
-                        } else {
-                            star.querySelector('svg').classList.remove('text-yellow-400');
-                            star.querySelector('svg').classList.add('text-gray-300');
-                        }
-                    });
-                }
-            });
-        });
-
-        starRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                const index = Array.from(starRadios).indexOf(this);
-                starLabels.forEach((star, i) => {
-                    if (i <= index) {
-                        star.querySelector('svg').classList.add('text-yellow-400');
-                        star.querySelector('svg').classList.remove('text-gray-300', 'text-yellow-300');
-                    } else {
-                        star.querySelector('svg').classList.remove('text-yellow-400', 'text-yellow-300');
-                        star.querySelector('svg').classList.add('text-gray-300');
-                    }
-                });
-            });
-        });
 
         // Rating form submission
         const ratingForm = document.getElementById('ratingForm');
@@ -561,25 +629,12 @@
                             }
                         }
 
-                        // Show error animation
-                        submitBtn.classList.add('animate-shake');
-                        setTimeout(() => {
-                            submitBtn.classList.remove('animate-shake');
-                        }, 500);
-
-                        Swal.fire('Error', msg, 'error');
+                        alert(msg);
                     })
                     .catch(() => {
                         loadingIcon.classList.add('hidden');
                         submitBtn.disabled = false;
-
-                        // Show error animation
-                        submitBtn.classList.add('animate-shake');
-                        setTimeout(() => {
-                            submitBtn.classList.remove('animate-shake');
-                        }, 500);
-
-                        Swal.fire('Error', 'Failed to submit rating.', 'error');
+                        alert('Failed to submit rating.');
                     });
             });
         }
@@ -587,44 +642,6 @@
 </script>
 
 <style>
-    @keyframes shake {
-
-        0%,
-        100% {
-            transform: translateX(0);
-        }
-
-        20%,
-        60% {
-            transform: translateX(-5px);
-        }
-
-        40%,
-        80% {
-            transform: translateX(5px);
-        }
-    }
-
-    .animate-shake {
-        animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
-    }
-
-    .animate-bounce {
-        animation: bounce 1s;
-    }
-
-    @keyframes bounce {
-
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-
-        50% {
-            transform: translateY(-10px);
-        }
-    }
-
     .prose ul {
         list-style-type: disc;
         padding-left: 1.5rem;

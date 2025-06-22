@@ -53,13 +53,16 @@ Route::get('/Model_home', [App\Http\Controllers\HomeController::class, 'model'])
 
 
 Route::get('/categories', [App\Http\Controllers\HomeController::class, 'Categories'])->name('search.categories');
-Route::get('/category/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByCategory'])->name('category.tumblers');
+Route::get('/category/{categoryId}', [HomeController::class, 'filterByCategory'])
+    ->name('category.tumblers');
 //route for filter model
 Route::get('/model/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterByModel'])->name('model.tumblers');
 //route for filter tumbler by category
 Route::get('/category/{id}/tumblers', [\App\Http\Controllers\HomeController::class, 'filterInCategory'])->name('category.tumblers');
 //search model
 Route::get('/search/model', [\App\Http\Controllers\HomeController::class, 'searchModel'])->name('search.model');
+    // Route for filtering tranding sales 
+    Route::get('/Tranding-Tumblers',[HomeController::class, 'filterTrendingTumblers'])->name('trending.tumblers');
 //route for normal user
 Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/User/Dashboard', [\App\Http\Controllers\HomeController::class, 'dashboard'])->name('User/Dashboard');
@@ -93,8 +96,7 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
     Route::get('/customized_tumbler/{id}/details', [HomeController::class, 'customizedTumblerDetails'])->name('customized.tumbler.details');
     Route::post('/customized_tumbler/{id}/delete', [HomeController::class, 'deleteCustomizedTumbler'])->name('customized.tumbler.delete');
 
-    // Route for filtering tranding sales 
-    Route::get('/Tranding-Tumblers',[HomeController::class, 'filterTrandingTumblers'])->name('trending.tumblers');
+
 });
 
 Route::post('/orders/clear', [OrderController::class, 'clearAllHistory'])

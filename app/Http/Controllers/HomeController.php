@@ -139,21 +139,26 @@ class HomeController extends Controller
     }
     public function filterByCategory($categoryId)
     {
-        $tumblers = Tumbler::where('category_id', $categoryId)->paginate(4);
-        $Categories = Categories::all();
-        $ModelTumbler = ModelTumbler::all();
-        // Eager load reviews to avoid N+1 queries
+        $query = request()->input('query');
+
+        $tumblers = Tumbler::where('category_id', $categoryId)
+            ->when($query, function ($q) use ($query) {
+                $q->where('tumbler_name', 'LIKE', "%{$query}%");
+            })
+            ->with(['reviews', 'category', 'model'])
+            ->paginate(8);
+
+        // Calculate ratings
         foreach ($tumblers as $tumbler) {
             $tumbler->rating = round($tumbler->reviews->avg('rating'), 1) ?? 0;
             $tumbler->rating_count = $tumbler->reviews->count();
         }
-        // Return the view with the tumblers, categories, and model tumbler data
-        if ($tumblers->isEmpty()) {
-            return redirect()->back()->with('error', 'No tumblers found for this category.');
-        }
-        // Return the view with the filtered tumblers
 
-        return view('Pages.category', compact('tumblers', 'Categories', 'ModelTumbler'));
+        $category = Categories::findOrFail($categoryId);
+        $Categories = Categories::all(); // Add this if needed in view
+        $ModelTumbler = ModelTumbler::all(); // Add this if needed in view
+
+        return view('Pages.category', compact('tumblers', 'Categories', 'ModelTumbler', 'category'));
     }
     // Filter tumblers by model
     public function filterByModel($modelId)
@@ -289,9 +294,9 @@ class HomeController extends Controller
         return view('Pages.customized_detail', compact('custom', 'tumbler'));
     }
     //Filter trending tumblers base on sales or reviews 
-    public function filterTrandingTumblers()
+    public function filterTrendingTumblers()
     {
-        $trendingTumblers = Tumbler::with(['category', 'model'])
+        $trendingTumblers = Tumbler::with(['category', 'model', 'reviews'])
             ->select(
                 'tumblers.id',
                 'tumblers.tumbler_name',
@@ -301,10 +306,9 @@ class HomeController extends Controller
                 'tumblers.thumbnails',
                 'tumblers.category_id',
                 'tumblers.model_id',
-                DB::raw('COUNT(DISTINCT order_items.id) as orders_count'),
-                DB::raw('COUNT(DISTINCT reviews.id) as reviews_count')
+                DB::raw('AVG(reviews.rating) as avg_rating'),
+                DB::raw('COUNT(reviews.id) as review_count')
             )
-            ->leftJoin('order_items', 'tumblers.id', '=', 'order_items.tumbler_id') // <-- Add this line
             ->leftJoin('reviews', 'tumblers.id', '=', 'reviews.tumbler_id')
             ->groupBy(
                 'tumblers.id',
@@ -316,8 +320,9 @@ class HomeController extends Controller
                 'tumblers.category_id',
                 'tumblers.model_id'
             )
-            ->havingRaw('COUNT(DISTINCT order_items.id) >= 3')
-            ->orderByDesc('orders_count')
+            ->having('avg_rating', '>=', 4)
+            ->orderByDesc('avg_rating')
+            ->orderByDesc('review_count')
             ->paginate(8);
 
         return view('Pages.Home_Trending_Tumbler', compact('trendingTumblers'));
