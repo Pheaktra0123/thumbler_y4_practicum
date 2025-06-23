@@ -621,73 +621,43 @@ ClassicEditor
         const uploadStats = document.getElementById('upload-stats');
         const uploadCount = document.getElementById('upload-count');
         const clearUploads = document.getElementById('clear-uploads');
+        let selectedFiles = [];
 
         if (!dropzone || !fileUpload) return; // Exit if elements don't exist
 
-        // Track selected files
-        let selectedFiles = [];
-
-        // Handle drag events
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, preventDefaults, false);
-        });
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        // Highlight dropzone when dragging files over it
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropzone.addEventListener(eventName, highlight, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, unhighlight, false);
-        });
-
-        function highlight() {
-            dropzone.classList.add('border-blue-500', 'bg-blue-50');
-        }
-
-        function unhighlight() {
-            dropzone.classList.remove('border-blue-500', 'bg-blue-50');
-        }
-
-        // Handle dropped files
-        dropzone.addEventListener('drop', handleDrop, false);
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        }
-
-        // Handle selected files from file input
+        // Handle file input change
         fileUpload.addEventListener('change', function() {
-            handleFiles(this.files);
+            selectedFiles = Array.from(this.files);
+            updatePreviews();
         });
 
-        // Process the files
-        function handleFiles(files) {
-            if (!files.length) return;
-
-            // Convert FileList to Array and filter for images
-            const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
-
-            // Add new files to our tracked files
-            selectedFiles = [...selectedFiles, ...newFiles];
-
-            // Update UI
+        // Handle drag & drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, function() {
+                dropzone.classList.add('border-blue-500', 'bg-blue-50');
+            }, false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, function() {
+                dropzone.classList.remove('border-blue-500', 'bg-blue-50');
+            }, false);
+        });
+        dropzone.addEventListener('drop', function(e) {
+            const dt = e.dataTransfer;
+            const files = Array.from(dt.files).filter(file => file.type.startsWith('image/'));
+            selectedFiles = selectedFiles.concat(files);
             updatePreviews();
-        }
+        }, false);
 
-        // Update the preview area with thumbnails
+        // Update previews
         function updatePreviews() {
-            // Clear existing previews
             previewContainer.innerHTML = '';
-
-            // Show/hide elements based on if we have files
             if (selectedFiles.length > 0) {
                 uploadPrompt.style.display = 'none';
                 uploadStats.style.display = 'flex';
@@ -696,102 +666,68 @@ ClassicEditor
                 uploadPrompt.style.display = 'block';
                 uploadStats.style.display = 'none';
             }
-
-            // Create preview for each file
-            selectedFiles.forEach((file, index) => {
+            selectedFiles.forEach((file, idx) => {
                 const reader = new FileReader();
-
                 reader.onload = function(e) {
-                    const preview = document.createElement('div');
-                    preview.className = 'relative group';
-
-                    // Create the image preview
+                    const div = document.createElement('div');
+                    div.className = 'relative group';
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.className = 'h-24 w-full object-cover rounded-lg shadow-sm';
-                    img.alt = file.name;
+                    div.appendChild(img);
 
-                    // Create the remove button
-                    const removeBtn = document.createElement('button');
-                    removeBtn.className = 'absolute top-1 right-1 bg-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200';
-                    removeBtn.innerHTML = '<svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
-                    removeBtn.title = 'Remove image';
-
-                    // Add click handler to remove this file
-                    removeBtn.addEventListener('click', function(e) {
-                        e.preventDefault(); // Prevent form submission
-                        selectedFiles.splice(index, 1);
+                    // Remove button
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'absolute top-1 right-1 bg-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200';
+                    btn.innerHTML = '<svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                    btn.onclick = function(ev) {
+                        ev.preventDefault();
+                        selectedFiles.splice(idx, 1);
                         updatePreviews();
-                        updateFormFiles(); // Update the form files when a file is removed
-                    });
+                        updateFormFiles();
+                    };
+                    div.appendChild(btn);
 
-                    // Create the file name label
-                    const label = document.createElement('div');
-                    label.className = 'mt-1 text-xs text-gray-500 truncate';
-                    label.textContent = file.name;
-
-                    // Assemble the preview
-                    preview.appendChild(img);
-                    preview.appendChild(removeBtn);
-                    preview.appendChild(label);
-                    previewContainer.appendChild(preview);
+                    previewContainer.appendChild(div);
                 };
-
                 reader.readAsDataURL(file);
             });
+            updateFormFiles();
         }
 
-        // Clear all selected files
+        // Update the file input with selectedFiles
+        function updateFormFiles() {
+            const dt = new DataTransfer();
+            selectedFiles.forEach(f => dt.items.add(f));
+            fileUpload.files = dt.files;
+        }
+
+        // Clear all
         if (clearUploads) {
             clearUploads.addEventListener('click', function(e) {
-                e.preventDefault(); // Prevent form submission
+                e.preventDefault();
                 selectedFiles = [];
-                fileUpload.value = ''; // Reset the file input
+                fileUpload.value = '';
                 updatePreviews();
-                updateFormFiles(); // Update the form files when all files are cleared
             });
-        }
-
-        // Handle form submission
-        const form = dropzone.closest('form');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                // No need to prevent default - the files are already attached to the input
-                // Just ensure the file input has all the selected files
-                updateFormFiles();
-                                             });
         }
     });
 
-    @foreach($tumblers as $tumbler)
+    // --- CREATE FORM IMAGE PREVIEW & REMOVE ---
 document.addEventListener('DOMContentLoaded', function() {
-    const dropzone = document.getElementById('edit_dropzone_{{$tumbler->id}}');
-    const fileUpload = document.getElementById('edit_file_upload_{{$tumbler->id}}');
-    const previewContainer = document.getElementById('edit_preview_container_{{$tumbler->id}}');
-    const clearUploads = document.getElementById('edit_clear_uploads_{{$tumbler->id}}');
+    const dropzone = document.getElementById('dropzone');
+    const fileUpload = document.getElementById('file-upload');
+    const previewContainer = document.getElementById('preview-container');
+    const clearUploads = document.getElementById('clear-uploads');
     let selectedFiles = [];
 
     if (!dropzone || !fileUpload) return;
 
-    // Handle file input change
     fileUpload.addEventListener('change', function() {
         selectedFiles = Array.from(this.files);
         updatePreviews();
     });
-
-    // Clear all selected files and previews (including existing images)
-    if (clearUploads) {
-        clearUploads.addEventListener('click', function(e) {
-            e.preventDefault();
-            selectedFiles = [];
-            fileUpload.value = '';
-            // Remove all previews (including existing images)
-            previewContainer.innerHTML = '';
-            // Remove all hidden inputs for existing images
-            const hiddenInputs = previewContainer.parentElement.querySelectorAll('input[name="existing_thumbnails[]"]');
-            hiddenInputs.forEach(input => input.remove());
-        });
-    }
 
     function updatePreviews() {
         previewContainer.innerHTML = '';
@@ -804,8 +740,87 @@ document.addEventListener('DOMContentLoaded', function() {
                 img.src = e.target.result;
                 img.className = 'h-24 w-full object-cover rounded-lg shadow-sm';
                 div.appendChild(img);
+
                 // Remove button
                 const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'absolute top-1 right-1 bg-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200';
+                               btn.innerHTML = '<svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                btn.onclick = function(ev) {
+                    ev.preventDefault();
+                    selectedFiles.splice(idx, 1);
+                    updatePreviews();
+                    updateFormFiles();
+                };
+                div.appendChild(btn);
+
+                previewContainer.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+        updateFormFiles();
+    }
+
+    function updateFormFiles() {
+        const dt = new DataTransfer();
+        selectedFiles.forEach(f => dt.items.add(f));
+        fileUpload.files = dt.files;
+    }
+
+    if (clearUploads) {
+        clearUploads.addEventListener('click', function(e) {
+            e.preventDefault();
+            selectedFiles = [];
+            fileUpload.value = '';
+            updatePreviews();
+        });
+    }
+});
+
+// --- UPDATE FORM IMAGE PREVIEW & REMOVE ---
+@foreach($tumblers as $tumbler)
+document.addEventListener('DOMContentLoaded', function() {
+    const dropzone = document.getElementById('edit_dropzone_{{$tumbler->id}}');
+    const fileUpload = document.getElementById('edit_file_upload_{{$tumbler->id}}');
+    const previewContainer = document.getElementById('edit_preview_container_{{$tumbler->id}}');
+    const clearUploads = document.getElementById('edit_clear_uploads_{{$tumbler->id}}');
+    let selectedFiles = [];
+
+    if (!dropzone || !fileUpload) return;
+
+    // Remove existing image
+    previewContainer.querySelectorAll('button[onclick^="removeEditImage"]').forEach(btn => {
+        btn.onclick = function(ev) {
+            ev.preventDefault();
+            const parentDiv = btn.closest('.relative.group');
+            if (parentDiv) parentDiv.remove();
+            // Remove the corresponding hidden input
+            const hiddenInput = parentDiv.querySelector('input[name="existing_thumbnails[]"]');
+            if (hiddenInput) hiddenInput.remove();
+        };
+    });
+
+    fileUpload.addEventListener('change', function() {
+        selectedFiles = Array.from(this.files);
+        updatePreviews();
+    });
+
+    function updatePreviews() {
+        // Remove only previews of new files, keep existing images until removed by their own button
+        previewContainer.querySelectorAll('.new-upload-preview').forEach(el => el.remove());
+        selectedFiles.forEach((file, idx) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'relative group new-upload-preview';
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'h-24 w-full object-cover rounded-lg shadow-sm';
+                div.appendChild(img);
+
+                // Remove button
+                const btn = document.createElement('button');
+                btn.type = 'button';
                 btn.className = 'absolute top-1 right-1 bg-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200';
                 btn.innerHTML = '<svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
                 btn.onclick = function(ev) {
@@ -814,9 +829,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     updatePreviews();
                 };
                 div.appendChild(btn);
+
                 previewContainer.appendChild(div);
             };
             reader.readAsDataURL(file);
+        });
+    }
+
+    if (clearUploads) {
+        clearUploads.addEventListener('click', function(e) {
+            e.preventDefault();
+            selectedFiles = [];
+            fileUpload.value = '';
+            // Remove all previews of new files
+            previewContainer.querySelectorAll('.new-upload-preview').forEach(el => el.remove());
+            // Remove all existing images and their hidden inputs
+            previewContainer.querySelectorAll('.relative.group:not(.new-upload-preview)').forEach(el => el.remove());
+            previewContainer.parentElement.querySelectorAll('input[name="existing_thumbnails[]"]').forEach(input => input.remove());
         });
     }
 

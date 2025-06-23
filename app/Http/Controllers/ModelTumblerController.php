@@ -37,7 +37,6 @@ class ModelTumblerController extends Controller
         // Validate the request
         $request->validate([
             'model_name' => 'required|string|max:255',
-            'categories_id' => 'required|exists:categories,id',
             'thumbnail' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:10240', // 10MB max
         ]);
 
@@ -53,7 +52,6 @@ class ModelTumblerController extends Controller
         // Store the data in the database
         $model = new ModelTumbler();
         $model->name = $request->input('model_name');
-        $model->category_id = $request->input('categories_id'); // Associate with the selected category
         $model->thumbnail = $imagePath;
         $model->save();
 
@@ -67,13 +65,11 @@ class ModelTumblerController extends Controller
         // Validate the request
         $request->validate([
             'title' => 'required|string|max:255',
-            'categories_id' => 'required|exists:categories,id', // Ensure the category exists
             'thumbnail' => 'nullable|image|mimes:png,jpg,jpeg,gif|max:10240', // 10MB max
         ]);
     
         // Update the model name and category ID
         $model->name = $request->input('title');
-        $model->category_id = $request->input('categories_id');
     
         // Handle thumbnail upload
         if ($request->hasFile('thumbnail')) {

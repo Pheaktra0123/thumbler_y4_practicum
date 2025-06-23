@@ -60,15 +60,6 @@
                                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
                                     <input type="text" name="model_name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type Model name" required>
                                 </div>
-                                <div class="col-span-2 sm:col-span-1">
-                                    <label for="category" class="block mb-2 text-sm font-medium text-gray-900">Category</label>
-                                    <select id="category" name="categories_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
-                                        <option selected="">Select category</option>
-                                        @foreach($categories as $category)
-                                        <option value="{{$category->id}}">{{$category->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
                                 <div class="col-span-2">
                                     <label for="thumbnail" class="block mb-2 text-sm font-medium">Upload Category Image</label>
                                     <div class="w-[370px] relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
@@ -127,9 +118,7 @@
                                     <tr class="">
                                         <th scope="col" class="p-2 text-left text-sm font-semibold text-gray-900 capitalize rounded-t-xl">ID</th>
                                         <th scope="col" class="p-2 text-left text-sm font-semibold text-gray-900 capitalize">Model Name</th>
-                                        <th scope="col" class="p-2 text-left text-sm font-semibold text-gray-900 capitalize">Category</th>
                                         <th scope="col" class="p-2 text-left text-sm font-semibold text-gray-900 capitalize"> Thumbnail</th>
-                                        <th scope="col" class="p-2 text-left text-sm font-semibold text-gray-900 capitalize"> Total Item</th>
                                         <th scope="col" class="p-2 text-left text-sm font-semibold text-gray-900 capitalize rounded-t-xl"> Actions </th>
                                     </tr>
                                 </thead>
@@ -138,11 +127,9 @@
                                     <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
                                         <td class="p-5 whitespace-nowrap text-sm font-medium text-gray-900 ">{{$model->id}}</td>
                                         <td class="p-2 whitespace-nowrap text-sm font-medium text-gray-900"> {{$model->name}}</td>
-                                        <td class="p-2 whitespace-nowrap text-sm font-medium text-gray-900">{{$model->category->name}}</td>
                                         <td class="p-2 whitespace-nowrap text-sm font-medium text-gray-900 object-cover object">
                                             <img src="{{Storage::url( $model->Thumbnail ) }}" style="width: 70px; height:70px;" alt="Img">
                                         </td>
-                                        <td class="p-2 whitespace-nowrap text-sm font-medium text-gray-900"> Partner</td>
                                         <td class=" p-2 ">
                                             <div class="flex items-center gap-1">
                                                 <button data-modal-target="edit-modal{{$model->id}}" data-modal-toggle="edit-modal{{$model->id}}" class="p-2  rounded-full  group transition-all duration-500  flex item-center" type="button">
@@ -188,17 +175,6 @@
                                                                 <div class="col-span-2">
                                                                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
                                                                     <input type="text" name="title" id="name" value="{{ $model->name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Type model name" required>
-                                                                </div>
-                                                                <div class="col-span-2 sm:col-span-1">
-                                                                    <label for="category" class="block mb-2 text-sm font-medium text-gray-900">Category</label>
-                                                                    <select id="category" name="categories_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
-                                                                        @foreach($categories as $category)
-                                                                        <option value="{{ $category->id }}" {{ $model->category_id == $category->id ? 'selected' : '' }}>
-                                                                            {{ $category->name }}
-                                                                        </option>
-                                                                        @endforeach
-                                                                    </select>
-
                                                                 </div>
                                                                 <div class="col-span-2">
                                                                     <label for="thumbnail" class="block mb-2 text-sm font-medium">New Model Image</label>
