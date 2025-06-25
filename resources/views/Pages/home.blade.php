@@ -1,9 +1,10 @@
-@extends("TailwindCssLink.style")
-@extends("TailwindCssLink.fontStyle")
 @extends("Component.header")
 @section('contents')
+@include("TailwindCssLink.style")
+@include("TailwindCssLink.fontStyle")
+
 <script>
-    document.documentElement.classList.add('js')
+    document.documentElement.classList.add('js');
 </script>
 
 <style>
@@ -33,15 +34,8 @@
     }
 
     @keyframes blink {
-
-        from,
-        to {
-            border-color: transparent;
-        }
-
-        50% {
-            border-color: white;
-        }
+        from, to { border-color: transparent; }
+        50% { border-color: white; }
     }
 
     .card-hover:hover {
@@ -54,6 +48,25 @@
         margin-left: auto;
         margin-right: auto;
     }
+
+    /* Dark mode overrides */
+    .dark .video-overlay::after {
+        background: rgba(0, 0, 0, 0.8);
+    }
+    .dark .card-hover {
+        background-color: #1f2937 !important;
+        color: #f3f4f6 !important;
+    }
+    .dark .bg-gray-50 { background-color: #1a202c !important; }
+    .dark .bg-gray-700 { background-color: #374151 !important; }
+    .dark .bg-gray-800 { background-color: #111827 !important; }
+    .dark .bg-white { background-color: #1f2937 !important; }
+    .dark .text-gray-800 { color: #f3f4f6 !important; }
+    .dark .text-gray-600 { color: #d1d5db !important; }
+    .dark .text-gray-700 { color: #e5e7eb !important; }
+    .dark .text-white { color: #fff !important; }
+    .dark .border-gray-300 { border-color: #374151 !important; }
+    .dark .shadow-lg { box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important; }
 </style>
 
 <main class="overflow-hidden">
@@ -68,7 +81,7 @@
             </h1>
             <h3 class="text-xl font-light lg:text-3xl md:text-2xl">Created By You</h3>
             <p class="text-lg lg:text-xl">Start your day without plastic with Tumbler Haven</p>
-            <button class="mx-auto flex items-center gap-2 bg-white/60 hover:bg-white/80 text-gray-800 font-semibold py-3 px-8 rounded-full transition-all">
+            <button class="mx-auto flex items-center gap-2 bg-white/60 hover:bg-white/80 text-gray-800 font-semibold py-3 px-8 rounded-full transition-all dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
                 Shop Now
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                     <path fill-rule="evenodd" d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 11-1.06-1.06l2.47-2.47H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z" clip-rule="evenodd" />
@@ -76,9 +89,7 @@
             </button>
         </div>
     </section>
-
-    <!-- Products Section -->
-    <section class="py-16 bg-gray-700 text-white">
+    <section class="py-16 bg-gray-700 text-white dark:bg-gray-800">
         <div class="content-section px-6">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-semibold mb-4">Bring your imagination—customize</h2>
@@ -87,7 +98,7 @@
 
             <div class="relative">
                 <div class="flex justify-center">
-                    <div class="card-hover max-w-sm bg-white/10 rounded-xl shadow-lg overflow-hidden backdrop-blur-sm">
+                    <div class="card-hover max-w-sm bg-white/10 rounded-xl shadow-lg overflow-hidden backdrop-blur-sm dark:bg-gray-900/40">
                         <div class="relative pt-12 px-12 flex justify-center group-hover:scale-105 transition-transform">
                             <div class="absolute w-64 h-64 bottom-0 left-0 -mb-28 ml-4 opacity-20" style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1);"></div>
                             <img class="w-56" src="3.png" alt="Bottle Image">
@@ -96,7 +107,7 @@
                             <span class="block opacity-75">Bottle</span>
                             <div class="flex justify-between items-center mt-2">
                                 <span class="block font-semibold text-xl">Oak Tree</span>
-                                <button class="flex items-center gap-1 bg-white/30 hover:bg-white/40 rounded-full text-white text-sm font-medium px-5 py-2 transition-all">
+                                <button class="flex items-center gap-1 bg-white/30 hover:bg-white/40 rounded-full text-white text-sm font-medium px-5 py-2 transition-all dark:bg-gray-700 dark:hover:bg-gray-600">
                                     View More
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                                         <path fill-rule="evenodd" d="M12.97 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06l6.22-6.22H3a.75.75 0 010-1.5h16.19l-6.22-6.22a.75.75 0 010-1.06z" clip-rule="evenodd" />
@@ -108,12 +119,12 @@
                 </div>
 
                 <div class="flex justify-between absolute top-1/2 left-0 right-0 transform -translate-y-1/2 px-4">
-                    <button class="bg-white/40 hover:bg-white/60 text-gray-800 p-2 rounded-full shadow-md">
+                    <button class="bg-white/40 hover:bg-white/60 text-gray-800 p-2 rounded-full shadow-md dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                             <path fill-rule="evenodd" d="M7.28 7.72a.75.75 0 010 1.06l-2.47 2.47H21a.75.75 0 010 1.5H4.81l2.47 2.47a.75.75 0 11-1.06 1.06l-3.75-3.75a.75.75 0 010-1.06l3.75-3.75a.75.75 0 011.06 0z" clip-rule="evenodd" />
                         </svg>
                     </button>
-                    <button class="bg-white/40 hover:bg-white/60 text-gray-800 p-2 rounded-full shadow-md">
+                    <button class="bg-white/40 hover:bg-white/60 text-gray-800 p-2 rounded-full shadow-md dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                             <path fill-rule="evenodd" d="M16.72 7.72a.75.75 0 011.06 0l3.75 3.75a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 11-1.06-1.06l2.47-2.47H3a.75.75 0 010-1.5h16.19l-2.47-2.47a.75.75 0 010-1.06z" clip-rule="evenodd" />
                         </svg>
@@ -124,7 +135,7 @@
     </section>
 
     <!-- About Section -->
-    <section id="about-us" class="py-16 bg-gray-50">
+    <section id="about-us" class="py-16 bg-gray-50 dark:bg-gray-900">
         <div class="content-section px-6">
             <div class="flex flex-col lg:flex-row items-center gap-12 mb-20">
                 <div class="relative w-full lg:w-1/2 flex justify-center">
@@ -133,8 +144,8 @@
                     <img src="tumbler3-remove-bg.png" class="absolute w-64 left-0 top-4 -rotate-6 hover:-translate-y-4 transition-transform drop-shadow-lg" alt="">
                 </div>
                 <div class="w-full lg:w-1/2">
-                    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Our Website</h2>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h2 class="text-3xl font-semibold text-gray-800 dark:text-white mb-4">Our Website</h2>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                         At Tumbler Haven, we make tumbler shopping easy, fun, and fully online. Our platform lets you customize your own tumbler in real time and place orders instantly—no more waiting or store visits. We're here to help you express your style with high-quality, personalized drinkware delivered right to your door.
                     </p>
                 </div>
@@ -143,8 +154,8 @@
             <div class="flex flex-col lg:flex-row-reverse items-center gap-12">
                 <img class="w-full lg:w-1/2 rounded-lg shadow-md" src="aboutus2.png" alt="About our service">
                 <div class="w-full lg:w-1/2">
-                    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Our Service</h2>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h2 class="text-3xl font-semibold text-gray-800 dark:text-white mb-4">Our Service</h2>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                         Tumbler Haven provides a seamless online service that lets customers design and purchase custom tumblers from the comfort of their home. We offer a variety of tumbler sizes and styles, a real-time customization tool, and a fast ordering process with no need for back-and-forth messaging.
                     </p>
                 </div>
@@ -153,13 +164,13 @@
     </section>
 
     <!-- Team Section -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-white dark:bg-gray-900">
         <div class="content-section px-6">
             <div class="flex flex-col lg:flex-row items-center gap-12">
                 <img class="w-full lg:w-1/2 rounded-lg shadow-md" src="https://i.pinimg.com/736x/2f/f3/d4/2ff3d4b27824c7ae338c586b3a71f919.jpg" alt="Our team">
                 <div class="w-full lg:w-1/2">
-                    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Our Team</h2>
-                    <p class="text-gray-600 leading-relaxed">
+                    <h2 class="text-3xl font-semibold text-gray-800 dark:text-white mb-4">Our Team</h2>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                         The team behind Tumbler Haven is a passionate group of creative thinkers, developers, and customer-focused individuals who believe in blending technology with personalization. With backgrounds in web development, design, and e-commerce, we work together to build a platform that is easy to use, visually appealing, and truly helpful for our users.
                     </p>
                 </div>
@@ -168,19 +179,19 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section id="testimonials" class="py-16 bg-gray-50">
+    <section id="testimonials" class="py-16 bg-gray-50 dark:bg-gray-900">
         <div class="content-section px-6" x-data="{ showAll: false }">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-semibold text-gray-800">What Our Customers Are Saying</h2>
+                <h2 class="text-3xl font-semibold text-gray-800 dark:text-white">What Our Customers Are Saying</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach ($reviews as $i => $review)
-                <div class="bg-white p-6 rounded-xl shadow-md"
+                <div class="bg-white p-6 rounded-xl shadow-md dark:bg-gray-800"
                     x-show="showAll || {{ $i }} < 3"
                     x-transition>
                     <blockquote class="mb-4">
-                        <p class="text-gray-700 italic">"{{ $review->comment }}"</p>
+                        <p class="text-gray-700 dark:text-gray-300 italic">"{{ $review->comment }}"</p>
                     </blockquote>
                     @if (!is_null($review->rating))
                     <div class="flex items-center mb-4">
@@ -191,13 +202,13 @@
                                 </svg>
                                 @endfor
                         </div>
-                        <span class="text-gray-500 text-sm ml-2">{{ $review->rating }}/5</span>
+                        <span class="text-gray-500 dark:text-gray-400 text-sm ml-2">{{ $review->rating }}/5</span>
                     </div>
                     @endif
                     <div class="flex items-center">
                         <img class="w-10 h-10 rounded-full mr-4" src="{{ $review->user->thumbnail ? asset($review->user->thumbnail) : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg' }}" alt="{{ $review->user->username }}">
                         <div>
-                            <p class="font-medium text-gray-800">{{ $review->user->username }}</p>
+                            <p class="font-medium text-gray-800 dark:text-white">{{ $review->user->username }}</p>
                         </div>
                     </div>
                 </div>
@@ -207,7 +218,7 @@
             @if (count($reviews) > 3)
             <div class="text-center mt-12">
                 <template x-if="!showAll">
-                    <button @click="showAll = true" class="inline-flex items-center px-6 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+                    <button @click="showAll = true" class="inline-flex items-center px-6 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100 transition-colors dark:border-gray-700 dark:text-white dark:hover:bg-gray-800">
                         View More
                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -215,7 +226,7 @@
                     </button>
                 </template>
                 <template x-if="showAll">
-                    <button @click="showAll = false" class="inline-flex items-center px-6 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+                    <button @click="showAll = false" class="inline-flex items-center px-6 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100 transition-colors dark:border-gray-700 dark:text-white dark:hover:bg-gray-800">
                         View Less
                         <svg class="w-4 h-4 ml-2 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -228,17 +239,17 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="py-16 bg-gray-800 text-white text-center">
+    <section class="py-16 bg-gray-800 text-white text-center dark:bg-gray-900">
         <div class="content-section px-6">
             <h3 class="text-2xl font-semibold mb-6">Don't see what you're looking for?</h3>
-            <button class="bg-white hover:bg-gray-100 text-gray-800 font-medium py-3 px-8 rounded-full transition-colors">
+            <button class="bg-white hover:bg-gray-100 text-gray-800 font-medium py-3 px-8 rounded-full transition-colors dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
                 Contact us
             </button>
         </div>
     </section>
 
     <!-- Back to Top Button -->
-    <button onclick="goToTop()" class="fixed bottom-8 right-8 bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full shadow-lg transition-all opacity-0 invisible z-50" id="backToTop">
+    <button onclick="goToTop()" class="fixed bottom-8 right-8 bg-gray-700 hover:bg-gray-600 text-white p-3 rounded-full shadow-lg transition-all opacity-0 invisible z-50 dark:bg-gray-900 dark:hover:bg-gray-700" id="backToTop">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
             <path fill-rule="evenodd" d="M11.47 2.47a.75.75 0 011.06 0l3.75 3.75a.75.75 0 01-1.06 1.06l-2.47-2.47V21a.75.75 0 01-1.5 0V4.81L8.78 7.28a.75.75 0 01-1.06-1.06l3.75-3.75z" clip-rule="evenodd" />
         </svg>

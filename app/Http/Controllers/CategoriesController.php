@@ -19,6 +19,12 @@ class CategoriesController extends Controller
         }
 
         $Categories = $query->paginate(4); // Paginate the results
+
+        // Redirect to last page if current page is out of range
+        if ($Categories->isEmpty() && $Categories->currentPage() > 1) {
+            return redirect()->route('categories', ['page' => $Categories->lastPage()]);
+        }
+
         return view('CRUD.Tumbler_Crud.View_Categories', compact('Categories'));
     }
     public function store(Request $request)

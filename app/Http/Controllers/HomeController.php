@@ -155,8 +155,7 @@ class HomeController extends Controller
         }
 
         $category = Categories::findOrFail($categoryId);
-        $Categories = Categories::all(); // Add this if needed in view
-        $ModelTumbler = ModelTumbler::all(); // Add this if needed in view
+        // Add this if needed in view
 
         return view('Pages.category', compact('tumblers', 'Categories', 'ModelTumbler', 'category'));
     }
